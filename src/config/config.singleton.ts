@@ -17,7 +17,18 @@ export class ConfigSingleton {
 
   constructor(filePath: string) {
     const config = dotenv.parse(fs.readFileSync(filePath));
-    this.envConfig = this.validateInput((config as unknown) as Env);
+    const envs: { [key: string]: string } = {};
+
+    if (process.env.MONGODB_URI) {
+      envs.MONGODB_URI = process.env.MONGODB_URI;
+    }
+
+    if (process.env.PORT) {
+      envs.PORT = process.env.PORT;
+    }
+
+    // @ts-ignore
+    this.envConfig = { ...this.validateInput((config as unknown) as Env), ...envs };
   }
 
   get(key: Env): Env {
