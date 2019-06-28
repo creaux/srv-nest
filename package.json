@@ -1,12 +1,12 @@
 {
-  "name": "@pyxis/nest",
+  "name": "@pyxismedia/srv-nest",
   "version": "0.1.0",
   "description": "Content management system",
   "author": "Petr Juna",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
-    "build_BYPASS": "yarn clean && tsc -p tsconfig.build.json",
+    "build_BYPASS": "npm run clean && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "nodemon",
@@ -14,7 +14,7 @@
     "prestart:prod": "rimraf dist && npm run build",
     "start:prod": "node dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
-    "test": "yarn lint && jest",
+    "test": "npm run lint && jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -23,7 +23,8 @@
     "webpack:start": "node dist/server.js",
     "webpack:build": "webpack --config webpack.config.js",
     "precommit": "lint-staged",
-    "prettier": "prettier --write 'src/**/*.ts'"
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "commit": "commit"
   },
   "dependencies": {
     "@nestjs/common": "6.3.1",
@@ -60,6 +61,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
     "@nestjs/testing": "^6.3.1",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.3.1",
@@ -99,9 +102,15 @@
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test && npm build"
+    }
+  },
   "engines": {
     "node": "10.15.3",
-    "yarn": "1.15.2",
     "npm": "6.4.1"
   }
 }
