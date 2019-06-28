@@ -1,0 +1,18 @@
+[
+  {
+    "_id": { "$oid": "00000000000000000000000a" },
+    "name": {
+      "en": "Section",
+      "de": "Der Sektion",
+      "fr": "La section"
+    }
+  },
+  {
+    "_id": { "$oid": "00000000000000000000000b" },
+    "name": {
+      "en": "Section 2",
+      "de": "Der Sektion 2",
+      "fr": "La section 2"
+    }
+  }
+]

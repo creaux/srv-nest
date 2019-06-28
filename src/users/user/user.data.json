@@ -1,0 +1,16 @@
+[
+  {
+    "_id": { "$oid": "000000000000000000000a00" },
+    "forname": "Karel",
+    "surname": "Vomacka",
+    "email": "karel@vomacka.cz",
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou"
+  },
+  {
+    "_id": { "$oid": "000000000000000000000b00" },
+    "forname": "Frantisek",
+    "surname": "Medvidek",
+    "email": "frantisek@medvidek.cz",
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou"
+  }
+]
