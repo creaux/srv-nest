@@ -3,5 +3,7 @@ node_js:
 - 10.15.3
 deploy:
   provider: heroku
-  api_key:
-    secure: HEROKU_SECURE
+  api_key: $HEROKU_SECURE
+  app: srv-nest
+  on:
+    repo: creaux/srv-nest
