@@ -19,8 +19,10 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 4000);
 
   // Hot Module Replacement Webpack
-  if (module.hot) {
+  if ((module as any).hot) {
+    // @ts-ignore
     module.hot.accept();
+    // @ts-ignore
     module.hot.dispose(() => app.close());
   }
 }
