@@ -1,4 +1,37 @@
-export { PostModel as PostMongo  } from '@pyxismedia/lib-model/post/post.model';
-export { CreatePostDto } from '@pyxismedia/lib-model/post/create-post.dto';
-export { SectionModel as Section } from '@pyxismedia/lib-model/post/section.model';
-export { PostStateEnum as PostState } from '@pyxismedia/lib-model/post/post-state.enum';
+import { Types, Document } from 'mongoose';
+import {
+  PostStateEnum as PostState,
+  PostModel,
+  CreatePostModel,
+  SectionModel,
+} from '@pyxismedia/lib-model';
+
+export { PostState };
+
+export interface Section extends SectionModel, Document {}
+
+export interface PostMongo extends PostModel, Document {
+  readonly title: string;
+  readonly subtitle: string;
+  readonly content: string;
+  readonly image: string;
+  readonly state: PostState;
+  readonly labels: string[];
+  readonly createdBy: Types.ObjectId;
+  readonly section: Types.ObjectId;
+  readonly id: Types.ObjectId;
+  readonly updatedBy: Types.ObjectId;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+}
+
+export class CreatePostDto implements CreatePostModel {
+  readonly title: string;
+  readonly subtitle: string;
+  readonly content: string;
+  readonly image: string;
+  readonly state: PostState;
+  readonly labels: string[];
+  readonly createdBy: Types.ObjectId;
+  readonly section: Types.ObjectId;
+}

@@ -68,7 +68,7 @@
     "@types/node": "^10.7.1",
     "@types/passport-http-bearer": "^1.0.33",
     "@types/supertest": "^2.0.5",
-    "@pyxismedia/lib-model": "1.0.2"
+    "@pyxismedia/lib-model": "1.0.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",

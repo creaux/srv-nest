@@ -1,9 +1,11 @@
 import { Document, Types } from 'mongoose';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { CreateUserDto } from '@pyxismedia/lib-model/user/create-user.dto'
-import { UserModel as IUserModel } from '@pyxismedia/lib-model/user/user.model';
+import {
+  CreateUserModel,
+  UserModel as IUserModel,
+} from '@pyxismedia/lib-model';
 
-export class UserCreate implements CreateUserDto {
+export class UserCreate implements CreateUserModel {
   constructor(
     forname: string,
     surname: string,
@@ -29,7 +31,7 @@ export class UserCreate implements CreateUserDto {
   readonly password: string;
 }
 
-export class UserModel implements IUserModel{
+export class UserModel implements IUserModel {
   constructor(
     public _id: any = Types.ObjectId(),
     public forname: string,
