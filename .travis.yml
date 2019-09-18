@@ -1,9 +1,12 @@
 language: node_js
 node_js:
-- 10.15.3
+  - 10.15.3
 deploy:
   provider: heroku
   api_key: $HEROKU_SECURE
   app: srv-nest
   on:
     repo: creaux/srv-nest
+
+after_deploy:
+  - npm run mongoimport:mlab
