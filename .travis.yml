@@ -7,6 +7,3 @@ deploy:
   app: srv-nest
   on:
     repo: creaux/srv-nest
-
-after_deploy:
-  - npm run mongoimport:mlab
