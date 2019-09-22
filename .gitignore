@@ -1,6 +1,5 @@
 .docker
 node_modules
-package-lock.json
 .idea
 *.log
 build

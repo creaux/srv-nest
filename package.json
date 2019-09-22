@@ -19,8 +19,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "mongoimport": "mongoimport -d pyxis --collection posts --file ./src/posts/post/post.data.json --drop --jsonArray && mongoimport -d pyxis --collection sections --file ./src/posts/section/section.data.json --drop --jsonArray&& mongoimport -d pyxis --collection users --file ./src/users/user/user.data.json --drop --jsonArray",
-    "mongoimport:mlab": "mongoimport -h $DB_HOSTNAME -d $DB_NAME -u $DB_USER -p $DB_PASSWORD --collection posts --file ./src/posts/post/post.data.json --drop --jsonArray && mongoimport -h $DB_HOSTNAME -d $DB_NAME -u $DB_USER -p $DB_PASSWORD --collection sections --file ./src/posts/section/section.data.json --drop --jsonArray&& mongoimport -h $DB_HOSTNAME -d $DB_NAME -u $DB_USER -p $DB_PASSWORD --collection users --file ./src/users/user/user.data.json --drop --jsonArray",
     "webpack:start": "node dist/server.js",
     "webpack:build": "webpack --config webpack.config.js",
     "precommit": "lint-staged",
@@ -69,7 +67,7 @@
     "@types/node": "^10.7.1",
     "@types/passport-http-bearer": "^1.0.33",
     "@types/supertest": "^2.0.5",
-    "@pyxismedia/lib-model": "1.0.6"
+    "@pyxismedia/lib-model": "^1.0.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
