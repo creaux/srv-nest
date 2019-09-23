@@ -16,7 +16,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // TODO: from dotenv, should access service from nest
-  await app.listen(process.env.PORT || 4000);
+  await app.listen(process.env.PORT || 4000, '0.0.0.0');
 
   // Hot Module Replacement Webpack
   if ((module as any).hot) {

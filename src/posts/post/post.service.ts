@@ -23,6 +23,7 @@ export class PostService {
   async findAll(skip: number = 0): Promise<PostMongo[]> {
     return await this.postModel
       .find()
+      .sort('createdAt')
       .skip(skip)
       .populate('section')
       .exec();
