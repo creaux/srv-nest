@@ -3,9 +3,9 @@ import { AuthService } from './auth/auth.service';
 import { UsersModule } from '../users/users.module';
 import { HttpStrategy } from './auth/http.strategy';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthSchema } from './auth/auth.schema';
 import { AUTH_MODEL } from './auth/auth.types';
 import { AuthController } from './auth/auth.controller';
+import { AuthSchema } from '@pyxismedia/lib-model';
 
 @Module({
   imports: [

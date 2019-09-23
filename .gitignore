@@ -15,3 +15,5 @@ logs
 *.swp
 .vscode
 dist
+development.env
+!production.env
