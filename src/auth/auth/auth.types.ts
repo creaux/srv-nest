@@ -13,7 +13,7 @@ export class Auth {
 
 export interface AuthDB extends Document, Auth {}
 
-export class AuthSignIn {
+export class AuthSignInDto {
   constructor(email: string, password: string) {
     this.email = email;
     this.password = password;

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Auth, AUTH_MODEL, AuthDB, AuthSignIn } from './auth.types';
+import { Auth, AUTH_MODEL, AuthDB, AuthSignInDto } from './auth.types';
 import { UserService } from '../../users/user/user.service';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -30,7 +30,7 @@ export class AuthService {
     return await this.authModel.findById(id);
   }
 
-  async signIn({ email, password }: AuthSignIn) {
+  async signIn({ email, password }: AuthSignInDto) {
     const user = await this.userService.findByEmail(email);
 
     if (user == null) {
