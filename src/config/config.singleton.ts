@@ -1,18 +1,20 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as Joi from 'joi';
-import { Injectable } from '@nestjs/common';
-import { DotenvParseOutput } from 'dotenv';
 
-enum Env {
+const { entries } = Object;
+
+export enum Env {
   MONGODB_URI = 'MONGODB_URI',
   NODE_ENV = 'NODE_ENV',
   PORT = 'PORT',
+  LOG_LEVEL = 'LOG_LEVEL',
+  LOG_NAME = 'LOG_NAME',
+  LOG_APPENDERS = 'LOG_APPENDERS',
 }
 
-@Injectable()
 export class ConfigSingleton {
-  private readonly envConfig: Env;
+  private readonly envConfig: Map<string, string>;
   public readonly Env = Env;
 
   constructor(filePath: string) {
@@ -27,13 +29,17 @@ export class ConfigSingleton {
       envs.PORT = process.env.PORT;
     }
 
-    // @ts-ignore
-    this.envConfig = { ...this.validateInput((config as unknown) as Env), ...envs };
+    this.envConfig = new Map(
+      entries({
+        // @ts-ignore
+        ...this.validateInput((config as unknown) as Env),
+        ...envs,
+      }),
+    );
   }
 
-  get(key: Env): Env {
-    // @ts-ignore
-    return this.envConfig[key];
+  get(key: Env): any {
+    return this.envConfig.get(key);
   }
 
   /**
@@ -47,6 +53,9 @@ export class ConfigSingleton {
         .default('development'),
       [this.Env.MONGODB_URI]: Joi.string(),
       [this.Env.PORT]: Joi.string(),
+      [this.Env.LOG_LEVEL]: Joi.string()
+        .valid(['debug', 'info', 'warn', 'error'])
+        .default('error'),
     });
 
     const { error, value: validatedEnvConfig } = Joi.validate(
