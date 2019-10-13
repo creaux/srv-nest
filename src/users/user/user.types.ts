@@ -5,7 +5,7 @@ import {
   UserModel as IUserModel,
 } from '@pyxismedia/lib-model';
 
-export class UserCreate implements CreateUserModel {
+export class UserCreateDto implements CreateUserModel {
   constructor(
     forname: string,
     surname: string,
@@ -32,13 +32,34 @@ export class UserCreate implements CreateUserModel {
 }
 
 export class UserModel implements IUserModel {
+  @ApiModelProperty()
+  _id: any;
+
+  @ApiModelProperty()
+  forname: string;
+
+  @ApiModelProperty()
+  surname: string;
+
+  @ApiModelProperty()
+  email: string;
+
+  @ApiModelProperty()
+  password: string;
+
   constructor(
-    public _id: any = Types.ObjectId(),
-    public forname: string,
-    public surname: string,
-    public email: string,
-    public password: string,
-  ) {}
+    _id: any = Types.ObjectId(),
+    forname: string,
+    surname: string,
+    email: string,
+    password: string,
+  ) {
+    this._id = _id;
+    this.forname = forname;
+    this.surname = surname;
+    this.email = email;
+    this.password = password;
+  }
 }
 
 export interface User extends Document, UserModel {}

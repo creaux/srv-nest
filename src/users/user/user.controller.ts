@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserModel, UserCreate } from './user.types';
+import { UserModel, UserCreateDto } from './user.types';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
@@ -27,8 +27,14 @@ export class UserController {
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
-  async createUser(@Body() { forname, surname, email, password }: UserCreate) {
-    const userCreate = new UserCreate(forname, surname, email, password);
+  async createUser(@Body()
+  {
+    forname,
+    surname,
+    email,
+    password,
+  }: UserCreateDto) {
+    const userCreate = new UserCreateDto(forname, surname, email, password);
     return await this.userService.createUser(userCreate);
   }
 }

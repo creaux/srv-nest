@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserModel, USER_MODEL, UserCreate, User } from './user.types';
+import { UserModel, USER_MODEL, UserCreateDto, User } from './user.types';
 
 @Injectable()
 export class UserService {
@@ -21,7 +21,7 @@ export class UserService {
     return await this.userModel.findById(id).select('-password');
   }
 
-  async createUser({ forname, surname, email, password }: UserCreate) {
+  async createUser({ forname, surname, email, password }: UserCreateDto) {
     const existing = await this.findByEmail(email);
 
     if (existing != null) {
