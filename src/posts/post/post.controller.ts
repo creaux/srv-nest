@@ -3,15 +3,11 @@ import { PostService } from './post.service';
 import { PostMongo } from './post.types';
 import { CreatePostDto } from './create-post.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { LoggerService } from 'nest-logger';
-import { MethodLogger } from 'src/decorators/method-logger.decorator';
+import { MethodLogger } from '../../decorators/method-logger.decorator';
 
 @Controller('post')
 export class PostController {
-  constructor(
-    private readonly postService: PostService,
-    private readonly logger: LoggerService,
-  ) {}
+  constructor(private readonly postService: PostService) {}
 
   @Get()
   @ApiOperation({ title: 'Request posts collection' })
