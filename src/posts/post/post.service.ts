@@ -1,7 +1,8 @@
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto, PostMongo } from './post.types';
+import { PostMongo } from './post.types';
+import { CreatePostDto } from './create-post.dto';
 
 @Injectable()
 export class PostService {
@@ -11,12 +12,10 @@ export class PostService {
 
   async create(createPostDto: CreatePostDto): Promise<PostMongo> {
     const post = {
-      // TODO: Post
-
       _id: Types.ObjectId(),
       ...createPostDto,
     };
-    const createdPost = new this.postModel(createPostDto);
+    const createdPost = new this.postModel(post);
     return await createdPost.save();
   }
 

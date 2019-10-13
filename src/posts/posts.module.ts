@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SectionService } from './section/section.service';
 import { PostController } from './post/post.controller';
 import { PostSchema, SectionSchema } from '@pyxismedia/lib-model';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { PostSchema, SectionSchema } from '@pyxismedia/lib-model';
       { name: 'Post', schema: PostSchema },
       { name: 'Section', schema: SectionSchema },
     ]),
+    LoggerModule,
   ],
   providers: [PostService, SectionService],
   controllers: [PostController],
