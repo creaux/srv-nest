@@ -45,7 +45,7 @@
     "@types/passport-http-bearer": "^1.0.33",
     "@types/supertest": "^2.0.5",
     "apollo-link-context": "^1.0.14",
-    "apollo-server-express": "^2.3.3",
+    "apollo-server-express": "^2.9.7",
     "bcrypt": "^3.0.6",
     "dotenv": "^8.1.0",
     "graphql": "^14.1.1",
