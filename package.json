@@ -27,7 +27,7 @@
     "documentation": "compodoc -p tsconfig.json -s"
   },
   "dependencies": {
-    "@nestjs/common": "6.8.3",
+    "@nestjs/common": "6.8.4",
     "@nestjs/core": "^6.3.1",
     "@nestjs/graphql": "^6.2.4",
     "@nestjs/mongoose": "^6.1.2",
