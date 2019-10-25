@@ -41,13 +41,10 @@ export class UserService {
       return new ConflictException('User with the same email already exists.');
     }
 
-    console.log(createUserRequestDto);
-
     return await this.userModel
       .create(createUserRequestDto)
       .then(document => new UserResponseDto(document.toObject()))
       .then(data => {
-        console.log(data);
         return data;
       });
   }

@@ -50,6 +50,7 @@
     "class-transformer": "0.2.0",
     "class-validator": "^0.10.2",
     "dotenv": "^8.1.0",
+    "flatted": "^2.0.1",
     "graphql": "^14.1.1",
     "graphql-tools": "^4.0.4",
     "husky": "^3.0.9",

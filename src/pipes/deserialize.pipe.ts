@@ -2,9 +2,8 @@ import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class DeserializePipe implements PipeTransform {
-  constructor() {}
+  // @ts-ignore
   transform(value: any, metadata: ArgumentMetadata) {
-    console.log('deserialize:', value);
     return value;
   }
 }

@@ -4,7 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
 import { Model } from 'mongoose';
-import { AuthSchemaInterface, AuthSuccessModel } from '@pyxismedia/lib-model';
+import { AuthSchemaInterface } from '@pyxismedia/lib-model';
 import {
   BcryptToken,
   Bcrypt,
@@ -12,6 +12,7 @@ import {
   JwtToken,
 } from '../../library/library.module';
 import { UserSchemaInterface } from '../../../../lib-model/src/user/user-schema.interface';
+import { CreateAuthModel } from '../../../../lib-model/src/auth/create-auth.model';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -72,8 +73,8 @@ describe('AuthService', () => {
 
   it('should create auth', () => {
     const spy = jest.spyOn(authModel, 'create');
-    service.createAuth(AuthSuccessModel.MOCK);
-    expect(spy).toHaveBeenCalledWith(AuthSuccessModel.MOCK);
+    service.createAuth(CreateAuthModel.MOCK);
+    expect(spy).toHaveBeenCalledWith(CreateAuthModel.MOCK);
   });
 
   it('should findAuthByUserId', () => {
@@ -98,7 +99,9 @@ describe('AuthService', () => {
       .spyOn(bcrypt, 'compare')
       .mockImplementation(() => Promise.resolve(true));
     const jwtSpy = jest.spyOn(jwt, 'sign').mockImplementation(() => 'abc');
-    service.signIn(new AuthSignInRequestDto('email', 'password'));
+    service.signIn(
+      new AuthSignInRequestDto({ email: 'email', password: 'password' }),
+    );
     expect(findByEmailSpy).toHaveBeenCalled();
     expect(findByEmailSpy).toHaveBeenCalledWith('email');
     // FIXME: Bug? it is not called

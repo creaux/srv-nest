@@ -4,6 +4,9 @@
   "jsRules": {
     "no-unused-expression": true
   },
+  "linterOptions": {
+    "exclude": ["**/*.e2e-spec.*", "**/*.spec.*", "webpack.config.js"]
+  },
   "rules": {
     "quotemark": [true, "single", "avoid-escape"],
     "member-access": [false],
@@ -15,10 +18,7 @@
     "object-literal-sort-keys": false,
     "max-classes-per-file": [true, 5, "exclude-class-expressions"],
     "variable-name": {
-      "options": [
-        "allow-leading-underscore",
-        "allow-pascal-case"
-      ]
+      "options": ["allow-leading-underscore", "allow-pascal-case"]
     }
   },
   "rulesDirectory": []

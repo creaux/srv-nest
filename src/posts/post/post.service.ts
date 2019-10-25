@@ -36,10 +36,6 @@ export class PostService {
   }
 
   async delete(id: string) {
-    console.log('id', id);
-    return await this.postModel
-      .findByIdAndRemove(id)
-      .then(console.log)
-      .catch(console.log);
+    return await this.postModel.findByIdAndRemove(id);
   }
 }
