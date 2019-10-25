@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { AuthSuccessModel } from '../../../../lib-model/src/auth/auth-success.model';
-import { AuthSignInModel } from '../../../../lib-model/src/auth/auth-signin.model';
+import { AuthSuccessModel } from '@pyxismedia/lib-model/build/auth/auth-success.model';
+import { AuthSignInModel } from '@pyxismedia/lib-model/build/auth/auth-signin.model';
 
 describe('Auth Controller', () => {
   let controller: AuthController;

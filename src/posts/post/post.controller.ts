@@ -14,7 +14,7 @@ import { CreatePostDto } from './create-post.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PostModel } from '@pyxismedia/lib-model';
-import { DeletePostModel } from '../../../../lib-model/src/post/delete-post.model';
+import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 

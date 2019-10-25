@@ -11,8 +11,8 @@ import {
   Jwt,
   JwtToken,
 } from '../../library/library.module';
-import { UserSchemaInterface } from '../../../../lib-model/src/user/user-schema.interface';
-import { CreateAuthModel } from '../../../../lib-model/src/auth/create-auth.model';
+import { UserSchemaInterface } from '@pyxismedia/lib-model/build/user/user-schema.interface';
+import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
 
 describe('AuthService', () => {
   let service: AuthService;

@@ -17,7 +17,7 @@ import {
 } from '../../library/library.module';
 import { UserResponseDto } from '../../users/user/create-user-response.dto';
 import { AuthSignInResponseDto } from './auth-sign-in-response.dto';
-import { CreateAuthModel } from '../../../../lib-model/src/auth/create-auth.model';
+import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
 
 @Injectable()
 export class AuthService {
