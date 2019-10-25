@@ -23,7 +23,8 @@
     "test:watch": "jest --watch",
     "prettier": "prettier --write 'src/**/*.ts'",
     "webpack:build": "webpack --config webpack.config.js",
-    "webpack:start": "node dist/server.js"
+    "webpack:start": "node dist/server.js",
+    "documentation": "compodoc -p tsconfig.json -s"
   },
   "dependencies": {
     "@nestjs/common": "6.8.3",
@@ -75,6 +76,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
+    "@compodoc/compodoc": "^1.1.11",
     "@nestjs/testing": "^6.3.1",
     "jest": "^24.9.0",
     "linkemon": "^0.1.1",

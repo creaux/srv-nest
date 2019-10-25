@@ -5,7 +5,12 @@
     "no-unused-expression": true
   },
   "linterOptions": {
-    "exclude": ["**/*.e2e-spec.*", "**/*.spec.*", "webpack.config.js"]
+    "exclude": [
+      "**/*.e2e-spec.*",
+      "**/*.spec.*",
+      "webpack.config.js",
+      "documentation/**/*"
+    ]
   },
   "rules": {
     "quotemark": [true, "single", "avoid-escape"],

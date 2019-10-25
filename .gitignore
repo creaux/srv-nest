@@ -17,3 +17,4 @@ logs
 dist
 *.env
 !production.env
+documentation
