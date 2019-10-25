@@ -8,22 +8,7 @@ import * as mongooseIntl from 'mongoose-intl';
 import { ConfigModule, ConfigService } from '../config/config.module';
 import { ConfigSingleton } from '../config/config.singleton';
 
-// Issue with webpack maybe cause imports *
-// TODO: Move to async provider
-plugin(mongooseIntl, { languages: ['en', 'de', 'fr'], defaultLanguage: 'en' }); // wrong instance
-
 @Module({
-  imports: [
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigSingleton) => {
-        return {
-          uri: configService.get(configService.Env.MONGODB_URI),
-        };
-      },
-      inject: [ConfigService],
-    }),
-  ],
   providers: [I18nService],
 })
 export class I18nModule {

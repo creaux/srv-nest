@@ -9,7 +9,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    // Because dependencies in @pyxismedia/lib-model which are js
+    "allowJs": true
   },
   "exclude": ["node_modules"]
 }

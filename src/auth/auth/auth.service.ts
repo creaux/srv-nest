@@ -1,47 +1,82 @@
 import {
-  ExceptionFilter,
   ForbiddenException,
   Injectable,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Auth, AUTH_MODEL, AuthDB, AuthSignInDto } from './auth.types';
+import { Model, Types } from 'mongoose';
+import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
+import { AuthSuccessModel, AuthSchemaInterface } from '@pyxismedia/lib-model';
+import {
+  JwtToken,
+  Jwt,
+  Bcrypt,
+  BcryptToken,
+} from '../../library/library.module';
+import { UserResponseDto } from '../../users/user/create-user-response.dto';
+import { AuthSignInResponseDto } from './auth-sign-in-response.dto';
+import { CreateAuthModel } from '../../../../lib-model/src/auth/create-auth.model';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(AUTH_MODEL) private readonly authModel: Model<AuthDB>,
+    @InjectModel(AUTH_MODEL)
+    private readonly authModel: Model<AuthSchemaInterface>,
     private readonly userService: UserService,
+    @Inject(JwtToken) private readonly jwt: Jwt,
+    @Inject(BcryptToken) private readonly bcrypt: Bcrypt,
   ) {}
 
-  async validateUser(token: string) {
-    return await this.authModel.findOne({ token });
+  async validateUser(token: string): Promise<AuthSignInResponseDto> {
+    return await this.authModel
+      .findOne({ token })
+      .then(document => new AuthSignInResponseDto(document));
   }
 
-  async createAuth(auth: Auth) {
-    return await this.authModel.create(auth);
+  async createAuth(auth: CreateAuthModel): Promise<AuthSignInResponseDto> {
+    return await this.authModel
+      .create(auth)
+      .then(document => new AuthSignInResponseDto(document.toObject()));
   }
 
-  async findAuthByUserId(id: string) {
-    return await this.authModel.findById(id);
+  async findAuthByUserId(id: string): Promise<AuthSignInResponseDto> {
+    return await this.authModel.findById(id).then(document => {
+      return new AuthSignInResponseDto(document.toObject());
+    });
   }
 
-  async signIn({ email, password }: AuthSignInDto) {
-    const user = await this.userService.findByEmail(email);
+  private findUserByEmail(email: string): Promise<UserResponseDto> {
+    return this.userService.findByEmail(email);
+  }
+
+  private comparePassword(
+    existingPassword: string,
+    password: string,
+  ): Promise<boolean> {
+    return this.bcrypt.compare(password, existingPassword);
+  }
+
+  async signIn({
+    email,
+    password,
+  }: AuthSignInRequestDto): Promise<
+    AuthSignInResponseDto | ForbiddenException
+  > {
+    const user = await this.findUserByEmail(email);
 
     if (user == null) {
       throw new NotFoundException("User doesn't exist.");
     }
 
-    const comparison = await bcrypt.compare(password, user.get('password'));
-    const token = jwt.sign({ user: user.get('email') }, '723bhjdw7');
+    const comparison = await this.comparePassword(user.password, password);
+    const token = this.jwt.sign({ user: user.email }, '723bhjdw7');
 
     if (comparison) {
-      return await this.createAuth(new Auth(undefined, token, user.get('id')));
+      return await this.createAuth(
+        new CreateAuthModel({ token, userId: user.id }),
+      );
     }
 
     return await Promise.resolve(new ForbiddenException());

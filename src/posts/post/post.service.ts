@@ -1,16 +1,16 @@
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { PostMongo } from './post.types';
 import { CreatePostDto } from './create-post.dto';
+import { PostSchemaInterface, PostModel } from '@pyxismedia/lib-model';
 
 @Injectable()
 export class PostService {
   constructor(
-    @InjectModel('Post') private readonly postModel: Model<PostMongo>,
+    @InjectModel('Post') private readonly postModel: Model<PostSchemaInterface>,
   ) {}
 
-  async create(createPostDto: CreatePostDto): Promise<PostMongo> {
+  async create(createPostDto: CreatePostDto): Promise<PostModel> {
     const post = {
       _id: Types.ObjectId(),
       ...createPostDto,
@@ -19,7 +19,7 @@ export class PostService {
     return await createdPost.save();
   }
 
-  async findAll(skip: number = 0): Promise<PostMongo[]> {
+  async findAll(skip: number = 0): Promise<PostModel[]> {
     return await this.postModel
       .find()
       .sort('createdAt')
@@ -28,10 +28,18 @@ export class PostService {
       .exec();
   }
 
-  async findById(id: string): Promise<PostMongo> {
+  async findById(id: string): Promise<PostModel> {
     return await this.postModel
       .findById(id)
       .populate('section')
       .exec();
+  }
+
+  async delete(id: string) {
+    console.log('id', id);
+    return await this.postModel
+      .findByIdAndRemove(id)
+      .then(console.log)
+      .catch(console.log);
   }
 }

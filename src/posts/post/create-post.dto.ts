@@ -1,10 +1,10 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { PostState } from './post.types';
 import { CreatePostModel } from '@pyxismedia/lib-model';
-import { UserModel } from '../../users/user/user.types';
 
 export class CreatePostDto implements CreatePostModel {
   @ApiModelProperty({
+    required: true,
     type: String,
     example: CreatePostModel.MOCK.title,
   })
