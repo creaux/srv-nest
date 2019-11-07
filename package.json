@@ -50,7 +50,7 @@
     "bcrypt": "^3.0.6",
     "class-transformer": "0.2.0",
     "class-validator": "^0.10.2",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "flatted": "^2.0.1",
     "graphql": "^14.1.1",
     "graphql-tools": "^4.0.4",
