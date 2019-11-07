@@ -5,10 +5,10 @@ import {
   Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
-import { AuthSuccessModel, AuthSchemaInterface } from '@pyxismedia/lib-model';
+import { AuthSchemaInterface } from '@pyxismedia/lib-model';
 import {
   JwtToken,
   Jwt,
@@ -71,7 +71,11 @@ export class AuthService {
     }
 
     const comparison = await this.comparePassword(user.password, password);
-    const token = this.jwt.sign({ user: user.email }, '723bhjdw7');
+    const token = this.jwt.sign(
+      // iat makes sure that token is also unique eachtime when testing is very fast
+      { user: user.email, iat: Math.floor(Date.now()) },
+      '723bhjdw7',
+    );
 
     if (comparison) {
       return await this.createAuth(
