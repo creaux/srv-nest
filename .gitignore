@@ -18,3 +18,5 @@ dist
 *.env
 !production.env
 documentation
+.yalc
+yalc.lock
