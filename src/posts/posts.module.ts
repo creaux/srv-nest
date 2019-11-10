@@ -7,6 +7,8 @@ import { PostSchema, SectionSchema } from '@pyxismedia/lib-model';
 import { LoggerModule } from '../logger/logger.module';
 import { MongoModule } from '../mongo/mongo.module';
 import { PipesModule } from '../pipes/pipes.module';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { PipesModule } from '../pipes/pipes.module';
     ]),
     LoggerModule,
     PipesModule,
+    AuthModule,
+    UsersModule,
   ],
   providers: [PostService, SectionService],
   controllers: [PostController],

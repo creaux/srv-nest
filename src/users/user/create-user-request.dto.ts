@@ -18,6 +18,7 @@ export class CreateUserRequestDto extends CreateUserModel {
 
   @ApiModelProperty()
   readonly password: string;
-}
 
-export const USER_MODEL = 'User';
+  @ApiModelProperty()
+  readonly roles: string[];
+}

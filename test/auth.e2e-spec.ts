@@ -3,9 +3,9 @@ import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
 import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
 import { MemoryDb } from './memory-db';
+import { ConfigService } from '../src/config/config.module';
 import { ConfigModule } from '../src/config/config.module';
-import { Entities } from '@pyxismedia/lib-model';
-import { ConfigService } from '../src/config/config.service';
+import { DataMockEntities } from '@pyxismedia/lib-model';
 
 describe('AuthController (e2e)', () => {
   let app: any;
@@ -14,10 +14,15 @@ describe('AuthController (e2e)', () => {
 
   beforeAll(async () => {
     db = new MemoryDb();
-    db.import(Entities.SECTIONS);
-    db.import(Entities.POSTS);
-    db.import(Entities.USERS);
+    db.import(DataMockEntities.SECTIONS);
+    db.import(DataMockEntities.POSTS);
+    db.import(DataMockEntities.USERS);
     dbUri = await db.uri;
+    await db.ensure();
+  });
+
+  afterAll(async () => {
+    await db.stop();
   });
 
   beforeEach(async () => {

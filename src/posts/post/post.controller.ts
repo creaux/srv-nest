@@ -11,28 +11,33 @@ import {
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PostModel } from '@pyxismedia/lib-model';
 import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { ValidationPipe } from '../../pipes/validation.pipe';
+import { UseRoles, ACGuard } from 'nest-access-control/lib';
+import { AccessGuard } from '../../users/access.guard';
 
 @UseInterceptors(LoggerInterceptor)
 @Controller('post')
+@ApiBearerAuth()
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @UseGuards(AccessGuard)
+  @UseRoles({ resource: 'post', action: 'read', possession: 'any' })
   @Get()
   @ApiOperation({ title: 'Request posts collection' })
-  // TODO: Model for request
   async findAll(@Query('skip') skip: string): Promise<PostModel[]> {
     return await this.postService.findAll(parseInt(skip, 0));
   }
 
   @Get(':id')
   @ApiOperation({ title: 'Request post' })
-  // TODO: Model for request
+  @UseGuards(AccessGuard)
+  @UseRoles({ resource: 'post', action: 'read', possession: 'any' })
   async findById(@Param('id') id: string): Promise<PostModel> {
     return await this.postService.findById(id);
   }
@@ -47,7 +52,8 @@ export class PostController {
     status: 401,
     description: 'Post creations requires authetification',
   })
-  @UseGuards(AuthGuard('bearer'))
+  @UseGuards(AuthGuard('bearer'), AccessGuard)
+  @UseRoles({ resource: 'post', action: 'create', possession: 'any' })
   async createPost(
     @Body(ValidationPipe) createPostDto: CreatePostDto,
   ): Promise<PostModel> {
@@ -64,9 +70,10 @@ export class PostController {
     status: 401,
     description: 'Deleting of Post requires authentification',
   })
-  // TODO: Model for request
+  @UseGuards(AuthGuard('bearer'), AccessGuard)
+  @UseRoles({ resource: 'post', action: 'delete', possession: 'any' })
   async deletePost(@Param('id') id: string) {
-    const deletePost = new DeletePostModel(id);
+    const deletePost = new DeletePostModel({ id });
     const result = await this.postService.delete(deletePost.id);
     return result;
   }

@@ -1,23 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
+import { RoleService } from './role.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { USER_MODEL } from '@pyxismedia/lib-model';
+import { ROLE_MODEL } from '@pyxismedia/lib-model';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('RoleService', () => {
+  let service: RoleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserService,
+        RoleService,
         {
-          provide: getModelToken(USER_MODEL),
+          provide: getModelToken(ROLE_MODEL),
           useValue: {},
         },
       ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    service = module.get<RoleService>(RoleService);
   });
 
   it('should be defined', () => {

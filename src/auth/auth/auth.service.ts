@@ -24,19 +24,30 @@ export class AuthService {
     @Inject(BCRYPT) private readonly bcrypt: Bcrypt,
   ) {}
 
-  async validateUser(token: string): Promise<AuthSignInResponseDto> {
+  public async validateUser(token: string): Promise<AuthSignInResponseDto> {
     return await this.authModel
       .findOne({ token })
-      .then(document => new AuthSignInResponseDto(document));
+      .exec()
+      .then(document => {
+        if (document) {
+          return new AuthSignInResponseDto(document.toObject());
+        }
+        return null;
+      });
   }
 
-  async createAuth(auth: CreateAuthModel): Promise<AuthSignInResponseDto> {
-    return await this.authModel
-      .create(auth)
-      .then(document => new AuthSignInResponseDto(document.toObject()));
+  public async createAuth(
+    auth: CreateAuthModel,
+  ): Promise<AuthSignInResponseDto | null> {
+    return await this.authModel.create(auth).then(document => {
+      if (document) {
+        return new AuthSignInResponseDto(document.toObject());
+      }
+      return null;
+    });
   }
 
-  async findAuthByUserId(id: string): Promise<AuthSignInResponseDto> {
+  public async findAuthByUserId(id: string): Promise<AuthSignInResponseDto> {
     return await this.authModel.findById(id).then(document => {
       return new AuthSignInResponseDto(document.toObject());
     });
@@ -53,7 +64,7 @@ export class AuthService {
     return this.bcrypt.compare(password, existingPassword);
   }
 
-  async signIn({
+  public async signIn({
     email,
     password,
   }: AuthSignInRequestDto): Promise<

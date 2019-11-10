@@ -1,9 +1,9 @@
-import { UserModel } from '@pyxismedia/lib-model';
+import { UserPopulatedModel } from '@pyxismedia/lib-model';
 
-export class UserResponseDto extends UserModel {
-  constructor(partial: Partial<UserResponseDto>) {
-    super(partial);
+export class UserResponseDto extends UserPopulatedModel {
+  constructor(model: UserResponseDto) {
+    super(model);
 
-    Object.assign(this, partial);
+    Object.assign(this, model);
   }
 }
