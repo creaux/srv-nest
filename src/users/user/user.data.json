@@ -4,13 +4,37 @@
     "forname": "Karel",
     "surname": "Vomacka",
     "email": "karel@vomacka.cz",
-    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou"
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
+    "roles": [{ "$oid": "5dc9bbffa68eed83b62d0e4c" }]
   },
   {
     "_id": { "$oid": "000000000000000000000b00" },
     "forname": "Frantisek",
     "surname": "Medvidek",
     "email": "frantisek@medvidek.cz",
-    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou"
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
+    "roles": [{ "$oid": "5dc9bbffa68eed83b62d0e4c" }]
+  },
+  {
+    "_id": {
+      "$oid": "000000000000000000000b00"
+    },
+    "forname": "Jindrich",
+    "surname": "Otrapa",
+    "email": "jindrich@otrapa.cz",
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
+    "roles": [{
+      "$oid": "5dc9bbffa68eed83b62d0e4c"
+    }]
+  },
+  {
+    "_id": {
+      "$oid": "000000000000000000000b00"
+    },
+    "forname": "Boris",
+    "surname": "Johnson",
+    "email": "boris@johnson.cz",
+    "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
+    "roles": [{ "$oid": "5dc9bbffa68eed83b62d0e4c" }, { "$oid":  "5dc9bc0c99e35856ffe90e66" }]
   }
 ]

@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import * as mongoose from 'mongoose';
+
+mongoose.set('debug', true);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +14,7 @@ async function bootstrap() {
     .setDescription('CMS API Description')
     .setVersion('1.0')
     .addTag('nest')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

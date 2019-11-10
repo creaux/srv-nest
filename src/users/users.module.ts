@@ -1,18 +1,40 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './user/user.service';
-import { UserSchema } from '@pyxismedia/lib-model';
 import { UserController } from './user/user.controller';
-import { USER_MODEL } from './user/create-user-request.dto';
 import { MongoModule } from '../mongo/mongo.module';
+import { RoleService } from './role/role.service';
+import { RoleController } from './role/role.controller';
+import { AccessController } from './access/access.controller';
+import {
+  UserSchema,
+  ROLE_MODEL,
+  RoleSchema,
+  USER_MODEL,
+} from '@pyxismedia/lib-model';
+import { AccessService } from './access/access.service';
+import { AccessControlModule, RolesBuilder } from 'nest-access-control/lib';
+import { AccessModule } from './access/access.module';
 
 @Module({
   imports: [
     MongoModule,
-    MongooseModule.forFeature([{ name: USER_MODEL, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: USER_MODEL, schema: UserSchema },
+      { name: ROLE_MODEL, schema: RoleSchema },
+    ]),
+    AccessControlModule.forRootAsync({
+      imports: [AccessModule],
+      inject: [AccessService],
+      async useFactory(accessService: AccessService) {
+        const rights = await accessService.findAll();
+        return new RolesBuilder([...rights]);
+      },
+    }),
+    AccessModule,
   ],
-  providers: [UserService],
-  controllers: [UserController],
-  exports: [UserService],
+  providers: [UserService, RoleService],
+  controllers: [UserController, RoleController, AccessController],
+  exports: [UserService, RoleService],
 })
 export class UsersModule {}

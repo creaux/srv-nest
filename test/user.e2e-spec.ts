@@ -4,7 +4,11 @@ import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto'
 import { AuthModule } from '../src/auth/auth.module';
 import { MemoryDb } from './memory-db';
 import { UsersModule } from '../src/users/users.module';
-import { AuthSuccessModel, UserModel, Entities } from '@pyxismedia/lib-model';
+import {
+  DataMockEntities,
+  UserModel,
+  AuthSuccessModel,
+} from '@pyxismedia/lib-model';
 import { ConfigService } from '../src/config/config.service';
 
 describe('UsersController (e2e)', () => {
@@ -15,8 +19,10 @@ describe('UsersController (e2e)', () => {
 
   beforeAll(async () => {
     db = new MemoryDb();
-    db.import(Entities.USERS);
+    db.import(DataMockEntities.USERS);
+    db.import(DataMockEntities.ROLES);
     dbUri = await db.uri;
+    await db.ensure();
   });
 
   beforeAll(async () => {
@@ -50,8 +56,12 @@ describe('UsersController (e2e)', () => {
       });
   });
 
+  afterAll(async () => {
+    await db.stop();
+  });
+
   it('/user (GET)', async () => {
-    const all = db.get(Entities.USERS);
+    const all = db.get(DataMockEntities.USERS);
     const expected = all.map((user: UserModel) => {
       const { password, ...rest } = user;
       return rest;
@@ -64,7 +74,7 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/user?skip=3 (GET)', async () => {
-    const all = db.get(Entities.USERS);
+    const all = db.get(DataMockEntities.USERS);
     const expected = all
       .map((user: UserModel) => {
         const { password, ...rest } = user;
@@ -79,10 +89,10 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/user/:id (GET)', () => {
-    const all = db.get(Entities.USERS)[0];
+    const all = db.get(DataMockEntities.USERS)[0];
     const { password, ...expected } = all;
     return request(app.getHttpServer())
-      .get(`/user/${db.get(Entities.USERS)[0].id}`)
+      .get(`/user/${db.get(DataMockEntities.USERS)[0].id}`)
       .set('Authorization', `Bearer ${auth.token}`)
       .expect(200)
       .expect(expected);
