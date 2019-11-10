@@ -117,4 +117,6 @@ describe('PostController (e2e)', () => {
         done();
       });
   });
+
+  // TODO: Testing scenario for making sure that delete endpoint will return validationErrors on missing id
 });

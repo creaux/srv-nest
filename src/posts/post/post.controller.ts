@@ -17,8 +17,8 @@ import { PostModel } from '@pyxismedia/lib-model';
 import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { ValidationPipe } from '../../pipes/validation.pipe';
+import { DeletePostDto } from './delete-post-dto';
 
-@UseInterceptors(LoggerInterceptor)
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -65,9 +65,7 @@ export class PostController {
     description: 'Deleting of Post requires authentification',
   })
   // TODO: Model for request
-  async deletePost(@Param('id') id: string) {
-    const deletePost = new DeletePostModel(id);
-    const result = await this.postService.delete(deletePost.id);
-    return result;
+  public deletePost(@Param() params: DeletePostDto) {
+    return this.postService.delete(params.id);
   }
 }
