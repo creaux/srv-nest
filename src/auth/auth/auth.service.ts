@@ -9,12 +9,7 @@ import { Model } from 'mongoose';
 import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
 import { AuthSchemaInterface } from '@pyxismedia/lib-model';
-import {
-  JwtToken,
-  Jwt,
-  Bcrypt,
-  BcryptToken,
-} from '../../library/library.module';
+import { JWT, Jwt, Bcrypt, BCRYPT } from '../../library/library.module';
 import { UserResponseDto } from '../../users/user/create-user-response.dto';
 import { AuthSignInResponseDto } from './auth-sign-in-response.dto';
 import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
@@ -25,8 +20,8 @@ export class AuthService {
     @InjectModel(AUTH_MODEL)
     private readonly authModel: Model<AuthSchemaInterface>,
     private readonly userService: UserService,
-    @Inject(JwtToken) private readonly jwt: Jwt,
-    @Inject(BcryptToken) private readonly bcrypt: Bcrypt,
+    @Inject(JWT) private readonly jwt: Jwt,
+    @Inject(BCRYPT) private readonly bcrypt: Bcrypt,
   ) {}
 
   async validateUser(token: string): Promise<AuthSignInResponseDto> {

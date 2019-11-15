@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '../config/config.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigSingleton } from '../config/config.singleton';
 import { plugin } from 'mongoose';
 // @ts-ignore
 import * as mongooseIntl from 'mongoose-intl';
+import { ConfigModule } from '../config/config.module';
+import { ConfigService } from '../config/config.service';
+import { CONFIG_ACCESSORS, ConfigAccessors } from '../config/config.accessors';
+import { LoggerService } from '../logger/logger.service';
+import { LoggerModule } from '../logger/logger.module';
 
 // Issue with webpack maybe cause imports *
 // TODO: Move to async provider
@@ -14,13 +17,19 @@ plugin(mongooseIntl, { languages: ['en', 'de', 'fr'], defaultLanguage: 'en' }); 
   imports: [
     ConfigModule,
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigSingleton) => {
-        return {
-          uri: configService.get(configService.Env.MONGODB_URI),
-        };
+      imports: [ConfigModule, LoggerModule],
+      useFactory: (
+        config: ConfigService,
+        accessors: typeof ConfigAccessors,
+        logger: LoggerService,
+      ) => {
+        const uri = config.get(accessors.MONGODB_URI);
+
+        logger.log(`${accessors.MONGODB_URI} is: ${uri}`, 'MongoModule');
+
+        return { uri };
       },
-      inject: [ConfigService],
+      inject: [ConfigService, CONFIG_ACCESSORS, LoggerService],
     }),
   ],
 })
