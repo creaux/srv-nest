@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ConfigSingleton } from './config.singleton';
-
-export const ConfigService = Symbol('ConfigService');
-
-const configService = {
-  provide: ConfigService,
-  useValue: new ConfigSingleton(`${process.env.NODE_ENV || 'development'}.env`),
-};
+import { ConfigService } from './config.service';
+import { LibraryModule } from '../library/library.module';
+import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
 
 @Module({
-  providers: [configService],
-  exports: [configService],
+  imports: [LibraryModule],
+  providers: [
+    ConfigService,
+    {
+      provide: CONFIG_ACCESSORS,
+      useValue: ConfigAccessors,
+    },
+  ],
+  exports: [ConfigService, CONFIG_ACCESSORS],
 })
 export class ConfigModule {}

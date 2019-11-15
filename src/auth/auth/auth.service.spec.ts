@@ -5,12 +5,7 @@ import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
 import { Model } from 'mongoose';
 import { AuthSchemaInterface } from '@pyxismedia/lib-model';
-import {
-  BcryptToken,
-  Bcrypt,
-  Jwt,
-  JwtToken,
-} from '../../library/library.module';
+import { BCRYPT, Bcrypt, Jwt, JWT } from '../../library/library.module';
 import { UserSchemaInterface } from '@pyxismedia/lib-model/build/user/user-schema.interface';
 import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
 
@@ -40,13 +35,13 @@ describe('AuthService', () => {
           },
         },
         {
-          provide: BcryptToken,
+          provide: BCRYPT,
           useValue: {
             compare() {},
           },
         },
         {
-          provide: JwtToken,
+          provide: JWT,
           useValue: {
             sign() {},
           },
@@ -57,8 +52,8 @@ describe('AuthService', () => {
     service = module.get<AuthService>(AuthService);
     userService = module.get<UserService>(UserService);
     authModel = module.get(getModelToken(AUTH_MODEL));
-    bcrypt = module.get<Bcrypt>(BcryptToken);
-    jwt = module.get<Jwt>(JwtToken);
+    bcrypt = module.get<Bcrypt>(BCRYPT);
+    jwt = module.get<Jwt>(JWT);
   });
 
   it('should be defined', () => {

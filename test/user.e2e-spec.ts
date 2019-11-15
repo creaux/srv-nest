@@ -1,12 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { ConfigService } from '../src/config/config.module';
 import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
 import { AuthModule } from '../src/auth/auth.module';
-import { MemoryDb, Entities } from './memory-db';
+import { MemoryDb } from './memory-db';
 import { UsersModule } from '../src/users/users.module';
-import { AuthSuccessModel } from '../../lib-model/src/auth/auth-success.model';
-import { UserModel } from '../../lib-model/src/user/user.model';
+import { AuthSuccessModel, UserModel, Entities } from '@pyxismedia/lib-model';
+import { ConfigService } from '../src/config/config.service';
 
 describe('UsersController (e2e)', () => {
   let app: any;

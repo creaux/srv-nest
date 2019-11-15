@@ -10,19 +10,19 @@ export class LoggerService extends Logger {
     LoggerService.logger = this;
   }
 
-  public log(message: string) {
-    super.log(message);
+  public log(message: string, context?: string) {
+    super.log(message, context);
   }
-  public error(message: string, trace: string) {
-    super.error(message, trace);
+  public error(message: string, trace: string, context?: string) {
+    super.error(message, trace, context);
   }
-  public warn(message: string) {
-    super.warn(message);
+  public warn(message: string, context?: string) {
+    super.warn(message, context);
   }
-  public debug(message: string) {
-    super.debug(message);
+  public debug(message: string, context?: string) {
+    super.debug(message, context);
   }
-  public verbose(message: string) {
-    super.verbose(message);
+  public verbose(message: string, context?: string) {
+    super.verbose(message, context);
   }
 }

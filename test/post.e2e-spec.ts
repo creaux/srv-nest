@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { PostsModule } from '../src/posts/posts.module';
-import { ConfigService } from '../src/config/config.module';
 import { PostModel } from '@pyxismedia/lib-model';
 import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
 import { AuthModule } from '../src/auth/auth.module';
-import { CreatePostModel } from '../../lib-model/src/post/create-post.model';
-import { MemoryDb, Entities } from './memory-db';
+import { MemoryDb } from './memory-db';
+import { Entities, CreatePostModel } from '@pyxismedia/lib-model';
+import { ConfigService } from '../src/config/config.service';
 
 describe('PostController (e2e)', () => {
   let app: any;
@@ -62,7 +62,12 @@ describe('PostController (e2e)', () => {
   it('/post (POST)', async done => {
     const auth = await request(app.getHttpServer())
       .post('/auth')
-      .send(new AuthSignInRequestDto('karel@vomacka.cz', '12345'))
+      .send(
+        new AuthSignInRequestDto({
+          email: 'karel@vomacka.cz',
+          password: '12345',
+        }),
+      )
       .then(res => {
         return res.body;
       });

@@ -3,5 +3,8 @@
   "watch": ["src", "node_modules/@pyxismedia"],
   "ext": "ts,graphql,json",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node -r tsconfig-paths/register src/main.ts"
+  "exec": "ts-node -r tsconfig-paths/register src/main.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
 }
