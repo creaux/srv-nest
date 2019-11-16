@@ -9,6 +9,7 @@ import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
 import { AuthService } from '../../auth/auth/auth.service';
 import { UserService } from '../../users/user/user.service';
 import { Reflector } from '@nestjs/core';
+import { RoleService } from '../../users/role/role.service';
 
 describe('Post Controller', () => {
   let controller: PostController;
@@ -33,6 +34,7 @@ describe('Post Controller', () => {
         { provide: AuthService, useValue: {} },
         { provide: UserService, useValue: {} },
         { provide: Reflector, useValue: {} },
+        { provide: RoleService, useValue: {} },
       ],
     }).compile();
 
