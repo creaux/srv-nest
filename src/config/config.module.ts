@@ -2,16 +2,19 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from './config.service';
 import { LibraryModule } from '../library/library.module';
 import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
+import { LoggerModule } from '../logger/logger.module';
+import { EnvironmentService } from './environment.service';
 
 @Module({
-  imports: [LibraryModule],
+  imports: [LibraryModule, LoggerModule],
   providers: [
     ConfigService,
     {
       provide: CONFIG_ACCESSORS,
       useValue: ConfigAccessors,
     },
+    EnvironmentService,
   ],
-  exports: [ConfigService, CONFIG_ACCESSORS],
+  exports: [ConfigService, CONFIG_ACCESSORS, EnvironmentService],
 })
 export class ConfigModule {}

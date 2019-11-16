@@ -8,6 +8,7 @@ import { AuthSchemaInterface } from '@pyxismedia/lib-model';
 import { BCRYPT, Bcrypt, Jwt, JWT } from '../../library/library.module';
 import { UserSchemaInterface } from '@pyxismedia/lib-model/build/user/user-schema.interface';
 import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
+import { UserResponseDto } from '../../users/user/create-user-response.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -81,14 +82,17 @@ describe('AuthService', () => {
   it('should signIn the user', () => {
     const findByEmailSpy = jest
       .spyOn(userService, 'findByEmail')
-      .mockImplementation(() =>
-        Promise.resolve((new Map(
-          Object.entries({
-            email: 'emailMock',
-            password: 'passwordMock',
-            id: 'idMock',
-          }),
-        ) as unknown) as UserSchemaInterface),
+      .mockImplementation(
+        () =>
+          (Promise.resolve(
+            new Map(
+              Object.entries({
+                email: 'emailMock',
+                password: 'passwordMock',
+                id: 'idMock',
+              }),
+            ),
+          ) as unknown) as Promise<UserResponseDto>,
       );
     const comparisonSpy = jest
       .spyOn(bcrypt, 'compare')

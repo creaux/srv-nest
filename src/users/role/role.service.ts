@@ -26,12 +26,15 @@ export class RoleService {
       );
   }
   public findById(id: string) {
-    return this.userModel.findById(id).then(document => {
-      if (document) {
-        return new RoleResponseDto(document.toObject());
-      }
-      return null;
-    });
+    return this.userModel
+      .findById(id)
+      .exec()
+      .then(document => {
+        if (document) {
+          return new RoleResponseDto(document.toObject());
+        }
+        return null;
+      });
   }
 
   public findByName(name: string) {

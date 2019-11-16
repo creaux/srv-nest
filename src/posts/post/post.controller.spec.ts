@@ -5,6 +5,10 @@ import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { LoggerService } from '../../logger/logger.service';
 import { PostModel } from '@pyxismedia/lib-model';
 import { CreatePostDto } from './create-post.dto';
+import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
+import { AuthService } from '../../auth/auth/auth.service';
+import { UserService } from '../../users/user/user.service';
+import { Reflector } from '@nestjs/core';
 
 describe('Post Controller', () => {
   let controller: PostController;
@@ -25,6 +29,10 @@ describe('Post Controller', () => {
         },
         { provide: LoggerInterceptor, useValue: {} },
         { provide: LoggerService, useValue: {} },
+        { provide: ROLES_BUILDER_TOKEN, useValue: {} },
+        { provide: AuthService, useValue: {} },
+        { provide: UserService, useValue: {} },
+        { provide: Reflector, useValue: {} },
       ],
     }).compile();
 

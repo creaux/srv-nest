@@ -41,7 +41,6 @@ describe('PostController (e2e)', () => {
         get() {
           return dbUri;
         },
-        Env: {},
       })
       .compile();
 
