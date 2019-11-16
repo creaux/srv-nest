@@ -9,6 +9,7 @@ import {
   JOI,
   JoiObjectSchema,
 } from '../library/library.module';
+import { LoggerService } from '../logger/logger.service';
 
 const { entries, keys } = Object;
 
@@ -49,9 +50,14 @@ export class ConfigService {
       ? process.env.NODE_ENV
       : ConfigService.DEFAULT;
 
+    this.logger.log(`Loading ${environment}.env file`, 'ConfigService');
+
     const variables = this.dotenv.parse(
       this.fs.readFileSync(`${environment}.env`),
     );
+
+    this.logger.log(`MONGODB_URI is ${variables.MONGODB_URI}`);
+    this.logger.log(`PORT is ${variables.PORT}`);
 
     return variables;
   }
@@ -73,17 +79,23 @@ export class ConfigService {
     @Inject(JOI) private readonly joi: Joi,
     @Inject(DOTENV) private readonly dotenv: DotEnv,
     @Inject(FS) private readonly fs: Fs,
+    private readonly logger: LoggerService,
   ) {
+    this.logger.log(
+      `Environment variable NODE_ENV value is ${process.env.NODE_ENV}`,
+      'ConfigService',
+    );
+
     let config = {};
 
     try {
-      config = { ...config, ...this.dot };
+      config = { ...config, ...this.validate(this.dot) };
     } catch {
       //
     }
 
     try {
-      config = { ...config, ...this.system };
+      config = { ...config, ...this.validate(this.system) };
     } catch {
       //
     }
