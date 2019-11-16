@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { plugin } from 'mongoose';
-// @ts-ignore
-import * as mongooseIntl from 'mongoose-intl';
 import { ConfigModule } from '../config/config.module';
-import { ConfigService } from '../config/config.service';
-import { CONFIG_ACCESSORS, ConfigAccessors } from '../config/config.accessors';
 import { LoggerService } from '../logger/logger.service';
 import { LoggerModule } from '../logger/logger.module';
+import { MongoMemoryService } from './mongo-memory/mongo-memory.service';
+import { mongooseOptionsFactory } from './mongoose-options.factory';
+import { EnvironmentService } from '../config/environment.service';
+import { MongoMemoryModule } from './mongo-memory/mongo-memory.module';
+// @ts-ignore
+import * as mongooseIntl from 'mongoose-intl';
 
 // Issue with webpack maybe cause imports *
 // TODO: Move to async provider
@@ -16,20 +18,11 @@ plugin(mongooseIntl, { languages: ['en', 'de', 'fr'], defaultLanguage: 'en' }); 
 @Module({
   imports: [
     ConfigModule,
+    LoggerModule,
     MongooseModule.forRootAsync({
-      imports: [ConfigModule, LoggerModule],
-      useFactory: (
-        config: ConfigService,
-        accessors: typeof ConfigAccessors,
-        logger: LoggerService,
-      ) => {
-        const uri = config.get(accessors.MONGODB_URI);
-
-        logger.log(`${accessors.MONGODB_URI} is: ${uri}`, 'MongoModule');
-
-        return { uri };
-      },
-      inject: [ConfigService, CONFIG_ACCESSORS, LoggerService],
+      imports: [ConfigModule, LoggerModule, MongoMemoryModule],
+      useFactory: mongooseOptionsFactory,
+      inject: [EnvironmentService, LoggerService, MongoMemoryService],
     }),
   ],
 })
