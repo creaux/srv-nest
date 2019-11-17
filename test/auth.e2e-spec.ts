@@ -54,7 +54,7 @@ describe('AuthController (e2e)', () => {
       .expect(201)
       .expect(function(res: any) {
         res.body.token.match(/\d/);
-        res.body.userId.match(/\d/);
+        // res.body.user.match(/\d/);
         res.body.createdAt.match(/\d/);
         res.body.id.match(/\d/);
       });

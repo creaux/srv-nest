@@ -27,6 +27,12 @@ export class AuthService {
   public async validateUser(token: string): Promise<AuthSignInResponseDto> {
     return await this.authModel
       .findOne({ token })
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+        },
+      })
       .exec()
       .then(document => {
         if (document) {
@@ -85,7 +91,7 @@ export class AuthService {
 
     if (comparison) {
       return await this.createAuth(
-        new CreateAuthModel({ token, userId: user.id }),
+        new CreateAuthModel({ token, user: user.id }),
       );
     }
 
