@@ -13,6 +13,7 @@
     ]
   },
   "rules": {
+    "triple-equals": [true, "allow-undefined-check", "allow-null-check"],
     "quotemark": [true, "single", "avoid-escape"],
     "member-access": [false],
     "ordered-imports": [false],

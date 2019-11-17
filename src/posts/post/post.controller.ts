@@ -8,6 +8,8 @@ import {
   UseGuards,
   Delete,
   UseInterceptors,
+  UsePipes,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
@@ -19,8 +21,10 @@ import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 import { UseRoles, ACGuard } from 'nest-access-control/lib';
 import { AccessGuard } from '../../users/access.guard';
+import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
+import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 
-@UseInterceptors(LoggerInterceptor)
+// TODO: Filter out fields which we don't want to send to client
 @Controller('post')
 @ApiBearerAuth()
 export class PostController {
@@ -30,7 +34,9 @@ export class PostController {
   @UseRoles({ resource: 'post', action: 'read', possession: 'any' })
   @Get()
   @ApiOperation({ title: 'Request posts collection' })
-  async findAll(@Query('skip') skip: string): Promise<PostModel[]> {
+  async findAll(
+    @Query('skip', ParseNumberPipe) skip: string,
+  ): Promise<PostModel[]> {
     return await this.postService.findAll(parseInt(skip, 0));
   }
 
@@ -38,7 +44,9 @@ export class PostController {
   @ApiOperation({ title: 'Request post' })
   @UseGuards(AccessGuard)
   @UseRoles({ resource: 'post', action: 'read', possession: 'any' })
-  async findById(@Param('id') id: string): Promise<PostModel> {
+  async findById(
+    @Param('id', ParseObjectIdPipe) id: string,
+  ): Promise<PostModel> {
     return await this.postService.findById(id);
   }
 
@@ -63,7 +71,7 @@ export class PostController {
   @Delete(':id')
   @ApiOperation({ title: 'Delete Post' })
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: 'Post has been successfully deleted.',
   })
   @ApiResponse({
@@ -72,7 +80,7 @@ export class PostController {
   })
   @UseGuards(AuthGuard('bearer'), AccessGuard)
   @UseRoles({ resource: 'post', action: 'delete', possession: 'any' })
-  async deletePost(@Param('id') id: string) {
+  async deletePost(@Param('id', ParseObjectIdPipe) id: string) {
     const deletePost = new DeletePostModel({ id });
     const result = await this.postService.delete(deletePost.id);
     return result;
