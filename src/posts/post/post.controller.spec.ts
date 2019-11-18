@@ -3,7 +3,7 @@ import { PostController } from './post.controller';
 import { PostService } from './post.service';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { LoggerService } from '../../logger/logger.service';
-import { PostModel } from '@pyxismedia/lib-model';
+import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
 import { CreatePostDto } from './create-post.dto';
 import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
 import { AuthService } from '../../auth/auth/auth.service';
@@ -65,10 +65,12 @@ describe('Post Controller', () => {
   it('should create post', async () => {
     const spy = jest
       .spyOn(postService, 'create')
-      .mockImplementation(() => Promise.resolve(PostModel.MOCK));
+      .mockImplementation(() =>
+        Promise.resolve((PostModel.MOCK as unknown) as PostSchemaInterface),
+      );
     expect(
       // FIXME: Why as CreatePostDto
-      await controller.createPost(PostModel.MOCK as CreatePostDto),
+      await controller.createPost((PostModel.MOCK as unknown) as CreatePostDto),
     ).toEqual(PostModel.MOCK);
     expect(spy).toHaveBeenCalledWith(PostModel.MOCK);
   });

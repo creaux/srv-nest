@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RoleResponseDto } from './role-response.dto';
 import { CreateRoleRequestDto } from './create-role-request.dto';
-import { RoleModel } from '../../../../lib-model/src/user/role.model';
 
 @Injectable()
 export class RoleService {

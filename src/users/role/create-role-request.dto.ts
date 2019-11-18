@@ -1,4 +1,4 @@
-import { CreateRoleModel } from '../../../../lib-model/src/user/create-role.model';
+import { CreateRoleModel } from '@pyxismedia/lib-model';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateRoleRequestDto extends CreateRoleModel {
