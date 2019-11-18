@@ -15,7 +15,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
 import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { PostModel } from '@pyxismedia/lib-model';
+import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
 import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { ValidationPipe } from '../../pipes/validation.pipe';
@@ -64,7 +64,7 @@ export class PostController {
   @UseRoles({ resource: 'post', action: 'create', possession: 'any' })
   async createPost(
     @Body(ValidationPipe) createPostDto: CreatePostDto,
-  ): Promise<PostModel> {
+  ): Promise<PostSchemaInterface> {
     return await this.postService.create(createPostDto);
   }
 
