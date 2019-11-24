@@ -1,6 +1,16 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { PostState } from './post.types';
 import { CreatePostModel } from '@pyxismedia/lib-model';
+import {
+  IsArray,
+  IsDefined,
+  IsEnum,
+  IsMongoId,
+  IsString,
+  IsUrl,
+  Length,
+} from 'class-validator';
+import { PostStateEnum } from '@pyxismedia/lib-model';
 
 export class CreatePostDto implements CreatePostModel {
   @ApiModelProperty({
@@ -8,24 +18,35 @@ export class CreatePostDto implements CreatePostModel {
     type: String,
     example: CreatePostModel.MOCK.title,
   })
+  @IsString()
+  @Length(1, 120)
+  @IsDefined()
   public readonly title: string;
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.subtitle,
   })
+  @IsString()
+  @Length(1, 360)
+  @IsDefined()
   public readonly subtitle: string;
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.content,
   })
+  @IsString()
+  @Length(1)
+  @IsDefined()
   public readonly content: string;
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.image,
   })
+  @IsUrl()
+  @IsDefined()
   public readonly image: string;
 
   @ApiModelProperty({
@@ -33,6 +54,8 @@ export class CreatePostDto implements CreatePostModel {
     type: PostState,
     example: PostState.DRAFT,
   })
+  @IsEnum(PostStateEnum)
+  @IsDefined()
   public readonly state: PostState;
 
   @ApiModelProperty({
@@ -40,17 +63,22 @@ export class CreatePostDto implements CreatePostModel {
     example: CreatePostModel.MOCK.labels,
     isArray: true,
   })
+  @IsString({ each: true })
+  @IsArray()
   public readonly labels: string[];
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.createdBy,
   })
+  @IsMongoId()
+  @IsDefined()
   public readonly createdBy: string;
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.section,
   })
+  @IsMongoId()
   public readonly section: string;
 }

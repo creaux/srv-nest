@@ -7,9 +7,6 @@ import {
   Body,
   UseGuards,
   Delete,
-  UseInterceptors,
-  UsePipes,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
@@ -17,12 +14,11 @@ import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
 import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
-import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
-import { ValidationPipe } from '../../pipes/validation.pipe';
-import { UseRoles, ACGuard } from 'nest-access-control/lib';
+import { UseRoles } from 'nest-access-control/lib';
 import { AccessGuard } from '../../users/access.guard';
 import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
+import { ValidationPipe } from '../../pipes/validation.pipe';
 
 // TODO: Filter out fields which we don't want to send to client
 @Controller('post')

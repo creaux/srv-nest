@@ -9,9 +9,12 @@ import {
 } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
+  constructor(private readonly logger: LoggerService) {}
+
   async transform(value: any, { metatype }: ArgumentMetadata) {
     if (!metatype || !this.toValidate(metatype)) {
       return value;
@@ -19,7 +22,8 @@ export class ValidationPipe implements PipeTransform<any> {
     const object = plainToClass(metatype, value);
     const errors = await validate(object);
     if (errors.length > 0) {
-      throw new BadRequestException('Validation failed');
+      this.logger.log(JSON.stringify(errors), 'ValidationPipe');
+      throw new BadRequestException(errors, 'Request validation failed');
     }
     return value;
   }

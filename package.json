@@ -99,7 +99,7 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged",
-      "pre-push": "npm test && npm build"
+      "pre-push": "npm test && npm run test:e2e && npm build"
     }
   },
   "jest": {
