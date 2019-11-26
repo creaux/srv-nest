@@ -13,6 +13,7 @@ export class MongoMemoryService extends DataMock {
     @Inject(MONGO_MEMORY_CONFIG) private readonly mongoMemoryConfig: any,
   ) {
     super();
+    // @ts-ignore
     this.connection = new this.MemoryServer(mongoMemoryConfig);
   }
 

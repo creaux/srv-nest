@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
+import { SectionModel } from '@pyxismedia/lib-model';
 import { Section } from '../post/post.types';
 
 @Injectable()
@@ -9,7 +10,15 @@ export class SectionService {
     @InjectModel('Section') private readonly sectionModel: Model<Section>,
   ) {}
 
-  async findById(id: Types.ObjectId): Promise<Section> {
-    return await this.sectionModel.findById(id);
+  async findById(id: string): Promise<SectionModel | null> {
+    return await this.sectionModel
+      .findById(id)
+      .exec()
+      .then(document => {
+        if (document) {
+          return new SectionModel(document.toObject());
+        }
+        return null;
+      });
   }
 }

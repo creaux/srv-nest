@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Delete,
+  SetMetadata,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
@@ -21,6 +22,7 @@ import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 
 // TODO: Filter out fields which we don't want to send to client
+// TODO: Put operation
 @Controller('post')
 @ApiBearerAuth()
 export class PostController {
@@ -59,7 +61,8 @@ export class PostController {
   @UseGuards(AuthGuard('bearer'), AccessGuard)
   @UseRoles({ resource: 'post', action: 'create', possession: 'any' })
   async createPost(
-    @Body(ValidationPipe) createPostDto: CreatePostDto,
+    @Body(ValidationPipe)
+    createPostDto: CreatePostDto,
   ): Promise<PostSchemaInterface> {
     return await this.postService.create(createPostDto);
   }

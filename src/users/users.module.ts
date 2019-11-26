@@ -15,6 +15,7 @@ import {
 import { AccessService } from './access/access.service';
 import { AccessControlModule, RolesBuilder } from 'nest-access-control/lib';
 import { AccessModule } from './access/access.module';
+import { UserExistsConstrain } from './constraints/user-exists.constrain';
 
 @Module({
   imports: [
@@ -33,8 +34,8 @@ import { AccessModule } from './access/access.module';
     }),
     AccessModule,
   ],
-  providers: [UserService, RoleService],
+  providers: [UserService, RoleService, UserExistsConstrain],
   controllers: [UserController, RoleController, AccessController],
-  exports: [UserService, RoleService],
+  exports: [UserService, RoleService, UserExistsConstrain],
 })
 export class UsersModule {}
