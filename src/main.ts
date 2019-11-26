@@ -2,11 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import * as mongoose from 'mongoose';
+import { useContainer } from 'class-validator';
 
 mongoose.set('debug', true);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Swagger
   const options = new DocumentBuilder()

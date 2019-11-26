@@ -11,6 +11,8 @@ import {
   Length,
 } from 'class-validator';
 import { PostStateEnum } from '@pyxismedia/lib-model';
+import { UserExistsConstrain } from '../../users/constraints/user-exists.constrain';
+import { SectionExistsConstrain } from '../constraints/section-exists.constrain';
 
 export class CreatePostDto implements CreatePostModel {
   @ApiModelProperty({
@@ -71,14 +73,20 @@ export class CreatePostDto implements CreatePostModel {
     type: String,
     example: CreatePostModel.MOCK.createdBy,
   })
-  @IsMongoId()
   @IsDefined()
+  @UserExistsConstrain.decorator()
+  @IsMongoId()
   public readonly createdBy: string;
 
   @ApiModelProperty({
     type: String,
     example: CreatePostModel.MOCK.section,
   })
+  @SectionExistsConstrain.decorator()
   @IsMongoId()
   public readonly section: string;
+
+  public constructor(model: CreatePostDto) {
+    Object.assign(this, model);
+  }
 }

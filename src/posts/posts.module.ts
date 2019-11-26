@@ -9,6 +9,7 @@ import { MongoModule } from '../mongo/mongo.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
+import { SectionExistsConstrain } from './constraints/section-exists.constrain';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { UsersModule } from '../users/users.module';
     AuthModule,
     UsersModule,
   ],
-  providers: [PostService, SectionService],
+  providers: [PostService, SectionService, SectionExistsConstrain],
   controllers: [PostController],
+  exports: [SectionExistsConstrain],
 })
 export class PostsModule {}

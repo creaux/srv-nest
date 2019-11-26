@@ -3,14 +3,13 @@ import * as request from 'supertest';
 import { PostsModule } from '../src/posts/posts.module';
 import { ConfigService } from '../src/config/config.service';
 import {
-  PostModel,
   DataMockEntities,
   CreatePostModel,
 } from '@pyxismedia/lib-model';
 import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
-import { AuthModule } from '../src/auth/auth.module';
 import { MemoryDb } from './memory-db';
 import { AuthSignInResponseDto } from '../src/auth/auth/auth-sign-in-response.dto';
+import { useContainer } from "class-validator";
 
 describe('PostController (e2e)', () => {
   let app: any;
@@ -34,7 +33,7 @@ describe('PostController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [PostsModule, AuthModule],
+      imports: [PostsModule],
     })
       .overrideProvider(ConfigService)
       .useValue({
@@ -46,6 +45,8 @@ describe('PostController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    useContainer(app, { fallbackOnErrors: true });
   });
 
   describe('with anonymous access', () => {
@@ -380,15 +381,14 @@ describe('PostController (e2e)', () => {
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(201)
           .end((err, { body }) => {
-            // FIXME: This is not PostModel but PostSchemaInterface
-            expect(body.title).toEqual(PostModel.MOCK.title);
-            expect(body.subtitle).toEqual(PostModel.MOCK.subtitle);
-            expect(body.content).toEqual(PostModel.MOCK.content);
-            expect(body.state).toEqual(PostModel.MOCK.state);
-            expect(body.labels).toEqual(PostModel.MOCK.labels);
-            expect(body.image).toEqual(PostModel.MOCK.image);
-            expect(body.createdBy).toEqual('507f1f77bcf86cd799439011');
-            expect(body.section).toEqual(PostModel.MOCK.section);
+            expect(body.title).toEqual(CreatePostModel.MOCK.title);
+            expect(body.subtitle).toEqual(CreatePostModel.MOCK.subtitle);
+            expect(body.content).toEqual(CreatePostModel.MOCK.content);
+            expect(body.state).toEqual(CreatePostModel.MOCK.state);
+            expect(body.labels).toEqual(CreatePostModel.MOCK.labels);
+            expect(body.image).toEqual(CreatePostModel.MOCK.image);
+            expect(body.createdBy).toEqual(CreatePostModel.MOCK.createdBy);
+            expect(body.section).toEqual(CreatePostModel.MOCK.section);
             return done();
           });
       });
@@ -857,9 +857,23 @@ describe('PostController (e2e)', () => {
             });
         });
 
-        it('should link to user which exists', () => {
-          // TODO
-          expect(true).toEqual(true);
+        it('should link to user which exists otherwise not found exception', (done) => {
+          const { createdBy, ...post } = CreatePostModel.MOCK;
+          const send = { ...post, createdBy: '5dda636ee09b9ecedb860b07' };
+          return request(app.getHttpServer())
+            .post('/post')
+            .send(send)
+            .set('Authorization', `Bearer ${auth.token}`)
+            .expect(400)
+            .end((err, { body } ) => {
+              expect(body.statusCode).toEqual(400);
+              expect(body.error).toEqual('Request validation failed');
+              expect(body.message[0].value).toEqual('5dda636ee09b9ecedb860b07');
+              expect(body.message[0].property).toEqual('createdBy');
+              expect(body.message[0].constraints).toEqual({ userExists: 'Property createdBy contain incorrect non existing user id 5dda636ee09b9ecedb860b07' });
+              expect(body.message[1]).toBeUndefined();
+              done()
+            });
         });
       });
 
@@ -872,7 +886,8 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, res ) => {
+              const { body } = res;
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('123');
@@ -884,9 +899,25 @@ describe('PostController (e2e)', () => {
             });
         });
 
-        it('should link to section which exists', () => {
-          // TODO
-          expect(true).toEqual(true);
+        it('should link to section which exists', (done) => {
+          const { section, ...post } = CreatePostModel.MOCK;
+          const send = { ...post, section: '5ddaff3f3aa6bfe8ad119950' };
+          return request(app.getHttpServer())
+            .post('/post')
+            .send(send)
+            .set('Authorization', `Bearer ${auth.token}`)
+            .expect(400)
+            .end((err, res ) => {
+              console.log(res.body.constraints);
+              const { body } = res;
+              expect(body.statusCode).toEqual(400);
+              expect(body.error).toEqual('Request validation failed');
+              expect(body.message[0].value).toEqual('5ddaff3f3aa6bfe8ad119950');
+              expect(body.message[0].property).toEqual('section');
+              expect(body.message[0].constraints).toEqual({ sectionExists: 'Property section contains incorrect non existing section id 5ddaff3f3aa6bfe8ad119950' });
+              expect(body.message[1]).toBeUndefined();
+              done();
+            });
         });
       });
     });

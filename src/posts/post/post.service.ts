@@ -4,11 +4,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './create-post.dto';
 import { PostSchemaInterface, PostModel } from '@pyxismedia/lib-model';
 import { PostResponseDto } from './post-response.dto';
-import { UserResponseDto } from '../../users/user/create-user-response.dto';
+import { UserService } from '../../users/user/user.service';
 
 @Injectable()
 export class PostService {
   constructor(
+    private readonly userService: UserService,
     @InjectModel('Post') private readonly postModel: Model<PostSchemaInterface>,
   ) {}
 
@@ -17,8 +18,9 @@ export class PostService {
       _id: Types.ObjectId(),
       ...createPostDto,
     };
-    const createdPost = new this.postModel(post);
-    return await createdPost.save();
+    return await this.postModel.create(post).then(document => {
+      return document.toObject();
+    });
   }
 
   async findAll(skip: number = 0): Promise<PostResponseDto[]> {
