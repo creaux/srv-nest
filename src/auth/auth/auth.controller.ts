@@ -1,8 +1,8 @@
 import { Body, Controller, Post, ForbiddenException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthSignInRequestDto } from './auth-sign-in-request.dto';
+import { AuthSignInRequestDto } from './dto/auth-sign-in-request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthSignInResponseDto } from './auth-sign-in-response.dto';
+import { AuthSignInResponseDto } from './dto/auth-sign-in-response.dto';
 
 @Controller('auth')
 export class AuthController {

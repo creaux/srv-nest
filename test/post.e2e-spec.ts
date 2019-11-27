@@ -2,14 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { PostsModule } from '../src/posts/posts.module';
 import { ConfigService } from '../src/config/config.service';
-import {
-  DataMockEntities,
-  CreatePostModel,
-} from '@pyxismedia/lib-model';
-import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
+import { DataMockEntities, CreatePostModel } from '@pyxismedia/lib-model';
+import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import { MemoryDb } from './memory-db';
-import { AuthSignInResponseDto } from '../src/auth/auth/auth-sign-in-response.dto';
-import { useContainer } from "class-validator";
+import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-response.dto';
+import { useContainer } from 'class-validator';
 
 describe('PostController (e2e)', () => {
   let app: any;
@@ -393,111 +390,113 @@ describe('PostController (e2e)', () => {
           });
       });
 
-      it("should respond with Bad Request when whole object is incorrect", () => {
+      it('should respond with Bad Request when whole object is incorrect', () => {
         return request(app.getHttpServer())
           .post('/post')
-          .send({ abc: 'abc'})
+          .send({ abc: 'abc' })
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(400)
           .expect({
-            "statusCode": 400,
-            "error": "Request validation failed",
-            "message": [
+            statusCode: 400,
+            error: 'Request validation failed',
+            message: [
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "title",
-                "children": [],
-                "constraints": {
-                  "isDefined": "title should not be null or undefined",
-                  "length": "title must be longer than or equal to 1 characters",
-                  "isString": "title must be a string"
-                }
+                property: 'title',
+                children: [],
+                constraints: {
+                  isDefined: 'title should not be null or undefined',
+                  length: 'title must be longer than or equal to 1 characters',
+                  isString: 'title must be a string',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "subtitle",
-                "children": [],
-                "constraints": {
-                  "isDefined": "subtitle should not be null or undefined",
-                  "length": "subtitle must be longer than or equal to 1 characters",
-                  "isString": "subtitle must be a string"
-                }
+                property: 'subtitle',
+                children: [],
+                constraints: {
+                  isDefined: 'subtitle should not be null or undefined',
+                  length:
+                    'subtitle must be longer than or equal to 1 characters',
+                  isString: 'subtitle must be a string',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "content",
-                "children": [],
-                "constraints": {
-                  "isDefined": "content should not be null or undefined",
-                  "length": "content must be longer than or equal to 1 characters",
-                  "isString": "content must be a string"
-                }
+                property: 'content',
+                children: [],
+                constraints: {
+                  isDefined: 'content should not be null or undefined',
+                  length:
+                    'content must be longer than or equal to 1 characters',
+                  isString: 'content must be a string',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "image",
-                "children": [],
-                "constraints": {
-                  "isDefined": "image should not be null or undefined",
-                  "isUrl": "image must be an URL address"
-                }
+                property: 'image',
+                children: [],
+                constraints: {
+                  isDefined: 'image should not be null or undefined',
+                  isUrl: 'image must be an URL address',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "state",
-                "children": [],
-                "constraints": {
-                  "isDefined": "state should not be null or undefined",
-                  "isEnum": "state must be a valid enum value"
-                }
+                property: 'state',
+                children: [],
+                constraints: {
+                  isDefined: 'state should not be null or undefined',
+                  isEnum: 'state must be a valid enum value',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "labels",
-                "children": [],
-                "constraints": {
-                  "isArray": "labels must be an array"
-                }
+                property: 'labels',
+                children: [],
+                constraints: {
+                  isArray: 'labels must be an array',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "createdBy",
-                "children": [],
-                "constraints": {
-                  "isDefined": "createdBy should not be null or undefined",
-                  "isMongoId": "createdBy must be a mongodb id"
-                }
+                property: 'createdBy',
+                children: [],
+                constraints: {
+                  isDefined: 'createdBy should not be null or undefined',
+                  isMongoId: 'createdBy must be a mongodb id',
+                },
               },
               {
-                "target": {
-                  "abc": "abc"
+                target: {
+                  abc: 'abc',
                 },
-                "property": "section",
-                "children": [],
-                "constraints": {
-                  "isMongoId": "section must be a mongodb id"
-                }
-              }
-            ]
+                property: 'section',
+                children: [],
+                constraints: {
+                  isMongoId: 'section must be a mongodb id',
+                },
+              },
+            ],
           });
       });
 
       describe('title error', () => {
-        it("should respond with error when it is undefined", (done) => {
+        it('should respond with error when it is undefined', done => {
           const { title, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -505,21 +504,27 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('title');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isDefined).toEqual('title should not be null or undefined');
-              expect(body.message[0].constraints.isString).toEqual('title must be a string');
-              expect(body.message[0].constraints.length).toEqual('title must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'title should not be null or undefined',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'title must be a string',
+              );
+              expect(body.message[0].constraints.length).toEqual(
+                'title must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is not string", (done) => {
+        it('should respond with error when it is not string', done => {
           const { title, ...post } = CreatePostModel.MOCK;
           const send = { ...post, title: 123 };
           return request(app.getHttpServer())
@@ -527,33 +532,39 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(123);
               expect(body.message[0].property).toEqual('title');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('title must be longer than or equal to 1 and shorter than or equal to 120 characters');
-              expect(body.message[0].constraints.isString).toEqual('title must be a string');
+              expect(body.message[0].constraints.length).toEqual(
+                'title must be longer than or equal to 1 and shorter than or equal to 120 characters',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'title must be a string',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is empty", (done) => {
+        it('should respond with error when it is empty', done => {
           const { title, ...post } = CreatePostModel.MOCK;
           return request(app.getHttpServer())
             .post('/post')
             .send({ ...post, title: '' })
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('');
               expect(body.message[0].property).toEqual('title');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('title must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.length).toEqual(
+                'title must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
               done();
             });
@@ -561,7 +572,7 @@ describe('PostController (e2e)', () => {
       });
 
       describe('subtitle error', () => {
-        it("should respond with error when it is undefined", (done) => {
+        it('should respond with error when it is undefined', done => {
           const { subtitle, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -569,21 +580,27 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('subtitle');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isDefined).toEqual('subtitle should not be null or undefined');
-              expect(body.message[0].constraints.isString).toEqual('subtitle must be a string');
-              expect(body.message[0].constraints.length).toEqual('subtitle must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'subtitle should not be null or undefined',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'subtitle must be a string',
+              );
+              expect(body.message[0].constraints.length).toEqual(
+                'subtitle must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is not string", (done) => {
+        it('should respond with error when it is not string', done => {
           const { subtitle, ...post } = CreatePostModel.MOCK;
           const send = { ...post, subtitle: 123 };
           return request(app.getHttpServer())
@@ -591,33 +608,39 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(123);
               expect(body.message[0].property).toEqual('subtitle');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('subtitle must be longer than or equal to 1 and shorter than or equal to 360 characters');
-              expect(body.message[0].constraints.isString).toEqual('subtitle must be a string');
+              expect(body.message[0].constraints.length).toEqual(
+                'subtitle must be longer than or equal to 1 and shorter than or equal to 360 characters',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'subtitle must be a string',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is empty", (done) => {
+        it('should respond with error when it is empty', done => {
           const { subtitle, ...post } = CreatePostModel.MOCK;
           return request(app.getHttpServer())
             .post('/post')
             .send({ ...post, subtitle: '' })
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('');
               expect(body.message[0].property).toEqual('subtitle');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('subtitle must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.length).toEqual(
+                'subtitle must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
               done();
             });
@@ -625,7 +648,7 @@ describe('PostController (e2e)', () => {
       });
 
       describe('content error', () => {
-        it("should respond with error when it is undefined", (done) => {
+        it('should respond with error when it is undefined', done => {
           const { content, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -633,21 +656,27 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('content');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isDefined).toEqual('content should not be null or undefined');
-              expect(body.message[0].constraints.isString).toEqual('content must be a string');
-              expect(body.message[0].constraints.length).toEqual('content must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'content should not be null or undefined',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'content must be a string',
+              );
+              expect(body.message[0].constraints.length).toEqual(
+                'content must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is not string", (done) => {
+        it('should respond with error when it is not string', done => {
           const { content, ...post } = CreatePostModel.MOCK;
           const send = { ...post, content: 123 };
           return request(app.getHttpServer())
@@ -655,33 +684,39 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(123);
               expect(body.message[0].property).toEqual('content');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('content must be longer than or equal to 1 and shorter than or equal to undefined characters');
-              expect(body.message[0].constraints.isString).toEqual('content must be a string');
+              expect(body.message[0].constraints.length).toEqual(
+                'content must be longer than or equal to 1 and shorter than or equal to undefined characters',
+              );
+              expect(body.message[0].constraints.isString).toEqual(
+                'content must be a string',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is empty", (done) => {
+        it('should respond with error when it is empty', done => {
           const { content, ...post } = CreatePostModel.MOCK;
           return request(app.getHttpServer())
             .post('/post')
             .send({ ...post, content: '' })
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('');
               expect(body.message[0].property).toEqual('content');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.length).toEqual('content must be longer than or equal to 1 characters');
+              expect(body.message[0].constraints.length).toEqual(
+                'content must be longer than or equal to 1 characters',
+              );
               expect(body.message[1]).toBeUndefined();
               done();
             });
@@ -689,7 +724,7 @@ describe('PostController (e2e)', () => {
       });
 
       describe('url error', () => {
-        it("should respond with error when it is undefined", (done) => {
+        it('should respond with error when it is undefined', done => {
           const { image, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -697,20 +732,24 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('image');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isUrl).toEqual('image must be an URL address');
-              expect(body.message[0].constraints.isDefined).toEqual('image should not be null or undefined');
+              expect(body.message[0].constraints.isUrl).toEqual(
+                'image must be an URL address',
+              );
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'image should not be null or undefined',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is not url", (done) => {
+        it('should respond with error when it is not url', done => {
           const { image, ...post } = CreatePostModel.MOCK;
           const send = { ...post, image: 'abc' };
           return request(app.getHttpServer())
@@ -718,21 +757,23 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('abc');
               expect(body.message[0].property).toEqual('image');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isUrl).toEqual('image must be an URL address');
+              expect(body.message[0].constraints.isUrl).toEqual(
+                'image must be an URL address',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
       });
 
       describe('state error', () => {
-        it("should respond with error when it is undefined", (done) => {
+        it('should respond with error when it is undefined', done => {
           const { state, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -740,20 +781,24 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('state');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isDefined).toEqual('state should not be null or undefined');
-              expect(body.message[0].constraints.isEnum).toEqual('state must be a valid enum value');
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'state should not be null or undefined',
+              );
+              expect(body.message[0].constraints.isEnum).toEqual(
+                'state must be a valid enum value',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should respond with error when it is not enum", (done) => {
+        it('should respond with error when it is not enum', done => {
           const { state, ...post } = CreatePostModel.MOCK;
           const send = { ...post, state: 'abc' };
           return request(app.getHttpServer())
@@ -761,21 +806,23 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('abc');
               expect(body.message[0].property).toEqual('state');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isEnum).toEqual('state must be a valid enum value');
+              expect(body.message[0].constraints.isEnum).toEqual(
+                'state must be a valid enum value',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
       });
 
       describe('labels error', () => {
-        it("should be array", (done) => {
+        it('should be array', done => {
           const { labels, ...post } = CreatePostModel.MOCK;
           const send = { ...post, labels: 'abc' };
           return request(app.getHttpServer())
@@ -783,19 +830,21 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('abc');
               expect(body.message[0].property).toEqual('labels');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isArray).toEqual('labels must be an array');
+              expect(body.message[0].constraints.isArray).toEqual(
+                'labels must be an array',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should be array of strings", (done) => {
+        it('should be array of strings', done => {
           const { labels, ...post } = CreatePostModel.MOCK;
           const send = { ...post, labels: [123, 456] };
           return request(app.getHttpServer())
@@ -803,21 +852,23 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual([123, 456]);
               expect(body.message[0].property).toEqual('labels');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isString).toEqual('each value in labels must be a string');
+              expect(body.message[0].constraints.isString).toEqual(
+                'each value in labels must be a string',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
       });
 
       describe('createdBy errors', () => {
-        it("should be defined", (done) => {
+        it('should be defined', done => {
           const { createdBy, ...post } = CreatePostModel.MOCK;
           const send = { ...post };
           return request(app.getHttpServer())
@@ -825,19 +876,21 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual(undefined);
               expect(body.message[0].property).toEqual('createdBy');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isDefined).toEqual('createdBy should not be null or undefined');
+              expect(body.message[0].constraints.isDefined).toEqual(
+                'createdBy should not be null or undefined',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it("should be mongo object id", (done) => {
+        it('should be mongo object id', done => {
           const { createdBy, ...post } = CreatePostModel.MOCK;
           const send = { ...post, createdBy: '123' };
           return request(app.getHttpServer())
@@ -845,19 +898,21 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('123');
               expect(body.message[0].property).toEqual('createdBy');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isMongoId).toEqual('createdBy must be a mongodb id');
+              expect(body.message[0].constraints.isMongoId).toEqual(
+                'createdBy must be a mongodb id',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it('should link to user which exists otherwise not found exception', (done) => {
+        it('should link to user which exists otherwise not found exception', done => {
           const { createdBy, ...post } = CreatePostModel.MOCK;
           const send = { ...post, createdBy: '5dda636ee09b9ecedb860b07' };
           return request(app.getHttpServer())
@@ -865,20 +920,23 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, { body } ) => {
+            .end((err, { body }) => {
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('5dda636ee09b9ecedb860b07');
               expect(body.message[0].property).toEqual('createdBy');
-              expect(body.message[0].constraints).toEqual({ userExists: 'Property createdBy contain incorrect non existing user id 5dda636ee09b9ecedb860b07' });
+              expect(body.message[0].constraints).toEqual({
+                userExists:
+                  'Property createdBy contain incorrect non existing user id 5dda636ee09b9ecedb860b07',
+              });
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
       });
 
       describe('section errors', () => {
-        it("should be mongo object id", (done) => {
+        it('should be mongo object id', done => {
           const { section, ...post } = CreatePostModel.MOCK;
           const send = { ...post, section: '123' };
           return request(app.getHttpServer())
@@ -886,20 +944,22 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, res ) => {
+            .end((err, res) => {
               const { body } = res;
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('123');
               expect(body.message[0].property).toEqual('section');
               expect(body.message[0].children).toEqual([]);
-              expect(body.message[0].constraints.isMongoId).toEqual('section must be a mongodb id');
+              expect(body.message[0].constraints.isMongoId).toEqual(
+                'section must be a mongodb id',
+              );
               expect(body.message[1]).toBeUndefined();
-              done()
+              done();
             });
         });
 
-        it('should link to section which exists', (done) => {
+        it('should link to section which exists', done => {
           const { section, ...post } = CreatePostModel.MOCK;
           const send = { ...post, section: '5ddaff3f3aa6bfe8ad119950' };
           return request(app.getHttpServer())
@@ -907,14 +967,17 @@ describe('PostController (e2e)', () => {
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
-            .end((err, res ) => {
+            .end((err, res) => {
               console.log(res.body.constraints);
               const { body } = res;
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');
               expect(body.message[0].value).toEqual('5ddaff3f3aa6bfe8ad119950');
               expect(body.message[0].property).toEqual('section');
-              expect(body.message[0].constraints).toEqual({ sectionExists: 'Property section contains incorrect non existing section id 5ddaff3f3aa6bfe8ad119950' });
+              expect(body.message[0].constraints).toEqual({
+                sectionExists:
+                  'Property section contains incorrect non existing section id 5ddaff3f3aa6bfe8ad119950',
+              });
               expect(body.message[1]).toBeUndefined();
               done();
             });

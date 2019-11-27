@@ -17,7 +17,7 @@ import { RoleResponseDto } from './role/role-response.dto';
 import { RoleService } from './role/role.service';
 import { LoggerService } from '../logger/logger.service';
 import { Types } from 'mongoose';
-import { UserResponseDto } from './user/create-user-response.dto';
+import { UserResponseDto } from './user/dto/create-user-response.dto';
 
 @Injectable()
 export class AccessGuard implements CanActivate {

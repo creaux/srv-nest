@@ -19,7 +19,7 @@ import {
   ApiConflictResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { CreateRoleRequestDto } from './create-role-request.dto';
+import { CreateRoleRequestDto } from './dto/create-role-request.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleResponseDto } from './role-response.dto';
 import { ConflictException } from '@nestjs/common';

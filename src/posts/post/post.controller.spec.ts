@@ -4,7 +4,7 @@ import { PostService } from './post.service';
 import { LoggerInterceptor } from '../../interceptors/logger.interceptor';
 import { LoggerService } from '../../logger/logger.service';
 import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
-import { CreatePostDto } from './create-post.dto';
+import { CreatePostRequestDto } from './dto/create-post-request.dto';
 import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
 import { AuthService } from '../../auth/auth/auth.service';
 import { UserService } from '../../users/user/user.service';
@@ -70,7 +70,9 @@ describe('Post Controller', () => {
       );
     expect(
       // FIXME: Why as CreatePostDto
-      await controller.createPost((PostModel.MOCK as unknown) as CreatePostDto),
+      await controller.createPost(
+        (PostModel.MOCK as unknown) as CreatePostRequestDto,
+      ),
     ).toEqual(PostModel.MOCK);
     expect(spy).toHaveBeenCalledWith(PostModel.MOCK);
   });

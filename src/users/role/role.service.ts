@@ -3,7 +3,7 @@ import { ROLE_MODEL, RoleSchemaInterface } from '@pyxismedia/lib-model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RoleResponseDto } from './role-response.dto';
-import { CreateRoleRequestDto } from './create-role-request.dto';
+import { CreateRoleRequestDto } from './dto/create-role-request.dto';
 
 @Injectable()
 export class RoleService {

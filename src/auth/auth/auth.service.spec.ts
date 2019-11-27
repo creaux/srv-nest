@@ -1,14 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { AUTH_MODEL, AuthSignInRequestDto } from './auth-sign-in-request.dto';
+import {
+  AUTH_MODEL,
+  AuthSignInRequestDto,
+} from './dto/auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
 import { Model } from 'mongoose';
 import { AuthSchemaInterface } from '@pyxismedia/lib-model';
 import { BCRYPT, Bcrypt, Jwt, JWT } from '../../library/library.module';
 import { UserSchemaInterface } from '@pyxismedia/lib-model/build/user/user-schema.interface';
 import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
-import { UserResponseDto } from '../../users/user/create-user-response.dto';
+import { UserResponseDto } from '../../users/user/dto/create-user-response.dto';
 
 describe('AuthService', () => {
   let service: AuthService;

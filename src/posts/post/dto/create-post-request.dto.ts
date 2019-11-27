@@ -1,5 +1,5 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { PostState } from './post.types';
+import { PostState } from '../post.types';
 import { CreatePostModel } from '@pyxismedia/lib-model';
 import {
   IsArray,
@@ -11,10 +11,10 @@ import {
   Length,
 } from 'class-validator';
 import { PostStateEnum } from '@pyxismedia/lib-model';
-import { UserExistsConstrain } from '../../users/constraints/user-exists.constrain';
-import { SectionExistsConstrain } from '../constraints/section-exists.constrain';
+import { UserExistsConstrain } from '../../../users/constraints/user-exists.constrain';
+import { SectionExistsConstrain } from '../../constraints/section-exists.constrain';
 
-export class CreatePostDto implements CreatePostModel {
+export class CreatePostRequestDto implements CreatePostModel {
   @ApiModelProperty({
     required: true,
     type: String,
@@ -86,7 +86,7 @@ export class CreatePostDto implements CreatePostModel {
   @IsMongoId()
   public readonly section: string;
 
-  public constructor(model: CreatePostDto) {
+  public constructor(model: CreatePostRequestDto) {
     Object.assign(this, model);
   }
 }

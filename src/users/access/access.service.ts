@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ACCESS_MODEL, AccessSchemaInterface } from '@pyxismedia/lib-model';
 import { Model } from 'mongoose';
-import { AccessResponseDto } from './access-response.dto';
+import { AccessResponseDto } from './dto/access-response.dto';
 
 @Injectable()
 export class AccessService {

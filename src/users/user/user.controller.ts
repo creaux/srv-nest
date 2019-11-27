@@ -10,11 +10,11 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserRequestDto } from './create-user-request.dto';
+import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ConflictException, ValidationPipe } from '@nestjs/common';
-import { UserResponseDto } from './create-user-response.dto';
+import { UserResponseDto } from './dto/create-user-response.dto';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')

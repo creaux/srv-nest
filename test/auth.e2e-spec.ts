@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
-import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
+import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import { MemoryDb } from './memory-db';
 import { ConfigService } from '../src/config/config.service';
 import { ConfigModule } from '../src/config/config.module';

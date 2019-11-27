@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './create-post.dto';
+import { CreatePostRequestDto } from './dto/create-post-request.dto';
 import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
@@ -61,7 +61,7 @@ export class PostController {
   @UseRoles({ resource: 'post', action: 'create', possession: 'any' })
   async createPost(
     @Body(ValidationPipe)
-    createPostDto: CreatePostDto,
+    createPostDto: CreatePostRequestDto,
   ): Promise<PostSchemaInterface> {
     return await this.postService.create(createPostDto);
   }

@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AccessService } from './access.service';
-import { AccessCollectionRequestDto } from './access-collection-request.dto';
-import { AccessResponseDto } from './access-response.dto';
+import { AccessCollectionRequestDto } from './dto/access-collection-request.dto';
+import { AccessResponseDto } from './dto/access-response.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
+import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import { AuthModule } from '../src/auth/auth.module';
 import { MemoryDb } from './memory-db';
 import { UsersModule } from '../src/users/users.module';

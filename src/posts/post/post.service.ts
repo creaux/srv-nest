@@ -1,9 +1,9 @@
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePostDto } from './create-post.dto';
+import { CreatePostRequestDto } from './dto/create-post-request.dto';
 import { PostSchemaInterface, PostModel } from '@pyxismedia/lib-model';
-import { PostResponseDto } from './post-response.dto';
+import { PostResponseDto } from './dto/post-response.dto';
 import { UserService } from '../../users/user/user.service';
 
 @Injectable()
@@ -13,7 +13,9 @@ export class PostService {
     @InjectModel('Post') private readonly postModel: Model<PostSchemaInterface>,
   ) {}
 
-  async create(createPostDto: CreatePostDto): Promise<PostSchemaInterface> {
+  async create(
+    createPostDto: CreatePostRequestDto,
+  ): Promise<PostSchemaInterface> {
     const post = {
       _id: Types.ObjectId(),
       ...createPostDto,

@@ -1,13 +1,13 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserRequestDto } from './create-user-request.dto';
+import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import {
   UserSchemaInterface,
   USER_MODEL,
   ROLE_MODEL,
 } from '@pyxismedia/lib-model';
-import { UserResponseDto } from './create-user-response.dto';
+import { UserResponseDto } from './dto/create-user-response.dto';
 
 @Injectable()
 export class UserService {

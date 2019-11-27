@@ -8,7 +8,7 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { UsersModule } from '../src/users/users.module';
 import { AuthModule } from '../src/auth/auth.module';
 import { ConfigService } from '../src/config/config.service';
-import { AuthSignInRequestDto } from '../src/auth/auth/auth-sign-in-request.dto';
+import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import * as request from 'supertest';
 
 describe('RoleController (e2e)', () => {
