@@ -7,7 +7,7 @@ import {
   Body,
   UseGuards,
   Delete,
-  SetMetadata,
+  Patch,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
@@ -16,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
 import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
 import { UseRoles } from 'nest-access-control/lib';
-import { AccessGuard } from '../../users/access.guard';
+import { AccessGuard } from '../../users/guards/access.guard';
 import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { ValidationPipe } from '../../pipes/validation.pipe';
@@ -83,5 +83,10 @@ export class PostController {
     const deletePost = new DeletePostModel({ id });
     const result = await this.postService.delete(deletePost.id);
     return result;
+  }
+
+  @Patch(':id')
+  async updatePost() {
+    // TODO
   }
 }

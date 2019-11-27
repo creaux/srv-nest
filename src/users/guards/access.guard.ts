@@ -4,8 +4,8 @@ import {
   Injectable,
   Request,
 } from '@nestjs/common';
-import { AuthService } from '../auth/auth/auth.service';
-import { UserService } from './user/user.service';
+import { AuthService } from '../../auth/auth/auth.service';
+import { UserService } from '../user/user.service';
 import { Reflector } from '@nestjs/core';
 import {
   InjectRolesBuilder,
@@ -13,11 +13,9 @@ import {
   RolesBuilder,
 } from 'nest-access-control/lib';
 import { IQueryInfo } from 'accesscontrol';
-import { RoleResponseDto } from './role/role-response.dto';
-import { RoleService } from './role/role.service';
-import { LoggerService } from '../logger/logger.service';
-import { Types } from 'mongoose';
-import { UserResponseDto } from './user/create-user-response.dto';
+import { RoleResponseDto } from '../role/role-response.dto';
+import { RoleService } from '../role/role.service';
+import { UserResponseDto } from '../user/create-user-response.dto';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -36,7 +34,6 @@ export class AccessGuard implements CanActivate {
     private readonly reflector: Reflector,
     @InjectRolesBuilder() private readonly roleBuilder: RolesBuilder,
     private readonly roleService: RoleService,
-    private readonly logger: LoggerService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
