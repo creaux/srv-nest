@@ -7,7 +7,6 @@ import {
   Body,
   UseGuards,
   Delete,
-  SetMetadata,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
@@ -81,7 +80,6 @@ export class PostController {
   @UseRoles({ resource: 'post', action: 'delete', possession: 'any' })
   async deletePost(@Param('id', ParseObjectIdPipe) id: string) {
     const deletePost = new DeletePostModel({ id });
-    const result = await this.postService.delete(deletePost.id);
-    return result;
+    return await this.postService.delete(deletePost.id);
   }
 }
