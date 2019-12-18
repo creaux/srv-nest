@@ -1,5 +1,3 @@
-// TODO https://docs.nestjs.com/pipes
-
 import {
   PipeTransform,
   Injectable,
@@ -21,6 +19,7 @@ export class ValidationPipe implements PipeTransform<any> {
     if (errors.length > 0) {
       throw new BadRequestException(errors, 'Request validation failed');
     }
+    // TODO new Model
     return value;
   }
 

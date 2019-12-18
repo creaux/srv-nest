@@ -2,7 +2,7 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostRequestDto } from './dto/create-post-request.dto';
-import { PostSchemaInterface, PostModel } from '@pyxismedia/lib-model';
+import { PostSchemaInterface } from '@pyxismedia/lib-model';
 import { PostResponseDto } from './dto/post-response.dto';
 import { UserService } from '../../users/user/user.service';
 
