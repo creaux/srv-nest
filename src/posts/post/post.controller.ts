@@ -12,8 +12,11 @@ import { PostService } from './post.service';
 import { CreatePostRequestDto } from './dto/create-post-request.dto';
 import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { PostModel, PostSchemaInterface } from '@pyxismedia/lib-model';
-import { DeletePostModel } from '@pyxismedia/lib-model/build/post/delete-post.model';
+import {
+  PostModel,
+  PostSchemaInterface,
+  DeletePostModel,
+} from '@pyxismedia/lib-model';
 import { UseRoles } from 'nest-access-control/lib';
 import { AccessGuard } from '../../users/access.guard';
 import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';

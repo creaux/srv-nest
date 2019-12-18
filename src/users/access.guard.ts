@@ -2,6 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  NotImplementedException,
   Request,
 } from '@nestjs/common';
 import { AuthService } from '../auth/auth/auth.service';
@@ -50,6 +51,7 @@ export class AccessGuard implements CanActivate {
     }
     const anonymous = await this.getAnonymous();
     const roles = this.reflector.get<Role[]>('roles', context.getHandler());
+
     return roles.every(role => {
       const queryInfo: IQueryInfo = role;
       if (userRoles == undefined || userRoles.length === 0) {
@@ -82,6 +84,12 @@ export class AccessGuard implements CanActivate {
   }
 
   private async getAnonymous() {
-    return [await this.getRoleById('5dc9bbffa68eed83b62d0e4c')];
+    const result = [await this.getRoleById('5dc9bbffa68eed83b62d0e4c')];
+    if (result[0] == undefined) {
+      throw new NotImplementedException(
+        'There are missing roles in the database.',
+      );
+    }
+    return result;
   }
 }

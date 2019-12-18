@@ -8,9 +8,10 @@ import {
 @Injectable()
 export class ParseNumberPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    if (isNaN(value) && value != undefined) {
+    const result = parseInt(value, 0);
+    if (isNaN(result) && typeof value !== 'undefined') {
       throw new BadRequestException('You have to provide numeric value.');
     }
-    return value;
+    return result;
   }
 }
