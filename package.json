@@ -35,7 +35,7 @@
     "@nestjs/mongoose": "^6.1.2",
     "@nestjs/passport": "^6.1.0",
     "@nestjs/platform-express": "^6.9.0",
-    "@nestjs/swagger": "^3.0.2",
+    "@nestjs/swagger": "^4.1.2",
     "@pyxismedia/lib-model": "^1.0.29",
     "@types/bcrypt": "^3.0.0",
     "@types/dotenv": "^8.2.0",
