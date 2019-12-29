@@ -968,7 +968,6 @@ describe('PostController (e2e)', () => {
             .set('Authorization', `Bearer ${auth.token}`)
             .expect(400)
             .end((err, res) => {
-              console.log(res.body.constraints);
               const { body } = res;
               expect(body.statusCode).toEqual(400);
               expect(body.error).toEqual('Request validation failed');

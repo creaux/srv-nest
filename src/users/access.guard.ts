@@ -37,7 +37,6 @@ export class AccessGuard implements CanActivate {
     private readonly reflector: Reflector,
     @InjectRolesBuilder() private readonly roleBuilder: RolesBuilder,
     private readonly roleService: RoleService,
-    private readonly logger: LoggerService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -52,7 +51,7 @@ export class AccessGuard implements CanActivate {
     const anonymous = await this.getAnonymous();
     const roles = this.reflector.get<Role[]>('roles', context.getHandler());
 
-    return roles.every(role => {
+    return roles.some(role => {
       const queryInfo: IQueryInfo = role;
       if (userRoles == undefined || userRoles.length === 0) {
         userRoles = anonymous;
