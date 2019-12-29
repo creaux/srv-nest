@@ -39,6 +39,7 @@ export class UserService {
         if (document) {
           return new UserResponseDto(document.toObject());
         }
+        // TODO: Throw exception not found, 404
         return null;
       });
   }
@@ -67,6 +68,7 @@ export class UserService {
         if (document) {
           return new UserResponseDto(document.toObject());
         }
+        // TODO: Throw exception not found, 404
         return null;
       });
   }

@@ -8,6 +8,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthSchema } from '@pyxismedia/lib-model';
 import { LibraryModule } from '../library/library.module';
 import { MongoModule } from '../mongo/mongo.module';
+import { UserByBearerPipe } from './pipes/user-by-bearer.pipe';
 
 @Module({
   imports: [
@@ -16,8 +17,8 @@ import { MongoModule } from '../mongo/mongo.module';
     MongooseModule.forFeature([{ name: AUTH_MODEL, schema: AuthSchema }]),
     LibraryModule,
   ],
-  providers: [AuthService, HttpStrategy],
+  providers: [AuthService, HttpStrategy, UserByBearerPipe],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, UserByBearerPipe],
 })
 export class AuthModule {}
