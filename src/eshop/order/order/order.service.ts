@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
 import { Model, Types } from 'mongoose';
 import { OrderResponse } from '../dto/order-response.dto';
+import { CreateOrderRequest } from '../dto/create-order-request.dto';
 
 @Injectable()
 export class OrderService {
@@ -76,5 +77,16 @@ export class OrderService {
           }
         });
       });
+  }
+
+  public async create(
+    createOrderRequest: CreateOrderRequest,
+  ): Promise<OrderResponse> {
+    return await this.orderModel
+      .create({
+        _id: Types.ObjectId(),
+        ...createOrderRequest,
+      })
+      .then(document => document.toObject());
   }
 }

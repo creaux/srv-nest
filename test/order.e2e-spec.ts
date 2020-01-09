@@ -47,7 +47,7 @@ describe('OrderController (e2e)', () => {
     useContainer(app, { fallbackOnErrors: true });
   });
 
-  describe('with any access rights', () => {
+  describe('access rights - any', () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
@@ -150,7 +150,7 @@ describe('OrderController (e2e)', () => {
           ])
       });
 
-      it('should be possible to skip by one', async () => {
+      it('should be possible to skip all orders by one', async () => {
         return await request(app.getHttpServer())
           .get('/commerce/order?skip=1')
           .set('Authorization', `Bearer ${auth.token}`)
@@ -200,7 +200,7 @@ describe('OrderController (e2e)', () => {
     });
 
     describe('/commerce/order/:id (GET)', () => {
-      it('should be possible to get by id', async () => {
+      it('should be possible to get any by id', async () => {
         return await request(app.getHttpServer())
           .get('/commerce/order/5e01c779d893e6938c118879')
           .set('Authorization', `Bearer ${auth.token}`)
@@ -248,9 +248,49 @@ describe('OrderController (e2e)', () => {
           )
       });
     });
+
+    describe('/commerce/order (POST)', () => {
+      it.todo('should be possible to create order under current user');
+      it.todo('should response with Bad RequestException when whole request object is incorrect');
+
+      describe('user error', () => {
+        it.todo('should respond with error when user is undefined');
+        it.todo('should respond with error when user is not valid ObjectID');
+        it.todo('should respond with error when user does not exist');
+      });
+
+      describe('products error', () => {
+        // At least only with one product we can make an order
+        it.todo('should respond with error when products are empty array');
+        it.todo('should respond with error when product is not valid ObjectID');
+        it.todo('should respond with error when product is undefined');
+      });
+    });
+
+    describe('/commerce/order (DELETE)', () => {
+      it.todo('should be possible to delete any order');
+    });
+
+    describe('/commerce/order/:id (PUT)', () => {
+      it.todo('should be possible to update any order');
+      it.todo('should response with Bad RequestException when whole request object is incorrect');
+
+      describe('user error', () => {
+        it.todo('should respond with error when user is undefined');
+        it.todo('should respond with error when user is not valid ObjectID');
+        it.todo('should respond with error when user does not exist');
+      });
+
+      describe('products error', () => {
+        // At least only with one product we can make an order
+        it.todo('should respond with error when products are empty array');
+        it.todo('should respond with error when product is not valid ObjectID');
+        it.todo('should respond with error when product is undefined');
+      });
+    });
   });
 
-  describe('with access rights to read own only', () => {
+  describe('access rights - own', () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
@@ -316,7 +356,7 @@ describe('OrderController (e2e)', () => {
     });
 
     describe('/commerce/order/:id (GET)', () => {
-      it('should be not possible to get any by id', async () => {
+      it('should not be possible to get not own by id', async () => {
         return await request(app.getHttpServer())
           .get('/commerce/order/5e01c779d893e6938c118879')
           .set('Authorization', `Bearer ${auth.token}`)
@@ -369,6 +409,50 @@ describe('OrderController (e2e)', () => {
               "surname": "Zakaznik"
             }
           })
+      });
+    });
+
+    describe('/commerce/order (POST)', () => {
+      it.todo('should be possible to create own order');
+
+      it.todo('should response with Bad RequestException when whole request object is incorrect');
+
+      describe('user error', () => {
+        it.todo('should respond with error when user is undefined');
+        it.todo('should respond with error when user is not valid ObjectID');
+        it.todo('should respond with error when user does not exist');
+      });
+
+      describe('products error', () => {
+        // At least only with one product we can make an order
+        it.todo('should respond with error when products are empty array');
+        it.todo('should respond with error when product is not valid ObjectID');
+        it.todo('should respond with error when product is undefined');
+      });
+    });
+
+    describe('/commerce/order (DELETE)', () => {
+      it.todo('should be possible to delete own order');
+      it.todo('should not be possible to delete not own order');
+    });
+
+    describe('/commerce/order/:id (PUT)', () => {
+      // This is due to situation that when order is made it cannot be update by customer
+      it.todo('should be not possible to update own order');
+
+      it.todo('should response with Bad RequestException when whole request object is incorrect');
+
+      describe('user error', () => {
+        it.todo('should respond with error when user is undefined');
+        it.todo('should respond with error when user is not valid ObjectID');
+        it.todo('should respond with error when user does not exist');
+      });
+
+      describe('products error', () => {
+        // At least only with one product we can make an order
+        it.todo('should respond with error when products are empty array');
+        it.todo('should respond with error when product is not valid ObjectID');
+        it.todo('should respond with error when product is undefined');
       });
     });
   });
