@@ -4,6 +4,7 @@ import { LibraryModule } from '../library/library.module';
 import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
 import { LoggerModule } from '../logger/logger.module';
 import { EnvironmentService } from './environment.service';
+import { constants, CONSTANTS } from './constants/constants.service';
 
 @Module({
   imports: [LibraryModule, LoggerModule],
@@ -14,7 +15,11 @@ import { EnvironmentService } from './environment.service';
       useValue: ConfigAccessors,
     },
     EnvironmentService,
+    {
+      provide: CONSTANTS,
+      useValue: constants,
+    },
   ],
-  exports: [ConfigService, CONFIG_ACCESSORS, EnvironmentService],
+  exports: [ConfigService, CONFIG_ACCESSORS, EnvironmentService, CONSTANTS],
 })
 export class ConfigModule {}
