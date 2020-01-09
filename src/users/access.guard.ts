@@ -83,6 +83,7 @@ export class AccessGuard implements CanActivate {
   }
 
   private async getAnonymous() {
+    // TODO: Take from constants
     const result = [await this.getRoleById('5e17734e841b06a773bd300b')];
     if (result[0] == undefined) {
       throw new NotImplementedException(
