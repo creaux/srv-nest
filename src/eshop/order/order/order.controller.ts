@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   Inject,
   Param,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +20,8 @@ import { UserByBearerPipe } from '../../../auth/pipes/user-by-bearer.pipe';
 import { UserResponseDto } from '../../../users/user/dto/create-user-response.dto';
 import { RoleModel } from '@pyxismedia/lib-model';
 import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
+import { ValidationPipe } from '../../../pipes/validation.pipe';
+import { CreateOrderRequest } from '../dto/create-order-request.dto';
 
 @Controller('commerce/order')
 @ApiBearerAuth()
@@ -52,6 +56,7 @@ export class OrderController {
   }
 
   @Get(':id')
+  @ApiOperation({ title: 'Requests order by id' })
   @UseGuards(AccessGuard)
   @UseRoles(
     { resource: 'order', action: 'read', possession: 'own' },
@@ -72,5 +77,13 @@ export class OrderController {
     }
 
     return await this.orderService.findByUserSomeId(userId, id);
+  }
+
+  @Post()
+  @ApiOperation({ title: 'Create new order' })
+  public async create(
+    @Body(ValidationPipe) createOrderRequest: CreateOrderRequest,
+  ): Promise<OrderResponse> {
+    return this.orderService.create(createOrderRequest);
   }
 }
