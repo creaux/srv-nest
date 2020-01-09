@@ -1,4 +1,4 @@
-// TODO: This is not working due to yarn workspaces
+// Running only under NPM installation
 module.exports = () => ({
   env: {
     type: 'node'
