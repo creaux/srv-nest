@@ -49,7 +49,7 @@
     "@types/passport-http-bearer": "^1.0.33",
     "@types/supertest": "^2.0.5",
     "apollo-link-context": "^1.0.14",
-    "apollo-server-express": "^2.3.3",
+    "apollo-server-express": "^2.9.16",
     "bcrypt": "^3.0.6",
     "class-transformer": "0.2.0",
     "class-validator": "^0.10.2",
