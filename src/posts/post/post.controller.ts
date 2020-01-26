@@ -18,7 +18,7 @@ import {
   DeletePostModel,
 } from '@pyxismedia/lib-model';
 import { UseRoles } from 'nest-access-control/lib';
-import { AccessGuard } from '../../users/access.guard';
+import { AccessGuard } from '../../users/access/access.guard';
 import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { ValidationPipe } from '../../pipes/validation.pipe';

@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrderService } from './order.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { ORDER_MODEL } from '@pyxismedia/lib-model';
+import { UserService } from '../../../users/user/user.service';
+import { ProductService } from '../../product/product/product.service';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -12,6 +14,14 @@ describe('OrderService', () => {
         OrderService,
         {
           provide: getModelToken(ORDER_MODEL),
+          useValue: {},
+        },
+        {
+          provide: UserService,
+          useValue: {},
+        },
+        {
+          provide: ProductService,
           useValue: {},
         },
       ],

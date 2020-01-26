@@ -5,8 +5,8 @@ import {
   NotImplementedException,
   Request,
 } from '@nestjs/common';
-import { AuthService } from '../auth/auth/auth.service';
-import { UserService } from './user/user.service';
+import { AuthService } from '../../auth/auth/auth.service';
+import { UserService } from '../user/user.service';
 import { Reflector } from '@nestjs/core';
 import {
   InjectRolesBuilder,
@@ -14,11 +14,9 @@ import {
   RolesBuilder,
 } from 'nest-access-control/lib';
 import { IQueryInfo } from 'accesscontrol';
-import { RoleResponseDto } from './role/role-response.dto';
-import { RoleService } from './role/role.service';
-import { LoggerService } from '../logger/logger.service';
-import { Types } from 'mongoose';
-import { UserResponseDto } from './user/dto/create-user-response.dto';
+import { RoleResponseDto } from '../role/role-response.dto';
+import { RoleService } from '../role/role.service';
+import { UserResponseDto } from '../user/dto/create-user-response.dto';
 
 @Injectable()
 export class AccessGuard implements CanActivate {

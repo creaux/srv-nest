@@ -3,12 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
 import { Model, Types } from 'mongoose';
 import { OrderResponse } from '../dto/order-response.dto';
-import { CreateOrderRequest } from '../dto/create-order-request.dto';
+import { CreateOrderUser } from '../dto/create-order-user.dto';
+import { UpdateOrderRequest } from '../dto/update-order-request.dto';
+import { UserService } from '../../../users/user/user.service';
+import { ProductService } from '../../product/product/product.service';
+import { applyAuthChecker } from 'type-graphql/dist/resolvers/helpers';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<OrderSchema>,
+    private readonly userService: UserService,
+    private readonly productService: ProductService,
   ) {}
 
   public async findAll(skip: number): Promise<OrderResponse[]> {
@@ -80,13 +86,131 @@ export class OrderService {
   }
 
   public async create(
-    createOrderRequest: CreateOrderRequest,
+    createOrderRequest: CreateOrderUser,
   ): Promise<OrderResponse> {
+    if (createOrderRequest.products && createOrderRequest.products.length > 0) {
+      // If any product doesn't exist it throws exception
+      for (const productId of createOrderRequest.products) {
+        try {
+          await this.productService.getProductById(productId);
+        } catch (e) {
+          throw e;
+        }
+      }
+    }
+
+    const id = Types.ObjectId();
+    await this.orderModel.create({
+      _id: id,
+      ...createOrderRequest,
+    });
+
+    return this.findById(id.toHexString());
+  }
+
+  public async deleteById(id: string): Promise<OrderResponse> {
     return await this.orderModel
-      .create({
-        _id: Types.ObjectId(),
-        ...createOrderRequest,
-      })
+      .findByIdAndDelete(id)
+      .populate('user', '-password')
+      .populate('products')
+      .exec()
       .then(document => document.toObject());
+  }
+
+  /**
+   * Update particular data on order depending on data which are provided
+   * @param id
+   * @param body
+   */
+  public async updateById(
+    id: string,
+    body: UpdateOrderRequest,
+  ): Promise<OrderResponse> {
+    if (body.user) {
+      // If user doesn't exist it throws exception
+      try {
+        await this.userService.findById(body.user);
+      } catch (e) {
+        throw e;
+      }
+    }
+
+    if (body.products && body.products.length > 0) {
+      // If any product doesn't exist it throws exception
+      for (const productId of body.products) {
+        try {
+          await this.productService.getProductById(productId);
+        } catch (e) {
+          throw e;
+        }
+      }
+    }
+
+    // TODO: Check whether provided products and users exists if not raise exceptions
+    return await this.orderModel
+      .findByIdAndUpdate(id, { $set: body }, { new: true })
+      .populate('user', '-password')
+      .populate('products')
+      .exec()
+      .then(document => {
+        if (document) {
+          // Populate has to be done after as findByIdAndUpdate().populate()
+          // happens at the same time
+          return document.toObject();
+        }
+        throw new NotFoundException(`Order of id ${id} doesn't exist.`);
+      });
+  }
+
+  public async addProductToOrder(orderId: string, productId: string) {
+    try {
+      await this.productService.getProductById(productId);
+    } catch (e) {
+      throw e;
+    }
+
+    return await this.orderModel
+      .findByIdAndUpdate(
+        orderId,
+        { $push: { products: productId } },
+        { new: true },
+      )
+      .populate('user', '-password')
+      .populate('products')
+      .exec()
+      .then(document => {
+        if (document) {
+          return document.toObject();
+        }
+        throw new NotFoundException(
+          `Order with requested id ${orderId} doesn't exists`,
+        );
+      });
+  }
+
+  public async removeProductFromOrder(orderId: string, productId: string) {
+    try {
+      await this.productService.getProductById(productId);
+    } catch (e) {
+      throw e;
+    }
+
+    return await this.orderModel
+      .findByIdAndUpdate(
+        orderId,
+        { $pull: { products: productId } },
+        { new: true },
+      )
+      .populate('user', '-password')
+      .populate('products')
+      .exec()
+      .then(document => {
+        if (document) {
+          return document.toObject();
+        }
+        throw new NotFoundException(
+          `Order with requested id ${orderId} doesn't exists`,
+        );
+      });
   }
 }
