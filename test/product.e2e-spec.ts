@@ -79,7 +79,19 @@ describe('ProductController (e2e)', () => {
                 ],
                 "price": 123,
                 "title": "aMock title EN"
-              }
+              },
+              {
+                "description": "bThis is mock description EN",
+                "id": "5e1efa1c284fd310a7387799",
+                "images": [
+                  {
+                    "alt": "This is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "price": 124,
+                "title": "bMock title EN"
+              },
             ]
           );
       });

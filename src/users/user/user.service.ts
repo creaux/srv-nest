@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
@@ -39,8 +43,10 @@ export class UserService {
         if (document) {
           return new UserResponseDto(document.toObject());
         }
-        // TODO: Throw exception not found, 404
-        return null;
+        // TODO: Test exception
+        throw new NotFoundException(
+          `User with provided id ${id} doesn't exists`,
+        );
       });
   }
 

@@ -919,17 +919,13 @@ describe('PostController (e2e)', () => {
             .post('/post')
             .send(send)
             .set('Authorization', `Bearer ${auth.token}`)
-            .expect(400)
+            .expect(404)
             .end((err, { body }) => {
-              expect(body.statusCode).toEqual(400);
-              expect(body.error).toEqual('Request validation failed');
-              expect(body.message[0].value).toEqual('5dda636ee09b9ecedb860b07');
-              expect(body.message[0].property).toEqual('createdBy');
-              expect(body.message[0].constraints).toEqual({
-                userExists:
-                  'Property createdBy contain incorrect non existing user id 5dda636ee09b9ecedb860b07',
-              });
-              expect(body.message[1]).toBeUndefined();
+              expect(body.statusCode).toEqual(404);
+              expect(body.error).toEqual('Not Found');
+              expect(body.message[0].value).toEqual(undefined);
+              expect(body.message[0].property).toEqual(undefined);
+              expect(body.message[0].constraints).toEqual(undefined);
               done();
             });
         });
