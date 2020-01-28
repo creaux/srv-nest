@@ -2,11 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
 import { Model, Types } from 'mongoose';
-import { OrderResponse } from '../dto/order-response.dto';
-import { CreateOrderUser } from '../dto/create-order-user.dto';
-import { UpdateOrderRequest } from '../dto/update-order-request.dto';
-import { UserService } from '../../../users/user/user.service';
-import { ProductService } from '../../product/product/product.service';
+import {
+  OrderResponseDto,
+  CreateOrderUserDto,
+  UpdateOrderRequestDto,
+} from './dto';
+import { UserService } from '../../users/user/user.service';
+import { ProductService } from '../product/product.service';
 import { applyAuthChecker } from 'type-graphql/dist/resolvers/helpers';
 
 @Injectable()
@@ -17,7 +19,7 @@ export class OrderService {
     private readonly productService: ProductService,
   ) {}
 
-  public async findAll(skip: number): Promise<OrderResponse[]> {
+  public async findAll(skip: number): Promise<OrderResponseDto[]> {
     return await this.orderModel
       .find()
       .sort('createdAt')
@@ -26,23 +28,23 @@ export class OrderService {
       .populate('products')
       .exec()
       .then(documents =>
-        documents.map(document => new OrderResponse(document.toObject())),
+        documents.map(document => new OrderResponseDto(document.toObject())),
       );
   }
 
-  public async findById(id: string): Promise<OrderResponse> {
+  public async findById(id: string): Promise<OrderResponseDto> {
     return await this.orderModel
       .findById(id)
       .populate('user', '-password')
       .populate('products')
       .exec()
-      .then(document => new OrderResponse(document.toObject()));
+      .then(document => new OrderResponseDto(document.toObject()));
   }
 
   public async findByUserSomeId(
     userId: string,
     id: string,
-  ): Promise<OrderResponse> {
+  ): Promise<OrderResponseDto> {
     return await this.orderModel
       .findById(id)
       .populate('user', '-password')
@@ -53,7 +55,7 @@ export class OrderService {
         if (document) {
           const data = document.toObject();
           if (data.user.id === userId) {
-            return new OrderResponse(data);
+            return new OrderResponseDto(data);
           }
         }
         throw new NotFoundException(
@@ -65,7 +67,7 @@ export class OrderService {
   public async findAllByUserId(
     userId: string,
     skip: number = 0,
-  ): Promise<OrderResponse[]> {
+  ): Promise<OrderResponseDto[]> {
     // TODO: How the hell do the search on mongodb?
     // find({ user: userId }) doesn't work and similar either
     return await this.orderModel
@@ -79,15 +81,15 @@ export class OrderService {
         return documents.filter(document => {
           const data = document.toObject();
           if (data.user.id === userId) {
-            return new OrderResponse(data);
+            return new OrderResponseDto(data);
           }
         });
       });
   }
 
   public async create(
-    createOrderRequest: CreateOrderUser,
-  ): Promise<OrderResponse> {
+    createOrderRequest: CreateOrderUserDto,
+  ): Promise<OrderResponseDto> {
     if (createOrderRequest.products && createOrderRequest.products.length > 0) {
       // If any product doesn't exist it throws exception
       for (const productId of createOrderRequest.products) {
@@ -108,7 +110,7 @@ export class OrderService {
     return this.findById(id.toHexString());
   }
 
-  public async deleteById(id: string): Promise<OrderResponse> {
+  public async deleteById(id: string): Promise<OrderResponseDto> {
     return await this.orderModel
       .findByIdAndDelete(id)
       .populate('user', '-password')
@@ -124,8 +126,8 @@ export class OrderService {
    */
   public async updateById(
     id: string,
-    body: UpdateOrderRequest,
-  ): Promise<OrderResponse> {
+    body: UpdateOrderRequestDto,
+  ): Promise<OrderResponseDto> {
     if (body.user) {
       // If user doesn't exist it throws exception
       try {

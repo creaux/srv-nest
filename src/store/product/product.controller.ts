@@ -11,14 +11,13 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ValidationPipe } from '../../../pipes/validation.pipe';
-import { ParseObjectIdPipe } from '../../../pipes/parse-object-id.pipe';
-import { ProductResponseDto } from './dto/product-response.dto';
-import { ParseNumberPipe } from '../../../pipes/parse-number.pipe';
+import { ValidationPipe } from '../../pipes/validation.pipe';
+import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
+import { ProductResponseDto, CreateProductRequestDto } from './dto';
+import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateProductRequestDto } from './dto/create-product-request.dto';
 
-@Controller('commerce/product')
+@Controller('store/product')
 @ApiBearerAuth()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

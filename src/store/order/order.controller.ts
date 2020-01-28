@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { OrderResponse } from '../dto/order-response.dto';
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -19,22 +18,25 @@ import {
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
-import { ParseObjectIdPipe } from '../../../pipes/parse-object-id.pipe';
-import { ParseNumberPipe } from '../../../pipes/parse-number.pipe';
-import { AccessGuard } from '../../../users/access/access.guard';
+import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
+import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
+import { AccessGuard } from '../../users/access/access.guard';
 import { RolesBuilder, UseRoles } from 'nest-access-control/lib';
-import { Call } from '../../../decorators/call.decorator';
-import { UserByBearerPipe } from '../../../auth/pipes/user-by-bearer.pipe';
-import { UserResponseDto } from '../../../users/user/dto/create-user-response.dto';
+import { Call } from '../../decorators/call.decorator';
+import { UserByBearerPipe } from '../../auth/pipes/user-by-bearer.pipe';
+import { UserResponseDto } from '../../users/user/dto/create-user-response.dto';
 import { RoleModel } from '@pyxismedia/lib-model';
 import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
-import { ValidationPipe } from '../../../pipes/validation.pipe';
-import { CreateOrderRequest } from '../dto/create-order-request.dto';
-import { CreateOrderUser } from '../dto/create-order-user.dto';
-import { UpdateOrderRequest } from '../dto/update-order-request.dto';
+import { ValidationPipe } from '../../pipes/validation.pipe';
+import {
+  CreateOrderRequestDto,
+  CreateOrderUserDto,
+  UpdateOrderRequestDto,
+  OrderResponseDto,
+} from './dto';
 import { Types } from 'mongoose';
 
-@Controller('commerce/order')
+@Controller('store/order')
 @ApiBearerAuth()
 export class OrderController {
   constructor(
@@ -52,7 +54,7 @@ export class OrderController {
   public async findAll(
     @Query('skip', ParseNumberPipe) skip: number,
     @Call(UserByBearerPipe) user: UserResponseDto,
-  ): Promise<OrderResponse[]> {
+  ): Promise<OrderResponseDto[]> {
     const { roles, id } = user;
     const names = roles.map((role: RoleModel) => role.name);
     const readAny = names.some(
@@ -76,7 +78,7 @@ export class OrderController {
   public async findById(
     @Param('id', ParseObjectIdPipe) id: string,
     @Call(UserByBearerPipe) user: UserResponseDto,
-  ): Promise<OrderResponse> {
+  ): Promise<OrderResponseDto> {
     const { roles, id: userId } = user;
     const names = roles.map((role: RoleModel) => role.name);
     const readAny = names.some(
@@ -98,10 +100,10 @@ export class OrderController {
     { resource: 'order', action: 'create', possession: 'any' },
   )
   public async create(
-    @Body(ValidationPipe) createOrderRequest: CreateOrderRequest,
+    @Body(ValidationPipe) createOrderRequest: CreateOrderRequestDto,
     @Call(UserByBearerPipe) user: UserResponseDto,
-  ): Promise<OrderResponse> {
-    const createOrderUser: CreateOrderUser = new CreateOrderUser({
+  ): Promise<OrderResponseDto> {
+    const createOrderUser: CreateOrderUserDto = new CreateOrderUserDto({
       user: user.id,
       products: createOrderRequest.products,
       createdAt: new Date().toDateString(),
@@ -115,7 +117,7 @@ export class OrderController {
   @UseRoles({ resource: 'order', action: 'delete', possession: 'any' })
   public async deleteById(
     @Param('orderId', ParseObjectIdPipe) id: string,
-  ): Promise<OrderResponse> {
+  ): Promise<OrderResponseDto> {
     return this.orderService.deleteById(id);
   }
 
@@ -133,7 +135,7 @@ export class OrderController {
   })
   public async updateById(
     @Param('orderId', ParseObjectIdPipe) id: string,
-    @Body(ValidationPipe) updateOrderRequest: UpdateOrderRequest,
+    @Body(ValidationPipe) updateOrderRequest: UpdateOrderRequestDto,
   ) {
     return this.orderService.updateById(id, updateOrderRequest);
   }

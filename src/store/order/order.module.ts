@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { OrderController } from './order/order.controller';
-import { OrderService } from './order/order.service';
+import { OrderController } from './order.controller';
+import { OrderService } from './order.service';
 import { MongoModule } from '../../mongo/mongo.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
