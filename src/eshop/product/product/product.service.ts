@@ -1,12 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import {
-  PRODUCT_MODEL,
-  ProductSchema,
-  ProductModel,
-} from '@pyxismedia/lib-model';
-import { ProductResponseDto } from './dto/ProductResponse.dto';
+import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
+import { ProductResponseDto } from './dto/product-response.dto';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 
 @Injectable()
@@ -16,7 +12,7 @@ export class ProductService {
     private readonly productModel: Model<ProductSchema>,
   ) {}
 
-  public getAll(skip: number = 0): Promise<ProductModel[]> {
+  public getAll(skip: number = 0): Promise<ProductResponseDto[]> {
     return this.productModel
       .find()
       .sort('title')
@@ -24,7 +20,7 @@ export class ProductService {
       .exec()
       .then(documents =>
         documents.map(document => {
-          return new ProductModel(document.toObject());
+          return new ProductResponseDto(document.toObject());
         }),
       );
   }
