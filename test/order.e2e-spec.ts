@@ -2,8 +2,8 @@ import { MemoryDb } from "./memory-db";
 import { Test, TestingModule } from "@nestjs/testing";
 import { OrderModule } from "../src/eshop/order/order.module";
 import { ConfigService } from "../src/config/config.service";
-import { useContainer } from 'class-validator';
-import { DataMockEntities, MOCK_TOKEN } from '@pyxismedia/lib-model';
+import { useContainer } from "class-validator";
+import { DataMockEntities, MOCK_TOKEN } from "@pyxismedia/lib-model";
 import * as request from "supertest";
 import { AuthSignInRequestDto } from "../src/auth/auth/dto/auth-sign-in-request.dto";
 import { AuthSignInResponseDto } from "../src/auth/auth/dto/auth-sign-in-response.dto";
@@ -12,11 +12,11 @@ import { CreateOrderRequest } from "../src/eshop/order/dto/create-order-request.
 
 const { keys } = Object;
 
-describe('OrderController (e2e)', () => {
+describe("OrderController (e2e)", () => {
   let app: any;
   let db: MemoryDb;
   let dbUri: string;
-  const URL = '/commerce/order';
+  const URL = "/commerce/order";
 
   beforeEach(async () => {
     db = new MemoryDb();
@@ -35,13 +35,13 @@ describe('OrderController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [OrderModule],
+      imports: [OrderModule]
     })
       .overrideProvider(ConfigService)
       .useValue({
         get() {
           return dbUri;
-        },
+        }
       })
       .compile();
 
@@ -51,26 +51,26 @@ describe('OrderController (e2e)', () => {
     useContainer(app, { fallbackOnErrors: true });
   });
 
-  describe('access rights - any', () => {
+  describe("access rights - any", () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
       auth = await request(app.getHttpServer())
-        .post('/auth')
+        .post("/auth")
         .send(
           new AuthSignInRequestDto({
-            email: 'karel@vomacka.cz',
-            password: '12345',
-          }),
+            email: "karel@vomacka.cz",
+            password: "12345"
+          })
         )
         .then(res => res.body);
     });
 
-    describe('/commerce/order (GET)', () => {
-      it('should be possible to get all orders', async () => {
+    describe("/commerce/order (GET)", () => {
+      it("should be possible to get all orders", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order?skip=0')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order?skip=0")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
             {
@@ -87,7 +87,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "value": 123,
+                      "currency": "usd"
+                    },
+                    {
+                      "value": 10,
+                      "currency": "czk"
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -99,7 +108,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "value": 124,
+                      "currency": "usd"
+                    },
+                    {
+                      "value": 11,
+                      "currency": "czk"
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -128,7 +146,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "value": 123,
+                      "currency": "usd"
+                    },
+                    {
+                      "value": 10,
+                      "currency": "czk"
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -140,7 +167,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "value": 124,
+                      "currency": "usd"
+                    },
+                    {
+                      "value": 11,
+                      "currency": "czk"
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -155,13 +191,13 @@ describe('OrderController (e2e)', () => {
                 "surname": "Zakaznik"
               }
             }
-          ])
+          ]);
       });
 
-      it('should be possible to skip all orders by one', async () => {
+      it("should be possible to skip all orders by one", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order?skip=1')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order?skip=1")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
             {
@@ -178,7 +214,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 123
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 10
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -190,7 +235,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 124
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 11
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -205,15 +259,15 @@ describe('OrderController (e2e)', () => {
                 "surname": "Zakaznik"
               }
             }
-          ])
+          ]);
       });
     });
 
-    describe('/commerce/order/:id (GET)', () => {
-      it('should be possible to get any by id', async () => {
+    describe("/commerce/order/:id (GET)", () => {
+      it("should be possible to get any by id", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order/5e01c779d893e6938c118879')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order/5e01c779d893e6938c118879")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect(
             {
@@ -230,7 +284,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 123
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 10
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -242,7 +305,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 124
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 11
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -257,11 +329,11 @@ describe('OrderController (e2e)', () => {
                 "surname": "Vomacka"
               }
             }
-          )
+          );
       });
     });
 
-    describe('/commerce/order (POST)', () => {
+    describe("/commerce/order (POST)", () => {
       let createOrderRequestDto: CreateOrderRequest;
 
       beforeEach(() => {
@@ -269,13 +341,13 @@ describe('OrderController (e2e)', () => {
         createOrderRequestDto = new Mock();
       });
 
-      it('should be possible to create order under current user', done => {
+      it("should be possible to create order under current user", done => {
         return request(app.getHttpServer())
           .post(URL)
           .send({
-            products: ['5de3e0a388e99a666e8ee8ad']
+            products: ["5de3e0a388e99a666e8ee8ad"]
           })
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(201)
           .end((err, { body }) => {
             expect(body.user).toEqual({
@@ -298,7 +370,16 @@ describe('OrderController (e2e)', () => {
                     "src": "https://picsum.photos/200/300"
                   }
                 ],
-                "price": 123,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
                 "title": "aMock title EN"
               }
             ]);
@@ -306,77 +387,92 @@ describe('OrderController (e2e)', () => {
           });
       });
 
-      it('should respond with not found exception when product doesn\'t exists', () => {
+      it("should respond with not found exception when product doesn't exists", () => {
         return request(app.getHttpServer())
           .post(URL)
           .send(createOrderRequestDto)
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(404)
           .expect({
             statusCode: 404,
-            error: 'Not Found',
-            message: 'There is no product exists with requested id.'
+            error: "Not Found",
+            message: "There is no product exists with requested id."
           });
       });
 
-      it('should response with Bad RequestException when whole request object is incorrect', done => {
+      it("should response with BadRequest Exception when whole request object is incorrect", () => {
         return request(app.getHttpServer())
           .post(URL)
-          .send({ abc: 'abc' })
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(200)
-          .end((err, { body }) => {
-            expect(body.message[0].property).toBe('products');
-            done();
+          .send({ abc: "abc" })
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(400)
+          .expect({
+            "error": "Request validation failed",
+            "message": [
+              {
+                "children": [],
+                "constraints": {
+                  "arrayNotEmpty": "products should not be empty",
+                  "isArray": "products must be an array",
+                  "isDefined": "products should not be null or undefined"
+                },
+                "property": "products",
+                "target": {
+                  "abc": "abc",
+                  "process": "unpaid"
+                }
+              }
+            ],
+            "statusCode": 400
           });
       });
 
-      describe('products error', () => {
+      describe("products error", () => {
         // At least only with one product we can make an order
-        it('should respond with error when products are empty array', done => {
+        it("should respond with error when products are empty array", done => {
           return request(app.getHttpServer())
             .post(URL)
             .send({ products: [] })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(200)
             .end((err, { body }) => {
-              expect(body.message[0].property).toBe('products');
-              expect(keys(body.message[0].constraints)).toEqual(['arrayNotEmpty']);
+              expect(body.message[0].property).toBe("products");
+              expect(keys(body.message[0].constraints)).toEqual(["arrayNotEmpty"]);
               done();
             });
         });
-        it('should respond with error when product is not valid ObjectID', done => {
+        it("should respond with error when product is not valid ObjectID", done => {
           return request(app.getHttpServer())
             .post(URL)
-            .send({ products: ['abc'] })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .send({ products: ["abc"] })
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(200)
             .end((err, { body }) => {
-              expect(body.message[0].property).toBe('products');
-              expect(keys(body.message[0].constraints)).toEqual(['isMongoId']);
+              expect(body.message[0].property).toBe("products");
+              expect(keys(body.message[0].constraints)).toEqual(["isMongoId"]);
               done();
             });
         });
-        it('should respond with error when product is undefined', done => {
+        it("should respond with error when product is undefined", done => {
           return request(app.getHttpServer())
             .post(URL)
             .send({ products: undefined })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(200)
             .end((err, { body }) => {
-              expect(body.message[0].property).toBe('products');
-              expect(keys(body.message[0].constraints)).toEqual(['isDefined', 'arrayNotEmpty', 'isArray']);
+              expect(body.message[0].property).toBe("products");
+              expect(keys(body.message[0].constraints)).toEqual(["isDefined", "arrayNotEmpty", "isArray"]);
               done();
             });
         });
       });
     });
 
-    describe('/commerce/order/:id (DELETE)', () => {
-      it('should be possible to delete any order', done => {
+    describe("/commerce/order/:id (DELETE)", () => {
+      it("should be possible to delete any order", done => {
         return request(app.getHttpServer())
           .delete(`/commerce/order/5e03379ad2e5526d3d8eb277`)
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .end((err, { body }) => {
             expect(body.products).toEqual([
@@ -389,7 +485,16 @@ describe('OrderController (e2e)', () => {
                     "alt": "aThis is alt of image"
                   }
                 ],
-                "price": 123,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
                 "id": "5de3e0a388e99a666e8ee8ad"
               },
               {
@@ -401,7 +506,16 @@ describe('OrderController (e2e)', () => {
                     "alt": "This is alt of image"
                   }
                 ],
-                "price": 124,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 124
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 11
+                  }
+                ],
                 "id": "5de3e0a388e99a666e8ee8ab"
               }
             ]);
@@ -415,26 +529,26 @@ describe('OrderController (e2e)', () => {
               ],
               "surname": "Zakaznik"
             });
-            expect(body.createdAt).toEqual('Sun Dec 29 2019 11:28:46 GMT+0100 (CET)');
-            expect(body.id).toEqual('5e03379ad2e5526d3d8eb277');
+            expect(body.createdAt).toEqual("Sun Dec 29 2019 11:28:46 GMT+0100 (CET)");
+            expect(body.id).toEqual("5e03379ad2e5526d3d8eb277");
             done();
           });
       });
 
-      it('should respond with exception when id is not provided', () => {
+      it("should respond with exception when id is not provided", () => {
         return request(app.getHttpServer())
           .delete(`/commerce/order/abc`)
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(400)
           .expect({
             statusCode: 400,
-            error: 'Bad Request',
-            message: 'Requested id is not ObjectId.',
+            error: "Bad Request",
+            message: "Requested id is not ObjectId."
           });
       });
     });
 
-    describe('/commerce/order/:id (PUT)', () => {
+    describe("/commerce/order/:id (PUT)", () => {
       let updateOrderRequestDto: CreateOrderRequest;
 
       beforeEach(() => {
@@ -442,11 +556,11 @@ describe('OrderController (e2e)', () => {
         updateOrderRequestDto = new Mock();
       });
 
-      it('should be possible to update any order', done => {
+      it("should be possible to update any order", done => {
         return request(app.getHttpServer())
-          .put(URL + '/5e01c779d893e6938c118879')
-          .send({ products: ['5de3e0a388e99a666e8ee8ab'] })
-          .set('Authorization', `Bearer ${auth.token}`)
+          .put(URL + "/5e01c779d893e6938c118879")
+          .send({ products: ["5de3e0a388e99a666e8ee8ab"] })
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(201)
           .end((err, { body }) => {
             expect(body.products).toEqual([{
@@ -458,18 +572,27 @@ describe('OrderController (e2e)', () => {
                   "src": "https://picsum.photos/200/300"
                 }
               ],
-              "price": 124,
+              "prices": [
+                {
+                  "currency": "usd",
+                  "value": 124
+                },
+                {
+                  "currency": "czk",
+                  "value": 11
+                }
+              ],
               "title": "Mock title EN"
             }]);
             return done();
           });
       });
 
-      it('should response with whole object when request is incorrect as params are optional', done => {
+      it("should response with whole object when request is incorrect as params are optional", done => {
         return request(app.getHttpServer())
-          .put(URL + '/5e01c779d893e6938c118879')
+          .put(URL + "/5e01c779d893e6938c118879")
           .send({ abc: 123 })
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(400)
           .end((err, { body }) => {
             expect(body).toEqual({
@@ -486,7 +609,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 123
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 10
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -498,7 +630,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 124
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 11
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -517,12 +658,12 @@ describe('OrderController (e2e)', () => {
           });
       });
 
-      describe('user error', () => {
-        it('should respond with error when user is not valid ObjectID', done => {
+      describe("user error", () => {
+        it("should respond with error when user is not valid ObjectID", done => {
           return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879')
-            .send({ user: 'abc' })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .put(URL + "/5e01c779d893e6938c118879")
+            .send({ user: "abc" })
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(400)
             .end((err, { body }) => {
               expect(body).toEqual({
@@ -545,11 +686,11 @@ describe('OrderController (e2e)', () => {
               done();
             });
         });
-        it('should respond with NotFound when user does not exist', done => {
+        it("should respond with NotFound when user does not exist", done => {
           return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879')
-            .send({ user: '5e1e0b455ef69b3708dbfcae' })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .put(URL + "/5e01c779d893e6938c118879")
+            .send({ user: "5e1e0b455ef69b3708dbfcae" })
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(404)
             .end((err, { body }) => {
               expect(body).toEqual({
@@ -562,13 +703,13 @@ describe('OrderController (e2e)', () => {
         });
       });
 
-      describe('products error', () => {
+      describe("products error", () => {
         // At least only with one product we can make an order
-        it('should respond with error when products are empty array', done => {
+        it("should respond with error when products are empty array", done => {
           return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879')
+            .put(URL + "/5e01c779d893e6938c118879")
             .send({ products: [] })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(400)
             .end((err, { body }) => {
               expect(body).toEqual({
@@ -592,11 +733,11 @@ describe('OrderController (e2e)', () => {
             });
         });
 
-        it('should respond with error when product is not valid ObjectID', done => {
+        it("should respond with error when product is not valid ObjectID", done => {
           return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879')
-            .send({ products: ['abc'] })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .put(URL + "/5e01c779d893e6938c118879")
+            .send({ products: ["abc"] })
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(400)
             .end((err, { body }) => {
               expect(body).toEqual({
@@ -624,11 +765,11 @@ describe('OrderController (e2e)', () => {
             });
         });
 
-        it('should respond with error when any product does not exists', done => {
+        it("should respond with error when any product does not exists", done => {
           return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879')
-            .send({ products: ['5e1e12de0ac961f8b111a83f'] })
-            .set('Authorization', `Bearer ${auth.token}`)
+            .put(URL + "/5e01c779d893e6938c118879")
+            .send({ products: ["5e1e12de0ac961f8b111a83f"] })
+            .set("Authorization", `Bearer ${auth.token}`)
             .expect(404)
             .end((err, { body }) => {
               expect(body).toEqual({
@@ -642,165 +783,12 @@ describe('OrderController (e2e)', () => {
       });
     });
 
-    describe('/commerce/:orderId/:productId (PUT)', () => {
-      it('should be possible to add one unique product', done => {
-          return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879/5e1efa1c284fd310a7387799')
-            .send()
-            .set('Authorization', `Bearer ${auth.token}`)
-            .expect(201)
-            .end((err, { body }) => {
-              expect(body.products).toEqual([
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 123,
-                  "title": "aMock title EN"
-                },
-                {
-                  "description": "This is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ab",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 124,
-                  "title": "Mock title EN"
-                },
-                {
-                  "description": "bThis is mock description EN",
-                  "id": "5e1efa1c284fd310a7387799",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 124,
-                  "title": "bMock title EN"
-                }
-              ]);
-              return done();
-            });
-        });
-
-      it('should be possible to add one existing product ones more time', done => {
-          return request(app.getHttpServer())
-            .put(URL + '/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad')
-            .send()
-            .set('Authorization', `Bearer ${auth.token}`)
-            .expect(201)
-            .end((err, { body }) => {
-              expect(body.products).toEqual([
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 123,
-                  "title": "aMock title EN"
-                },
-                {
-                  "description": "This is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ab",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 124,
-                  "title": "Mock title EN"
-                },
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "price": 123,
-                  "title": "aMock title EN"
-                },
-              ]);
-              return done();
-            });
-        });
-
-      it('should respond with an exception when order id is not correct ObjectId', () => {
+    describe("/commerce/:orderId/:productId (PUT)", () => {
+      it("should be possible to add one unique product", done => {
         return request(app.getHttpServer())
-          .put(URL + '/abc/5de3e0a388e99a666e8ee8ad')
+          .put(URL + "/5e01c779d893e6938c118879/5e1efa1c284fd310a7387799")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(400)
-          .expect({
-            statusCode: 400,
-            error: 'Bad Request',
-            message: 'Requested id is not ObjectId.'
-          });
-      });
-
-      it('should respond with an exception when order id doesn\'t exists', () => {
-        return request(app.getHttpServer())
-          .put(URL + '/5e2d9e9b3613deeb0056f905/5de3e0a388e99a666e8ee8ad')
-          .send()
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(404)
-          .expect({
-            statusCode: 404,
-            error: 'Not Found',
-            message:
-              'Order with requested id 5e2d9e9b3613deeb0056f905 doesn\'t exists'
-          });
-      });
-
-      it('should respond with an exception when product id is not correct ObjectId', () => {
-        return request(app.getHttpServer())
-          .put(URL + '/5e01c779d893e6938c118879/abc')
-          .send()
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(400)
-          .expect({
-            statusCode: 400,
-            error: 'Bad Request',
-            message: 'Requested id is not ObjectId.'
-          });
-      });
-
-      it('should respond with and exception when product id doesn\'t exists', () => {
-        return request(app.getHttpServer())
-          .put(URL + '/5e01c779d893e6938c118879/5e2d9d218dfc7e3b5456fc3f')
-          .send()
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(404)
-          .expect({
-            statusCode: 404,
-            error: 'Not Found',
-            message: 'There is no product exists with requested id.'
-          });
-      });
-    });
-
-    describe('/commerce/:orderId/:productId (DELETE)', () => {
-      it('should be possible to remove just one product', done => {
-        return request(app.getHttpServer())
-          .delete(URL + '/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad')
-          .send()
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(201)
           .end((err, { body }) => {
             expect(body.products).toEqual([
@@ -813,7 +801,16 @@ describe('OrderController (e2e)', () => {
                     "src": "https://picsum.photos/200/300"
                   }
                 ],
-                "price": 123,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
                 "title": "aMock title EN"
               },
               {
@@ -825,89 +822,305 @@ describe('OrderController (e2e)', () => {
                     "src": "https://picsum.photos/200/300"
                   }
                 ],
-                "price": 124,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 124
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 11
+                  }
+                ],
                 "title": "Mock title EN"
               },
+              {
+                "description": "bThis is mock description EN",
+                "id": "5e1efa1c284fd310a7387799",
+                "images": [
+                  {
+                    "alt": "This is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
+                "title": "bMock title EN"
+              }
             ]);
             return done();
           });
       });
 
-      it('should respond with an exception when order id is not correct ObjectId', () => {
+      it("should be possible to add one existing product ones more time", done => {
         return request(app.getHttpServer())
-          .delete(URL + '/abc/5de3e0a388e99a666e8ee8ad')
+          .put(URL + "/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
-          .expect(400)
-          .expect({
-            statusCode: 400,
-            error: 'Bad Request',
-            message: 'Requested id is not ObjectId.'
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(201)
+          .end((err, { body }) => {
+            expect(body.products).toEqual([
+              {
+                "description": "aThis is mock description EN",
+                "id": "5de3e0a388e99a666e8ee8ad",
+                "images": [
+                  {
+                    "alt": "aThis is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
+                "title": "aMock title EN"
+              },
+              {
+                "description": "This is mock description EN",
+                "id": "5de3e0a388e99a666e8ee8ab",
+                "images": [
+                  {
+                    "alt": "This is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 124
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 11
+                  }
+                ],
+                "title": "Mock title EN"
+              },
+              {
+                "description": "aThis is mock description EN",
+                "id": "5de3e0a388e99a666e8ee8ad",
+                "images": [
+                  {
+                    "alt": "aThis is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
+                "title": "aMock title EN"
+              }
+            ]);
+            return done();
           });
       });
 
-      it('should respond with an exception when order id doesn\'t exists', () => {
+      it("should respond with an exception when order id is not correct ObjectId", () => {
         return request(app.getHttpServer())
-          .delete(URL + '/5e2d9e9b3613deeb0056f905/5de3e0a388e99a666e8ee8ad')
+          .put(URL + "/abc/5de3e0a388e99a666e8ee8ad")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(400)
+          .expect({
+            statusCode: 400,
+            error: "Bad Request",
+            message: "Requested id is not ObjectId."
+          });
+      });
+
+      it("should respond with an exception when order id doesn't exists", () => {
+        return request(app.getHttpServer())
+          .put(URL + "/5e2d9e9b3613deeb0056f905/5de3e0a388e99a666e8ee8ad")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(404)
           .expect({
             statusCode: 404,
-            error: 'Not Found',
+            error: "Not Found",
             message:
-              'Order with requested id 5e2d9e9b3613deeb0056f905 doesn\'t exists'
+              "Order with requested id 5e2d9e9b3613deeb0056f905 doesn't exists"
           });
       });
 
-      it('should respond with an exception when product id is not correct ObjectId', () => {
+      it("should respond with an exception when product id is not correct ObjectId", () => {
         return request(app.getHttpServer())
-          .delete(URL + '/5e01c779d893e6938c118879/abc')
+          .put(URL + "/5e01c779d893e6938c118879/abc")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(400)
           .expect({
             statusCode: 400,
-            error: 'Bad Request',
-            message: 'Requested id is not ObjectId.'
+            error: "Bad Request",
+            message: "Requested id is not ObjectId."
           });
       });
 
-      it('should respond with and exception when product id doesn\'t exists', () => {
+      it("should respond with and exception when product id doesn't exists", () => {
         return request(app.getHttpServer())
-          .delete(URL + '/5e01c779d893e6938c118879/5e2d9d218dfc7e3b5456fc3f')
+          .put(URL + "/5e01c779d893e6938c118879/5e2d9d218dfc7e3b5456fc3f")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(404)
           .expect({
             statusCode: 404,
-            error: 'Not Found',
-            message: 'There is no product exists with requested id.'
+            error: "Not Found",
+            message: "There is no product exists with requested id."
+          });
+      });
+    });
+
+    describe("/commerce/:orderId/:productId (DELETE)", () => {
+      it("should be possible to remove just one product", done => {
+        return request(app.getHttpServer())
+          .delete(URL + "/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(201)
+          .end((err, { body }) => {
+            expect(body.products).toEqual([
+              {
+                "description": "aThis is mock description EN",
+                "id": "5de3e0a388e99a666e8ee8ad",
+                "images": [
+                  {
+                    "alt": "aThis is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
+                "title": "aMock title EN"
+              },
+              {
+                "description": "This is mock description EN",
+                "id": "5de3e0a388e99a666e8ee8ab",
+                "images": [
+                  {
+                    "alt": "This is alt of image",
+                    "src": "https://picsum.photos/200/300"
+                  }
+                ],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 124
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 11
+                  }
+                ],
+                "title": "Mock title EN"
+              }
+            ]);
+            return done();
+          });
+      });
+
+      it("should respond with an exception when order id is not correct ObjectId", () => {
+        return request(app.getHttpServer())
+          .delete(URL + "/abc/5de3e0a388e99a666e8ee8ad")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(400)
+          .expect({
+            statusCode: 400,
+            error: "Bad Request",
+            message: "Requested id is not ObjectId."
+          });
+      });
+
+      it("should respond with an exception when order id doesn't exists", () => {
+        return request(app.getHttpServer())
+          .delete(URL + "/5e2d9e9b3613deeb0056f905/5de3e0a388e99a666e8ee8ad")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(404)
+          .expect({
+            statusCode: 404,
+            error: "Not Found",
+            message:
+              "Order with requested id 5e2d9e9b3613deeb0056f905 doesn't exists"
+          });
+      });
+
+      it("should respond with an exception when product id is not correct ObjectId", () => {
+        return request(app.getHttpServer())
+          .delete(URL + "/5e01c779d893e6938c118879/abc")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(400)
+          .expect({
+            statusCode: 400,
+            error: "Bad Request",
+            message: "Requested id is not ObjectId."
+          });
+      });
+
+      it("should respond with and exception when product id doesn't exists", () => {
+        return request(app.getHttpServer())
+          .delete(URL + "/5e01c779d893e6938c118879/5e2d9d218dfc7e3b5456fc3f")
+          .send()
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(404)
+          .expect({
+            statusCode: 404,
+            error: "Not Found",
+            message: "There is no product exists with requested id."
           });
       });
     });
   });
 
-  describe('access rights - own', () => {
+  describe("access rights - own", () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
       auth = await request(app.getHttpServer())
-        .post('/auth')
+        .post("/auth")
         .send(
           new AuthSignInRequestDto({
-            email: 'tonda@zakaznik.cz',
-            password: '12345',
-          }),
+            email: "tonda@zakaznik.cz",
+            password: "12345"
+          })
         )
         .then(res => res.body);
     });
 
-    describe('/commerce/order (GET)', () => {
-      it('should be possible to get all own orders', async () => {
+    describe("/commerce/order (GET)", () => {
+      it("should be possible to get all own orders", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order?skip=0')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order?skip=0")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
             {
@@ -924,7 +1137,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 123,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 123
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 10
+                    }
+                  ],
                   "title": "aMock title EN"
                 },
                 {
@@ -936,7 +1158,16 @@ describe('OrderController (e2e)', () => {
                       "src": "https://picsum.photos/200/300"
                     }
                   ],
-                  "price": 124,
+                  "prices": [
+                    {
+                      "currency": "usd",
+                      "value": 124
+                    },
+                    {
+                      "currency": "czk",
+                      "value": 11
+                    }
+                  ],
                   "title": "Mock title EN"
                 }
               ],
@@ -951,28 +1182,28 @@ describe('OrderController (e2e)', () => {
                 "surname": "Zakaznik"
               }
             }
-          ])
+          ]);
       });
     });
 
-    describe('/commerce/order/:id (GET)', () => {
-      it('should not be possible to get not own by id', async () => {
+    describe("/commerce/order/:id (GET)", () => {
+      it("should not be possible to get not own by id", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order/5e01c779d893e6938c118879')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order/5e01c779d893e6938c118879")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(404)
           .expect({
             statusCode: 404,
-            error: 'Not Found',
+            error: "Not Found",
             message:
-              'Order with userId of 5e021cc4b0d0a6bd5f64b67c and id of 5e01c779d893e6938c118879 doesn\'t exist.'
-          })
+              "Order with userId of 5e021cc4b0d0a6bd5f64b67c and id of 5e01c779d893e6938c118879 doesn't exist."
+          });
       });
 
-      it('should be possible to get own by id', async () => {
+      it("should be possible to get own by id", async () => {
         return await request(app.getHttpServer())
-          .get('/commerce/order/5e03379ad2e5526d3d8eb277')
-          .set('Authorization', `Bearer ${auth.token}`)
+          .get("/commerce/order/5e03379ad2e5526d3d8eb277")
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect({
             "createdAt": "Sun Dec 29 2019 11:28:46 GMT+0100 (CET)",
@@ -988,17 +1219,35 @@ describe('OrderController (e2e)', () => {
                     "src": "https://picsum.photos/200/300"
                   }
                 ],
-                "price": 123,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
                 "title": "aMock title EN"
               },
               {
                 "description": "This is mock description EN",
                 "id": "5de3e0a388e99a666e8ee8ab",
                 "images": [{
-                    "alt": "This is alt of image",
-                    "src": "https://picsum.photos/200/300"
-                  }],
-                "price": 124,
+                  "alt": "This is alt of image",
+                  "src": "https://picsum.photos/200/300"
+                }],
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 124
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 11
+                  }
+                ],
                 "title": "Mock title EN"
               }
             ],
@@ -1010,11 +1259,11 @@ describe('OrderController (e2e)', () => {
 "roles": ["5e021e7c909b5abd8afb0ba5"],
               "surname": "Zakaznik"
             }
-          })
+          });
       });
     });
 
-    describe('/commerce/order (POST)', () => {
+    describe("/commerce/order (POST)", () => {
       let createOrderRequestDto: CreateOrderRequest;
 
       beforeEach(() => {
@@ -1022,13 +1271,13 @@ describe('OrderController (e2e)', () => {
         createOrderRequestDto = new Mock();
       });
 
-      it('should be possible to create own order', done => {
+      it("should be possible to create own order", done => {
         return request(app.getHttpServer())
           .post(URL)
           .send({
-            products: ['5de3e0a388e99a666e8ee8ad']
+            products: ["5de3e0a388e99a666e8ee8ad"]
           })
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(201)
           .end((err, { body }) => {
             expect(body.user).toEqual({
@@ -1051,7 +1300,16 @@ describe('OrderController (e2e)', () => {
                     "src": "https://picsum.photos/200/300"
                   }
                 ],
-                "price": 123,
+                "prices": [
+                  {
+                    "currency": "usd",
+                    "value": 123
+                  },
+                  {
+                    "currency": "czk",
+                    "value": 10
+                  }
+                ],
                 "title": "aMock title EN"
               }
             ]);
@@ -1060,27 +1318,27 @@ describe('OrderController (e2e)', () => {
       });
     });
 
-    describe('/commerce/order/:id (DELETE)', () => {
-      it('should not be possible to delete own order', () => {
+    describe("/commerce/order/:id (DELETE)", () => {
+      it("should not be possible to delete own order", () => {
         return request(app.getHttpServer())
           .delete(`/commerce/order/5e01c779d893e6938c118879`)
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(403)
           .expect({
             statusCode: 403,
-            error: 'Forbidden',
-            message: 'Forbidden resource',
+            error: "Forbidden",
+            message: "Forbidden resource"
           });
       });
     });
 
-    describe('/commerce/order/:id (PUT)', () => {
+    describe("/commerce/order/:id (PUT)", () => {
       // This is due to situation that when order is made it cannot be update by customer
-      it('should not be possible to update own order', done => {
+      it("should not be possible to update own order", done => {
         return request(app.getHttpServer())
-          .put(URL + '/5e01c779d893e6938c118879')
-          .send({ products: ['5de3e0a388e99a666e8ee8ab'] })
-          .set('Authorization', `Bearer ${auth.token}`)
+          .put(URL + "/5e01c779d893e6938c118879")
+          .send({ products: ["5de3e0a388e99a666e8ee8ab"] })
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(403)
           .end((err, { body }) => {
             expect(body).toEqual({
@@ -1093,17 +1351,17 @@ describe('OrderController (e2e)', () => {
       });
     });
 
-    describe('/commerce/:orderId/:productId (DELETE)', () => {
-      it('should not be possible to remove from own order just one product', () => {
+    describe("/commerce/:orderId/:productId (DELETE)", () => {
+      it("should not be possible to remove from own order just one product", () => {
         request(app.getHttpServer())
-          .delete(URL + '/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad')
+          .delete(URL + "/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad")
           .send()
-          .set('Authorization', `Bearer ${auth.token}`)
+          .set("Authorization", `Bearer ${auth.token}`)
           .expect(403)
           .expect({
             statusCode: 403,
-            error: 'Forbidden',
-            message: 'Forbidden resource'
+            error: "Forbidden",
+            message: "Forbidden resource"
           });
       });
     });
