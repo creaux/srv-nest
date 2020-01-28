@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProductController } from './product/product.controller';
-import { ProductService } from './product/product.service';
+import { ProductController } from './product.controller';
+import { ProductService } from './product.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
 import { PipesModule } from '../../pipes/pipes.module';

@@ -5,4 +5,4 @@ import { OrderModule } from './order/order.module';
 @Module({
   imports: [ProductModule, OrderModule],
 })
-export class EshopModule {}
+export class StoreModule {}

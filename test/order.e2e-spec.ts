@@ -1,14 +1,13 @@
 import { MemoryDb } from "./memory-db";
 import { Test, TestingModule } from "@nestjs/testing";
-import { OrderModule } from "../src/eshop/order/order.module";
+import { OrderModule } from "../src/store/order/order.module";
 import { ConfigService } from "../src/config/config.service";
 import { useContainer } from "class-validator";
 import { DataMockEntities, MOCK_TOKEN } from "@pyxismedia/lib-model";
 import * as request from "supertest";
 import { AuthSignInRequestDto } from "../src/auth/auth/dto/auth-sign-in-request.dto";
 import { AuthSignInResponseDto } from "../src/auth/auth/dto/auth-sign-in-response.dto";
-import { CreateProductRequestDto } from "../src/eshop/product/product/dto/create-product-request.dto";
-import { CreateOrderRequest } from "../src/eshop/order/dto/create-order-request.dto";
+import { CreateOrderRequestDto } from "../src/store/order/dto";
 
 const { keys } = Object;
 
@@ -16,7 +15,7 @@ describe("OrderController (e2e)", () => {
   let app: any;
   let db: MemoryDb;
   let dbUri: string;
-  const URL = "/commerce/order";
+  const URL = "/store/order";
 
   beforeEach(async () => {
     db = new MemoryDb();
@@ -66,10 +65,10 @@ describe("OrderController (e2e)", () => {
         .then(res => res.body);
     });
 
-    describe("/commerce/order (GET)", () => {
+    describe("/store/order (GET)", () => {
       it("should be possible to get all orders", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order?skip=0")
+          .get("/store/order?skip=0")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
@@ -196,7 +195,7 @@ describe("OrderController (e2e)", () => {
 
       it("should be possible to skip all orders by one", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order?skip=1")
+          .get("/store/order?skip=1")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
@@ -263,10 +262,10 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (GET)", () => {
+    describe("/store/order/:id (GET)", () => {
       it("should be possible to get any by id", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order/5e01c779d893e6938c118879")
+          .get("/store/order/5e01c779d893e6938c118879")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect(
@@ -333,11 +332,11 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order (POST)", () => {
-      let createOrderRequestDto: CreateOrderRequest;
+    describe("/store/order (POST)", () => {
+      let createOrderRequestDto: CreateOrderRequestDto;
 
       beforeEach(() => {
-        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequest);
+        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequestDto);
         createOrderRequestDto = new Mock();
       });
 
@@ -468,10 +467,10 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (DELETE)", () => {
+    describe("/store/order/:id (DELETE)", () => {
       it("should be possible to delete any order", done => {
         return request(app.getHttpServer())
-          .delete(`/commerce/order/5e03379ad2e5526d3d8eb277`)
+          .delete(`/store/order/5e03379ad2e5526d3d8eb277`)
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .end((err, { body }) => {
@@ -537,7 +536,7 @@ describe("OrderController (e2e)", () => {
 
       it("should respond with exception when id is not provided", () => {
         return request(app.getHttpServer())
-          .delete(`/commerce/order/abc`)
+          .delete(`/store/order/abc`)
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(400)
           .expect({
@@ -548,11 +547,11 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (PUT)", () => {
-      let updateOrderRequestDto: CreateOrderRequest;
+    describe("/store/order/:id (PUT)", () => {
+      let updateOrderRequestDto: CreateOrderRequestDto;
 
       beforeEach(() => {
-        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequest);
+        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequestDto);
         updateOrderRequestDto = new Mock();
       });
 
@@ -783,7 +782,7 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/:orderId/:productId (PUT)", () => {
+    describe("/store/:orderId/:productId (PUT)", () => {
       it("should be possible to add one unique product", done => {
         return request(app.getHttpServer())
           .put(URL + "/5e01c779d893e6938c118879/5e1efa1c284fd310a7387799")
@@ -990,7 +989,7 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/:orderId/:productId (DELETE)", () => {
+    describe("/store/:orderId/:productId (DELETE)", () => {
       it("should be possible to remove just one product", done => {
         return request(app.getHttpServer())
           .delete(URL + "/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad")
@@ -1116,10 +1115,10 @@ describe("OrderController (e2e)", () => {
         .then(res => res.body);
     });
 
-    describe("/commerce/order (GET)", () => {
+    describe("/store/order (GET)", () => {
       it("should be possible to get all own orders", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order?skip=0")
+          .get("/store/order?skip=0")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect([
@@ -1186,10 +1185,10 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (GET)", () => {
+    describe("/store/order/:id (GET)", () => {
       it("should not be possible to get not own by id", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order/5e01c779d893e6938c118879")
+          .get("/store/order/5e01c779d893e6938c118879")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(404)
           .expect({
@@ -1202,7 +1201,7 @@ describe("OrderController (e2e)", () => {
 
       it("should be possible to get own by id", async () => {
         return await request(app.getHttpServer())
-          .get("/commerce/order/5e03379ad2e5526d3d8eb277")
+          .get("/store/order/5e03379ad2e5526d3d8eb277")
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect({
@@ -1263,11 +1262,11 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order (POST)", () => {
-      let createOrderRequestDto: CreateOrderRequest;
+    describe("/store/order (POST)", () => {
+      let createOrderRequestDto: CreateOrderRequestDto;
 
       beforeEach(() => {
-        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequest);
+        const Mock = Reflect.getMetadata(MOCK_TOKEN, CreateOrderRequestDto);
         createOrderRequestDto = new Mock();
       });
 
@@ -1318,10 +1317,10 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (DELETE)", () => {
+    describe("/store/order/:id (DELETE)", () => {
       it("should not be possible to delete own order", () => {
         return request(app.getHttpServer())
-          .delete(`/commerce/order/5e01c779d893e6938c118879`)
+          .delete(`/store/order/5e01c779d893e6938c118879`)
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(403)
           .expect({
@@ -1332,7 +1331,7 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/order/:id (PUT)", () => {
+    describe("/store/order/:id (PUT)", () => {
       // This is due to situation that when order is made it cannot be update by customer
       it("should not be possible to update own order", done => {
         return request(app.getHttpServer())
@@ -1351,7 +1350,7 @@ describe("OrderController (e2e)", () => {
       });
     });
 
-    describe("/commerce/:orderId/:productId (DELETE)", () => {
+    describe("/store/:orderId/:productId (DELETE)", () => {
       it("should not be possible to remove from own order just one product", () => {
         request(app.getHttpServer())
           .delete(URL + "/5e01c779d893e6938c118879/5de3e0a388e99a666e8ee8ad")

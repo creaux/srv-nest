@@ -1,20 +1,20 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
-import { ProductModule } from "../src/eshop/product/product.module";
+import { ProductModule } from "../src/store/product/product.module";
 import { ConfigService } from "../src/config/config.service";
 import { DataMockEntities, MOCK_TOKEN } from "@pyxismedia/lib-model";
 import { MemoryDb } from "./memory-db";
 import { useContainer } from "class-validator";
 import { AuthSignInRequestDto } from "../src/auth/auth/dto/auth-sign-in-request.dto";
 import { AuthSignInResponseDto } from "../src/auth/auth/dto/auth-sign-in-response.dto";
-import { CreateProductRequestDto } from "../src/eshop/product/product/dto/create-product-request.dto";
+import { CreateProductRequestDto } from "../src/store/product/dto";
 import { ImageResponseDto } from "../src/image.response.dto";
 
 describe("ProductController (e2e)", () => {
   let app: any;
   let db: MemoryDb;
   let dbUri: string;
-  const URL = "/commerce/product";
+  const URL = "/store/product";
 
   beforeAll(async () => {
     db = new MemoryDb();
@@ -212,7 +212,7 @@ describe("ProductController (e2e)", () => {
         .then(res => res.body);
     });
 
-    describe("/commerce/product (POST)", () => {
+    describe("/store/product (POST)", () => {
       let createProductRequestMock: CreateProductRequestDto;
 
       beforeEach(() => {

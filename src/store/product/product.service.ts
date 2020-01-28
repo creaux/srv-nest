@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
-import { ProductResponseDto } from './dto/product-response.dto';
-import { CreateProductRequestDto } from './dto/create-product-request.dto';
+import { ProductResponseDto, CreateProductRequestDto } from './dto';
 
 @Injectable()
 export class ProductService {

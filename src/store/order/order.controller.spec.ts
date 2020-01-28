@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
 import { OrderService } from './order.service';
-import { AuthService } from '../../../auth/auth/auth.service';
-import { UserService } from '../../../users/user/user.service';
-import { RoleService } from '../../../users/role/role.service';
+import { AuthService } from '../../auth/auth/auth.service';
+import { UserService } from '../../users/user/user.service';
+import { RoleService } from '../../users/role/role.service';
 
 describe('Order Controller', () => {
   let controller: OrderController;
