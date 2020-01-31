@@ -4,6 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { ORDER_MODEL } from '@pyxismedia/lib-model';
 import { UserService } from '../../users/user/user.service';
 import { ProductService } from '../product/product.service';
+import { PaymentService } from '../payment/payment.service';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -22,6 +23,10 @@ describe('OrderService', () => {
         },
         {
           provide: ProductService,
+          useValue: {},
+        },
+        {
+          provide: PaymentService,
           useValue: {},
         },
       ],

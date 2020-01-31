@@ -282,7 +282,7 @@ describe("ProductController (e2e)", () => {
         });
 
 
-        it("should respond with error when it is not string", done => {
+        it("should respond with error when title is not string", done => {
           const { title, ...rest } = createProductRequestMock;
           const send = { ...rest, title: 123 };
           return request(app.getHttpServer())

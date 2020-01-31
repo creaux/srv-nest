@@ -30,7 +30,6 @@ import { ROLES_BUILDER_TOKEN } from 'nest-access-control/lib';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 import {
   CreateOrderRequestDto,
-  CreateOrderUserDto,
   UpdateOrderRequestDto,
   OrderResponseDto,
 } from './dto';
@@ -103,12 +102,9 @@ export class OrderController {
     @Body(ValidationPipe) createOrderRequest: CreateOrderRequestDto,
     @Call(UserByBearerPipe) user: UserResponseDto,
   ): Promise<OrderResponseDto> {
-    const createOrderUser: CreateOrderUserDto = new CreateOrderUserDto({
-      user: user.id,
-      products: createOrderRequest.products,
-      createdAt: new Date().toDateString(),
-    });
-    return this.orderService.create(createOrderUser);
+    createOrderRequest.set('user', user.id);
+    createOrderRequest.set('createdAt', new Date().toDateString());
+    return await this.orderService.create(createOrderRequest);
   }
 
   @Delete(':orderId')

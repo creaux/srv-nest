@@ -1,9 +1,9 @@
 import { LoggerService } from '../logger/logger.service';
-import { EnvironmentService } from '../config/environment.service';
+import { ConfigFacade } from '../config/config.facade';
 import { MongoMemoryService } from './mongo-memory/mongo-memory.service';
 
 export async function mongooseOptionsFactory(
-  env: EnvironmentService,
+  env: ConfigFacade,
   logger: LoggerService,
   mongoMemory: MongoMemoryService,
 ) {

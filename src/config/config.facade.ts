@@ -3,7 +3,7 @@ import { ConfigService } from './config.service';
 import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
 
 @Injectable()
-export class EnvironmentService {
+export class ConfigFacade {
   constructor(
     private readonly config: ConfigService,
     @Inject(CONFIG_ACCESSORS)
@@ -16,5 +16,13 @@ export class EnvironmentService {
 
   public get MONGODB_URI(): string {
     return this.config.get(this.accessors.MONGODB_URI);
+  }
+
+  public get STRIPE_SECRET(): string {
+    return this.config.get(this.accessors.STRIPE_SECRET);
+  }
+
+  public get STRIPE_WEBHOOK_SECRET(): string {
+    return this.config.get(this.accessors.STRIPE_WEBHOOK_SECRET);
   }
 }

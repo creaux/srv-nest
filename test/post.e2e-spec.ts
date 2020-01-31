@@ -413,101 +413,83 @@ describe('PostController (e2e)', () => {
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(400)
           .expect({
-            statusCode: 400,
-            error: 'Request validation failed',
-            message: [
+            "error": "Request validation failed",
+            "message": [
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "state should not be null or undefined",
+                  "isEnum": "state must be a valid enum value"
                 },
-                property: 'title',
-                children: [],
-                constraints: {
-                  isDefined: 'title should not be null or undefined',
-                  length: 'title must be longer than or equal to 1 characters',
-                  isString: 'title must be a string',
-                },
+                "property": "state",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "createdBy should not be null or undefined",
+                  "isMongoId": "createdBy must be a mongodb id"
                 },
-                property: 'subtitle',
-                children: [],
-                constraints: {
-                  isDefined: 'subtitle should not be null or undefined',
-                  length:
-                    'subtitle must be longer than or equal to 1 characters',
-                  isString: 'subtitle must be a string',
-                },
+                "property": "createdBy",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isMongoId": "section must be a mongodb id"
                 },
-                property: 'content',
-                children: [],
-                constraints: {
-                  isDefined: 'content should not be null or undefined',
-                  length:
-                    'content must be longer than or equal to 1 characters',
-                  isString: 'content must be a string',
-                },
+                "property": "section",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "title should not be null or undefined",
+                  "isString": "title must be a string",
+                  "length": "title must be longer than or equal to 1 characters"
                 },
-                property: 'image',
-                children: [],
-                constraints: {
-                  isDefined: 'image should not be null or undefined',
-                  isUrl: 'image must be an URL address',
-                },
+                "property": "title",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "subtitle should not be null or undefined",
+                  "isString": "subtitle must be a string",
+                  "length": "subtitle must be longer than or equal to 1 characters"
                 },
-                property: 'state',
-                children: [],
-                constraints: {
-                  isDefined: 'state should not be null or undefined',
-                  isEnum: 'state must be a valid enum value',
-                },
+                "property": "subtitle",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "content should not be null or undefined",
+                  "isString": "content must be a string",
+                  "length": "content must be longer than or equal to 1 characters"
                 },
-                property: 'labels',
-                children: [],
-                constraints: {
-                  isArray: 'labels must be an array',
-                },
+                "property": "content",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isDefined": "image should not be null or undefined",
+                  "isUrl": "image must be an URL address"
                 },
-                property: 'createdBy',
-                children: [],
-                constraints: {
-                  isDefined: 'createdBy should not be null or undefined',
-                  isMongoId: 'createdBy must be a mongodb id',
-                },
+                "property": "image",
+                "target": {}
               },
               {
-                target: {
-                  abc: 'abc',
+                "children": [],
+                "constraints": {
+                  "isArray": "labels must be an array"
                 },
-                property: 'section',
-                children: [],
-                constraints: {
-                  isMongoId: 'section must be a mongodb id',
-                },
-              },
+                "property": "labels",
+                "target": {}
+              }
             ],
+            "statusCode": 400
           });
       });
 

@@ -417,7 +417,7 @@ describe("OrderController (e2e)", () => {
                 },
                 "property": "products",
                 "target": {
-                  "abc": "abc",
+                  "_map": {},
                   "process": "unpaid"
                 }
               }
@@ -587,7 +587,7 @@ describe("OrderController (e2e)", () => {
           });
       });
 
-      it("should response with whole object when request is incorrect as params are optional", done => {
+      it("should response with Bad Request when non user and at least one product is provided", done => {
         return request(app.getHttpServer())
           .put(URL + "/5e01c779d893e6938c118879")
           .send({ abc: 123 })
@@ -595,63 +595,9 @@ describe("OrderController (e2e)", () => {
           .expect(400)
           .end((err, { body }) => {
             expect(body).toEqual({
-              "createdAt": "Sun Dec 29 2019 11:28:45 GMT+0100 (CET)",
-              "id": "5e01c779d893e6938c118879",
-              "process": "unpaid",
-              "products": [
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "currency": "usd",
-                      "value": 123
-                    },
-                    {
-                      "currency": "czk",
-                      "value": 10
-                    }
-                  ],
-                  "title": "aMock title EN"
-                },
-                {
-                  "description": "This is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ab",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "currency": "usd",
-                      "value": 124
-                    },
-                    {
-                      "currency": "czk",
-                      "value": 11
-                    }
-                  ],
-                  "title": "Mock title EN"
-                }
-              ],
-              "user": {
-                "email": "karel@vomacka.cz",
-                "forname": "Karel",
-                "id": "000000000000000000000a00",
-                "l10n": [],
-"roles": [
-                  "5dc9bc0c99e35856ffe90e66"
-                ],
-                "surname": "Vomacka"
-              }
+              "error": "Bad Request",
+              "message": "At least one existing user or one of existing products should be provided",
+              "statusCode": 400
             });
             done();
           });
