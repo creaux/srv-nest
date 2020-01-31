@@ -6,7 +6,7 @@ import { LoggerService } from '../logger/logger.service';
 import { LoggerModule } from '../logger/logger.module';
 import { MongoMemoryService } from './mongo-memory/mongo-memory.service';
 import { mongooseOptionsFactory } from './mongoose-options.factory';
-import { EnvironmentService } from '../config/environment.service';
+import { ConfigFacade } from '../config/config.facade';
 import { MongoMemoryModule } from './mongo-memory/mongo-memory.module';
 // @ts-ignore
 import * as mongooseIntl from 'mongoose-intl';
@@ -22,7 +22,7 @@ plugin(mongooseIntl, { languages: ['en', 'de', 'fr'], defaultLanguage: 'en' }); 
     MongooseModule.forRootAsync({
       imports: [ConfigModule, LoggerModule, MongoMemoryModule],
       useFactory: mongooseOptionsFactory,
-      inject: [EnvironmentService, LoggerService, MongoMemoryService],
+      inject: [ConfigFacade, LoggerService, MongoMemoryService],
     }),
   ],
 })

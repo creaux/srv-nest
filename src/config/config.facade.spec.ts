@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EnvironmentService } from './environment.service';
+import { ConfigFacade } from './config.facade';
 import { ConfigService } from './config.service';
 import { CONFIG_ACCESSORS } from './config.accessors';
 
 describe('EnvironmentService', () => {
-  let service: EnvironmentService;
+  let service: ConfigFacade;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        EnvironmentService,
+        ConfigFacade,
         {
           provide: ConfigService,
           useValue: {},
@@ -21,7 +21,7 @@ describe('EnvironmentService', () => {
       ],
     }).compile();
 
-    service = module.get<EnvironmentService>(EnvironmentService);
+    service = module.get<ConfigFacade>(ConfigFacade);
   });
 
   it('should be defined', () => {

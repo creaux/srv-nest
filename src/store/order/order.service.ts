@@ -1,15 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
 import { Model, Types } from 'mongoose';
 import {
   OrderResponseDto,
-  CreateOrderUserDto,
   UpdateOrderRequestDto,
+  CreateOrderRequestDto,
 } from './dto';
 import { UserService } from '../../users/user/user.service';
 import { ProductService } from '../product/product.service';
-import { applyAuthChecker } from 'type-graphql/dist/resolvers/helpers';
+import { PaymentService } from '../payment/payment.service';
+import { classToPlain } from 'class-transformer';
 
 @Injectable()
 export class OrderService {
@@ -17,6 +22,7 @@ export class OrderService {
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<OrderSchema>,
     private readonly userService: UserService,
     private readonly productService: ProductService,
+    private readonly paymentService: PaymentService,
   ) {}
 
   public async findAll(skip: number): Promise<OrderResponseDto[]> {
@@ -38,6 +44,7 @@ export class OrderService {
       .populate('user', '-password')
       .populate('products')
       .exec()
+      // TODO serialize????!
       .then(document => new OrderResponseDto(document.toObject()));
   }
 
@@ -88,7 +95,7 @@ export class OrderService {
   }
 
   public async create(
-    createOrderRequest: CreateOrderUserDto,
+    createOrderRequest: CreateOrderRequestDto,
   ): Promise<OrderResponseDto> {
     if (createOrderRequest.products && createOrderRequest.products.length > 0) {
       // If any product doesn't exist it throws exception
@@ -101,13 +108,33 @@ export class OrderService {
       }
     }
 
-    const id = Types.ObjectId();
-    await this.orderModel.create({
-      _id: id,
-      ...createOrderRequest,
-    });
+    // TODO Calculate amount and provide correct currency
+    // Price has to be calculated from products prices in certain currency
+    // Currency has to be gathered from client on request on endpoint passed as parameter of this.create
+    // Question is whether there should be some session of user and on the beginning of this session
+    // these informations suppose to be cached (althought this could be implemented later as feature)
+    // ------!!!!! ->
+    // or even better it should be saved in database with user informations - this assumes to be registered before
+    // ordering even so currency could be saved based on browser setting and changed later manually
+    // ----- changed later it should not happen as different markets could have different prices!!!!!!!!!!!!! so ti should be locked
+    // const paymentSecret = await this.paymentService.getPaymentSecret(
+    //   123,
+    //   'usd',
+    // );
 
-    return this.findById(id.toHexString());
+    const id = Types.ObjectId();
+    const plain = classToPlain(createOrderRequest);
+    await this.orderModel.create(
+      Object.assign(
+        {
+          _id: id,
+          // paymentId: paymentSecret.id,
+        },
+        plain,
+      ),
+    );
+
+    return await this.findById(id.toHexString());
   }
 
   public async deleteById(id: string): Promise<OrderResponseDto> {
@@ -128,6 +155,12 @@ export class OrderService {
     id: string,
     body: UpdateOrderRequestDto,
   ): Promise<OrderResponseDto> {
+    if (body.products == undefined && body.user == undefined) {
+      throw new BadRequestException(
+        'At least one existing user or one of existing products should be provided',
+      );
+    }
+
     if (body.user) {
       // If user doesn't exist it throws exception
       try {
@@ -149,19 +182,9 @@ export class OrderService {
     }
 
     // TODO: Check whether provided products and users exists if not raise exceptions
-    return await this.orderModel
-      .findByIdAndUpdate(id, { $set: body }, { new: true })
-      .populate('user', '-password')
-      .populate('products')
-      .exec()
-      .then(document => {
-        if (document) {
-          // Populate has to be done after as findByIdAndUpdate().populate()
-          // happens at the same time
-          return document.toObject();
-        }
-        throw new NotFoundException(`Order of id ${id} doesn't exist.`);
-      });
+    await this.orderModel.findByIdAndUpdate(id, { $set: body }, { new: true });
+
+    return this.findById(id);
   }
 
   public async addProductToOrder(orderId: string, productId: string) {

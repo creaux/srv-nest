@@ -1,56 +1,12 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { PostState } from '../post.types';
-import { CreatePostModel } from '@pyxismedia/lib-model';
-import {
-  IsArray,
-  IsDefined,
-  IsEnum,
-  IsMongoId,
-  IsString,
-  IsUrl,
-  Length,
-} from 'class-validator';
-import { PostStateEnum } from '@pyxismedia/lib-model';
+import { IsDefined, IsEnum, IsMongoId } from 'class-validator';
+import { PostStateEnum, CreatePostModel } from '@pyxismedia/lib-model';
 import { UserExistsConstrain } from '../../../users/constraints/user-exists.constrain';
 import { SectionExistsConstrain } from '../../constraints/section-exists.constrain';
+import { Expose } from 'class-transformer';
 
-export class CreatePostRequestDto implements CreatePostModel {
-  @ApiModelProperty({
-    required: true,
-    type: String,
-    example: CreatePostModel.MOCK.title,
-  })
-  @IsString()
-  @Length(1, 120)
-  @IsDefined()
-  public readonly title: string;
-
-  @ApiModelProperty({
-    type: String,
-    example: CreatePostModel.MOCK.subtitle,
-  })
-  @IsString()
-  @Length(1, 360)
-  @IsDefined()
-  public readonly subtitle: string;
-
-  @ApiModelProperty({
-    type: String,
-    example: CreatePostModel.MOCK.content,
-  })
-  @IsString()
-  @Length(1)
-  @IsDefined()
-  public readonly content: string;
-
-  @ApiModelProperty({
-    type: String,
-    example: CreatePostModel.MOCK.image,
-  })
-  @IsUrl()
-  @IsDefined()
-  public readonly image: string;
-
+export class CreatePostRequestDto extends CreatePostModel {
   @ApiModelProperty({
     enum: [PostState.DRAFT, PostState.PUBLISHED, PostState.ARCHIVED],
     type: PostState,
@@ -58,16 +14,8 @@ export class CreatePostRequestDto implements CreatePostModel {
   })
   @IsEnum(PostStateEnum)
   @IsDefined()
+  @Expose()
   public readonly state: PostState;
-
-  @ApiModelProperty({
-    type: String,
-    example: CreatePostModel.MOCK.labels,
-    isArray: true,
-  })
-  @IsString({ each: true })
-  @IsArray()
-  public readonly labels: string[];
 
   @ApiModelProperty({
     type: String,
@@ -76,6 +24,7 @@ export class CreatePostRequestDto implements CreatePostModel {
   @IsDefined()
   @UserExistsConstrain.decorator()
   @IsMongoId()
+  @Expose()
   public readonly createdBy: string;
 
   @ApiModelProperty({
@@ -84,9 +33,12 @@ export class CreatePostRequestDto implements CreatePostModel {
   })
   @SectionExistsConstrain.decorator()
   @IsMongoId()
+  @Expose()
   public readonly section: string;
 
-  public constructor(model: CreatePostRequestDto) {
+  constructor(model: CreatePostRequestDto) {
+    super(model);
+
     Object.assign(this, model);
   }
 }

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
 import { ProductResponseDto, CreateProductRequestDto } from './dto';
+import { classToPlain } from 'class-transformer';
 
 @Injectable()
 export class ProductService {
@@ -25,9 +26,10 @@ export class ProductService {
   }
 
   public async create(createProductRequestDto: CreateProductRequestDto) {
+    const plain = classToPlain(createProductRequestDto);
     const product = {
       _id: Types.ObjectId(),
-      ...createProductRequestDto,
+      ...plain,
     };
     return await this.productModel.create(product).then(document => {
       return document.toObject();

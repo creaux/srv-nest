@@ -3,7 +3,7 @@ import { ConfigService } from './config.service';
 import { LibraryModule } from '../library/library.module';
 import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
 import { LoggerModule } from '../logger/logger.module';
-import { EnvironmentService } from './environment.service';
+import { ConfigFacade } from './config.facade';
 import { constants, CONSTANTS } from './constants/constants.service';
 
 @Module({
@@ -14,12 +14,12 @@ import { constants, CONSTANTS } from './constants/constants.service';
       provide: CONFIG_ACCESSORS,
       useValue: ConfigAccessors,
     },
-    EnvironmentService,
+    ConfigFacade,
     {
       provide: CONSTANTS,
       useValue: constants,
     },
   ],
-  exports: [ConfigService, CONFIG_ACCESSORS, EnvironmentService, CONSTANTS],
+  exports: [ConfigService, CONFIG_ACCESSORS, ConfigFacade, CONSTANTS],
 })
 export class ConfigModule {}
