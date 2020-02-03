@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiOperation, ApiBearerAuth, ApiImplicitQuery } from '@nestjs/swagger';
 import { ConflictException, ValidationPipe } from '@nestjs/common';
 import { UserResponseDto } from './dto/create-user-response.dto';
 
