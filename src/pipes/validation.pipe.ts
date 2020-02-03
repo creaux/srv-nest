@@ -15,6 +15,7 @@ export class ValidationPipe implements PipeTransform {
       return value;
     }
     const object = plainToClass(metatype, value, {
+      // @ts-ignore
       excludeExtraneousValues: true,
       excludePrefixes: ['_'],
     });
