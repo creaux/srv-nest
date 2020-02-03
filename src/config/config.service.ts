@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  MethodNotAllowedException,
+} from '@nestjs/common';
 import { CONFIG_ACCESSORS, ConfigAccessors } from './config.accessors';
 import {
   DotEnv,
@@ -63,7 +68,9 @@ export class ConfigService {
   }
 
   private validate(variables: KValue): KValue {
-    const validated = this.joi.validate<KValue>(variables, this.schema);
+    const validated = this.joi.validate<KValue>(variables, this.schema, {
+      allowUnknown: true,
+    });
     const { error, value } = validated;
 
     if (error) {
@@ -90,14 +97,14 @@ export class ConfigService {
 
     try {
       config = { ...config, ...this.validate(this.dot) };
-    } catch {
-      //
-    }
-
-    try {
-      config = { ...config, ...this.validate(this.system) };
-    } catch {
-      //
+    } catch (err1) {
+      try {
+        config = { ...config, ...this.validate(this.system) };
+      } catch (err2) {
+        throw new InternalServerErrorException(
+          `DOTENV VARIABLES: ${err1.message} SYSTEM VARIABLES: ${err2.message}`,
+        );
+      }
     }
 
     this.config = new Map(entries(this.validate(config)));
