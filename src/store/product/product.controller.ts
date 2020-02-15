@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,7 +8,9 @@ import {
   Param,
   Post,
   Query,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -16,6 +19,8 @@ import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
 import { ProductResponseDto, CreateProductRequestDto } from './dto';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { AuthGuard } from '@nestjs/passport';
+import { classToPlain } from 'class-transformer';
+import { ExposeGroup } from '@pyxismedia/lib-model';
 
 @Controller('store/product')
 @ApiBearerAuth()
@@ -23,8 +28,12 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @SerializeOptions({
+    groups: [ExposeGroup.RESPONSE],
+  })
   @ApiOperation({ title: 'Request product collection' })
-  public getAll(@Query('skip', ParseNumberPipe) skip: number) {
+  public async getAll(@Query('skip', ParseNumberPipe) skip: number) {
     return this.productService.getAll(skip);
   }
 

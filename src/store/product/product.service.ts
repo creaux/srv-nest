@@ -1,9 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
+import {
+  PRODUCT_MODEL,
+  ProductSchema,
+  ExposeGroup,
+} from '@pyxismedia/lib-model';
 import { ProductResponseDto, CreateProductRequestDto } from './dto';
-import { classToPlain } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ProductService {
@@ -20,7 +28,7 @@ export class ProductService {
       .exec()
       .then(documents =>
         documents.map(document => {
-          return new ProductResponseDto(document.toObject());
+          return plainToClass(ProductResponseDto, document.toObject());
         }),
       );
   }
@@ -34,6 +42,7 @@ export class ProductService {
     return await this.productModel.create(product).then(document => {
       return document.toObject();
     });
+    // TODO: catch!!! everywhere
   }
 
   public async getProductById(

@@ -1,10 +1,12 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
+import { ORDER_MODEL, OrderSchema, OrderProcess } from '@pyxismedia/lib-model';
 import { Model, Types } from 'mongoose';
 import {
   OrderResponseDto,
@@ -14,7 +16,7 @@ import {
 import { UserService } from '../../users/user/user.service';
 import { ProductService } from '../product/product.service';
 import { PaymentService } from '../payment/payment.service';
-import { classToPlain } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 @Injectable()
 export class OrderService {
@@ -22,6 +24,7 @@ export class OrderService {
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<OrderSchema>,
     private readonly userService: UserService,
     private readonly productService: ProductService,
+    @Inject(forwardRef(() => PaymentService))
     private readonly paymentService: PaymentService,
   ) {}
 
@@ -34,6 +37,7 @@ export class OrderService {
       .populate('products')
       .exec()
       .then(documents =>
+        // TODO plainToClass to ensure prices with tax etc
         documents.map(document => new OrderResponseDto(document.toObject())),
       );
   }
@@ -235,6 +239,30 @@ export class OrderService {
         }
         throw new NotFoundException(
           `Order with requested id ${orderId} doesn't exists`,
+        );
+      });
+  }
+
+  public findOrderByIdAndMarkAsPaid(
+    orderId: string,
+  ): Promise<OrderResponseDto> {
+    return this.orderModel
+      .findByIdAndUpdate(
+        orderId,
+        {
+          $set: { process: OrderProcess.PAID },
+        },
+        { new: true },
+      )
+      .populate('products')
+      .populate('users', '-password')
+      .exec()
+      .then(document => {
+        if (document) {
+          return plainToClass(OrderResponseDto, document.toObject());
+        }
+        throw new NotFoundException(
+          `Order with requested id ${orderId} doesn't exist.`,
         );
       });
   }

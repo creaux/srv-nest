@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "template_version": 0
+  },
+  "fixtures": [
+    {
+      "name": "payment_intent",
+      "path": "/v1/payment_intents",
+      "method": "post",
+      "params": {
+        "amount": 2000,
+        "currency": "usd",
+        "description": "(created by Stripe CLI)",
+        "payment_method_types": ["card"]
+      }
+    },
+    {
+      "name": "capture",
+      "path": "/v1/payment_intents/pi_1G8tMSIawEQOfiMA7EboKWeZ/capture",
+      "method": "post"
+    }
+  ]
+}

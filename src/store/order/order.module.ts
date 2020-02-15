@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { MongoModule } from '../../mongo/mongo.module';
@@ -23,9 +23,10 @@ import { PaymentModule } from '../payment/payment.module';
     UsersModule,
     AuthModule,
     ProductModule,
-    PaymentModule,
+    forwardRef(() => PaymentModule),
   ],
   controllers: [OrderController],
   providers: [OrderService],
+  exports: [OrderService],
 })
 export class OrderModule {}

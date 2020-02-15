@@ -68,7 +68,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -78,7 +81,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -101,7 +107,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -111,7 +120,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -134,7 +146,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -144,7 +159,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -167,7 +185,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -177,7 +198,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -200,7 +224,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -210,7 +237,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -252,7 +282,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -262,7 +295,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "CZ",
+                  "location": "CZ"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000b00',
@@ -285,7 +321,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -295,7 +334,10 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
                 id: '000000000000000000000a00',
@@ -327,7 +369,10 @@ describe('PostController (e2e)', () => {
               forname: 'Karel',
               surname: 'Vomacka',
               email: 'karel@vomacka.cz',
-              "l10n": [],
+              "l10n": {
+                "location": "US",
+                "language": "EN"
+              },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
               id: '000000000000000000000a00',
@@ -337,7 +382,10 @@ describe('PostController (e2e)', () => {
               forname: 'Frantisek',
               surname: 'Medvidek',
               email: 'frantisek@medvidek.cz',
-              "l10n": [],
+              "l10n": {
+                "location": "CZ",
+                "language": "CZ"
+              },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
               id: '000000000000000000000b00',
@@ -998,7 +1046,10 @@ describe('PostController (e2e)', () => {
               email: 'karel@vomacka.cz',
               forname: 'Karel',
               id: '000000000000000000000a00',
-              "l10n": [],
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
               roles: [{ id: '5dc9bc0c99e35856ffe90e66', name: 'Superadmin' }],
@@ -1008,7 +1059,10 @@ describe('PostController (e2e)', () => {
               email: 'frantisek@medvidek.cz',
               forname: 'Frantisek',
               id: '000000000000000000000b00',
-              "l10n": [],
+              "l10n": {
+                "location": "CZ",
+                "language": "CZ"
+              },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
               roles: [{ id: '5dc9bbffa68eed83b62d0e4c', name: 'Admin' }],

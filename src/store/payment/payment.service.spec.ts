@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentService } from './payment.service';
 import { StripePaymentService } from './stripe-payment/stripe-payment.service';
+import { OrderService } from '../order/order.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -11,6 +12,10 @@ describe('PaymentService', () => {
         PaymentService,
         {
           provide: StripePaymentService,
+          useValue: {},
+        },
+        {
+          provide: OrderService,
           useValue: {},
         },
       ],

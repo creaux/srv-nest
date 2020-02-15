@@ -9,8 +9,9 @@ import { Stripe } from 'stripe';
 import { InjectStripe } from 'nestjs-stripe';
 import { ConfigFacade } from '../../../config/config.facade';
 import { StripeWebhookService } from './stripe-webhook.service';
+import { StripeAcknowledgeReceiptDto } from './dto';
 
-@Controller('store/stripe/webhook')
+@Controller('store/hook')
 export class StripeWebhookController {
   constructor(
     @InjectStripe() private readonly stripe: Stripe,
@@ -22,17 +23,21 @@ export class StripeWebhookController {
   public webhook(
     @Headers('stripe-signature') sig: string,
     @Body() body: string | Buffer,
-  ): { received: true } | BadRequestException {
+  ): Promise<StripeAcknowledgeReceiptDto | BadRequestException> {
     let event: Stripe.Event;
 
-    try {
-      event = this.stripe.webhooks.constructEvent(
-        body,
-        sig,
-        this.config.STRIPE_WEBHOOK_SECRET,
-      );
-    } catch (err) {
-      throw new BadRequestException(`Stripe webhook Error: ${err.message}`);
+    if (this.config.isDevelopment) {
+      event = (body as unknown) as Stripe.Event;
+    } else {
+      try {
+        event = this.stripe.webhooks.constructEvent(
+          body,
+          sig,
+          this.config.STRIPE_WEBHOOK_SECRET,
+        );
+      } catch (err) {
+        throw new BadRequestException(`STRIPE API ERROR: ${err.message}`);
+      }
     }
 
     return this.stripeWebhookService.processEvent(event);
