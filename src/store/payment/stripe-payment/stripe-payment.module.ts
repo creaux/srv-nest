@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { StripeModule } from 'nestjs-stripe';
 import { ConfigFacade } from '../../../config/config.facade';
 import { StripePaymentService } from './stripe-payment.service';
 import { StripeWebhookController } from './stripe-webhook.controller';
 import { StripeWebhookService } from './stripe-webhook.service';
 import { ConfigModule } from '../../../config/config.module';
+import { PaymentModule } from '../payment.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '../../../config/config.module';
       imports: [ConfigModule],
     }),
     ConfigModule,
+    forwardRef(() => PaymentModule),
   ],
   providers: [StripePaymentService, StripeWebhookService],
   exports: [StripePaymentService],

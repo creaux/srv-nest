@@ -73,8 +73,9 @@ describe("OrderController (e2e)", () => {
           .expect(200)
           .expect([
             {
-              "createdAt": "Sun Dec 29 2019 11:28:45 GMT+0100 (CET)",
+              "createdAt": "2019-12-29T10:28:45.000Z",
               "id": "5e01c779d893e6938c118879",
+              "payment": [],
               "process": "unpaid",
               "products": [
                 {
@@ -88,138 +89,11 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "value": 123,
-                      "currency": "usd"
-                    },
-                    {
-                      "value": 10,
-                      "currency": "czk"
-                    }
-                  ],
-                  "title": "aMock title EN"
-                },
-                {
-                  "description": "This is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ab",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "value": 124,
-                      "currency": "usd"
-                    },
-                    {
-                      "value": 11,
-                      "currency": "czk"
-                    }
-                  ],
-                  "title": "Mock title EN"
-                }
-              ],
-              "user": {
-                "email": "karel@vomacka.cz",
-                "forname": "Karel",
-                "id": "000000000000000000000a00",
-                "l10n": [],
-"roles": [
-                  "5dc9bc0c99e35856ffe90e66"
-                ],
-                "surname": "Vomacka"
-              }
-            },
-            {
-              "createdAt": "Sun Dec 29 2019 11:28:46 GMT+0100 (CET)",
-              "id": "5e03379ad2e5526d3d8eb277",
-              "process": "paid",
-              "products": [
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "value": 123,
-                      "currency": "usd"
-                    },
-                    {
-                      "value": 10,
-                      "currency": "czk"
-                    }
-                  ],
-                  "title": "aMock title EN"
-                },
-                {
-                  "description": "This is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ab",
-                  "images": [
-                    {
-                      "alt": "This is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "value": 124,
-                      "currency": "usd"
-                    },
-                    {
-                      "value": 11,
-                      "currency": "czk"
-                    }
-                  ],
-                  "title": "Mock title EN"
-                }
-              ],
-              "user": {
-                "email": "tonda@zakaznik.cz",
-                "forname": "Tonda",
-                "id": "5e021cc4b0d0a6bd5f64b67c",
-                "l10n": [],
-"roles": [
-                  "5e021e7c909b5abd8afb0ba5"
-                ],
-                "surname": "Zakaznik"
-              }
-            }
-          ]);
-      });
-
-      it("should be possible to skip all orders by one", async () => {
-        return await request(app.getHttpServer())
-          .get("/store/order?skip=1")
-          .set("Authorization", `Bearer ${auth.token}`)
-          .expect(200)
-          .expect([
-            {
-              "createdAt": "Sun Dec 29 2019 11:28:46 GMT+0100 (CET)",
-              "id": "5e03379ad2e5526d3d8eb277",
-              "process": "paid",
-              "products": [
-                {
-                  "description": "aThis is mock description EN",
-                  "id": "5de3e0a388e99a666e8ee8ad",
-                  "images": [
-                    {
-                      "alt": "aThis is alt of image",
-                      "src": "https://picsum.photos/200/300"
-                    }
-                  ],
-                  "prices": [
-                    {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 123
                     },
                     {
-                      "currency": "czk",
+                      "country": "CZ",
                       "value": 10
                     }
                   ],
@@ -236,11 +110,74 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 124
                     },
                     {
-                      "currency": "czk",
+                      "country": "FR",
+                      "value": 11
+                    }
+                  ],
+                  "title": "Mock title EN"
+                }
+              ],
+              "user": {
+                "email": "karel@vomacka.cz",
+                "forname": "Karel",
+                "id": "000000000000000000000a00",
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
+                "roles": [
+                  "5dc9bc0c99e35856ffe90e66"
+                ],
+                "surname": "Vomacka"
+              }
+            },
+            {
+              "createdAt": "2019-12-29T10:28:46.000Z",
+              "id": "5e03379ad2e5526d3d8eb277",
+              "payment": [],
+              "process": "paid",
+              "products": [
+                {
+                  "description": "aThis is mock description EN",
+                  "id": "5de3e0a388e99a666e8ee8ad",
+                  "images": [
+                    {
+                      "alt": "aThis is alt of image",
+                      "src": "https://picsum.photos/200/300"
+                    }
+                  ],
+                  "prices": [
+                    {
+                      "country": "US",
+                      "value": 123
+                    },
+                    {
+                      "country": "CZ",
+                      "value": 10
+                    }
+                  ],
+                  "title": "aMock title EN"
+                },
+                {
+                  "description": "This is mock description EN",
+                  "id": "5de3e0a388e99a666e8ee8ab",
+                  "images": [
+                    {
+                      "alt": "This is alt of image",
+                      "src": "https://picsum.photos/200/300"
+                    }
+                  ],
+                  "prices": [
+                    {
+                      "country": "US",
+                      "value": 124
+                    },
+                    {
+                      "country": "FR",
                       "value": 11
                     }
                   ],
@@ -251,7 +188,82 @@ describe("OrderController (e2e)", () => {
                 "email": "tonda@zakaznik.cz",
                 "forname": "Tonda",
                 "id": "5e021cc4b0d0a6bd5f64b67c",
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
+                "roles": [
+                  "5e021e7c909b5abd8afb0ba5"
+                ],
+                "surname": "Zakaznik"
+              }
+            }
+          ]);
+      });
+
+      it("should be possible to skip all orders by one", async () => {
+        return await request(app.getHttpServer())
+          .get("/store/order?skip=1")
+          .set("Authorization", `Bearer ${auth.token}`)
+          .expect(200)
+          .expect([
+            {
+              "createdAt": "2019-12-29T10:28:46.000Z",
+              "id": "5e03379ad2e5526d3d8eb277",
+              "payment": [],
+              "process": "paid",
+              "products": [
+                {
+                  "description": "aThis is mock description EN",
+                  "id": "5de3e0a388e99a666e8ee8ad",
+                  "images": [
+                    {
+                      "alt": "aThis is alt of image",
+                      "src": "https://picsum.photos/200/300"
+                    }
+                  ],
+                  "prices": [
+                    {
+                      "country": "US",
+                      "value": 123
+                    },
+                    {
+                      "country": "CZ",
+                      "value": 10
+                    }
+                  ],
+                  "title": "aMock title EN"
+                },
+                {
+                  "description": "This is mock description EN",
+                  "id": "5de3e0a388e99a666e8ee8ab",
+                  "images": [
+                    {
+                      "alt": "This is alt of image",
+                      "src": "https://picsum.photos/200/300"
+                    }
+                  ],
+                  "prices": [
+                    {
+                      "country": "US",
+                      "value": 124
+                    },
+                    {
+                      "country": "FR",
+                      "value": 11
+                    }
+                  ],
+                  "title": "Mock title EN"
+                }
+              ],
+              "user": {
+                "email": "tonda@zakaznik.cz",
+                "forname": "Tonda",
+                "id": "5e021cc4b0d0a6bd5f64b67c",
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
                 "roles": [
                   "5e021e7c909b5abd8afb0ba5"
                 ],
@@ -270,8 +282,9 @@ describe("OrderController (e2e)", () => {
           .expect(200)
           .expect(
             {
-              "createdAt": "Sun Dec 29 2019 11:28:45 GMT+0100 (CET)",
+              "createdAt": "2019-12-29T10:28:45.000Z",
               "id": "5e01c779d893e6938c118879",
+              "payment": [],
               "process": "unpaid",
               "products": [
                 {
@@ -285,11 +298,11 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 123
                     },
                     {
-                      "currency": "czk",
+                      "country": "CZ",
                       "value": 10
                     }
                   ],
@@ -306,11 +319,11 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 124
                     },
                     {
-                      "currency": "czk",
+                      "country": "FR",
                       "value": 11
                     }
                   ],
@@ -321,7 +334,10 @@ describe("OrderController (e2e)", () => {
                 "email": "karel@vomacka.cz",
                 "forname": "Karel",
                 "id": "000000000000000000000a00",
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
 "roles": [
                   "5dc9bc0c99e35856ffe90e66"
                 ],
@@ -353,7 +369,10 @@ describe("OrderController (e2e)", () => {
               "email": "karel@vomacka.cz",
               "forname": "Karel",
               "id": "000000000000000000000a00",
-              "l10n": [],
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
 "roles": [
                 "5dc9bc0c99e35856ffe90e66"
               ],
@@ -371,11 +390,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -486,11 +505,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -507,11 +526,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "country": "FR",
                     "value": 11
                   }
                 ],
@@ -522,13 +541,16 @@ describe("OrderController (e2e)", () => {
               "email": "tonda@zakaznik.cz",
               "forname": "Tonda",
               "id": "5e021cc4b0d0a6bd5f64b67c",
-              "l10n": [],
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
 "roles": [
                 "5e021e7c909b5abd8afb0ba5"
               ],
               "surname": "Zakaznik"
             });
-            expect(body.createdAt).toEqual("Sun Dec 29 2019 11:28:46 GMT+0100 (CET)");
+            expect(body.createdAt).toEqual("2019-12-29T10:28:46.000Z");
             expect(body.id).toEqual("5e03379ad2e5526d3d8eb277");
             done();
           });
@@ -573,11 +595,11 @@ describe("OrderController (e2e)", () => {
               ],
               "prices": [
                 {
-                  "currency": "usd",
+                  "country": "US",
                   "value": 124
                 },
                 {
-                  "currency": "czk",
+                  "country": "FR",
                   "value": 11
                 }
               ],
@@ -748,11 +770,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -769,11 +791,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "country": "FR",
                     "value": 11
                   }
                 ],
@@ -790,11 +812,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "DE",
                     "value": 10
                   }
                 ],
@@ -824,11 +846,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -845,11 +867,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "country": "FR",
                     "value": 11
                   }
                 ],
@@ -866,11 +888,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -955,11 +977,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -976,11 +998,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "country": "FR",
                     "value": 11
                   }
                 ],
@@ -1069,8 +1091,9 @@ describe("OrderController (e2e)", () => {
           .expect(200)
           .expect([
             {
-              "createdAt": "Sun Dec 29 2019 11:28:46 GMT+0100 (CET)",
+              "createdAt": "2019-12-29T10:28:46.000Z",
               "id": "5e03379ad2e5526d3d8eb277",
+              "payment": [],
               "process": "paid",
               "products": [
                 {
@@ -1084,11 +1107,11 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 123
                     },
                     {
-                      "currency": "czk",
+                      "country": "CZ",
                       "value": 10
                     }
                   ],
@@ -1105,11 +1128,11 @@ describe("OrderController (e2e)", () => {
                   ],
                   "prices": [
                     {
-                      "currency": "usd",
+                      "country": "US",
                       "value": 124
                     },
                     {
-                      "currency": "czk",
+                      "country": "FR",
                       "value": 11
                     }
                   ],
@@ -1120,7 +1143,10 @@ describe("OrderController (e2e)", () => {
                 "email": "tonda@zakaznik.cz",
                 "forname": "Tonda",
                 "id": "5e021cc4b0d0a6bd5f64b67c",
-                "l10n": [],
+                "l10n": {
+                  "language": "EN",
+                  "location": "US"
+                },
 "roles": [
                   "5e021e7c909b5abd8afb0ba5"
                 ],
@@ -1151,8 +1177,9 @@ describe("OrderController (e2e)", () => {
           .set("Authorization", `Bearer ${auth.token}`)
           .expect(200)
           .expect({
-            "createdAt": "Sun Dec 29 2019 11:28:46 GMT+0100 (CET)",
+            "createdAt": "2019-12-29T10:28:46.000Z",
             "id": "5e03379ad2e5526d3d8eb277",
+            "payment": [],
             "process": "paid",
             "products": [
               {
@@ -1166,11 +1193,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],
@@ -1185,11 +1212,11 @@ describe("OrderController (e2e)", () => {
                 }],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "country": "FR",
                     "value": 11
                   }
                 ],
@@ -1200,7 +1227,10 @@ describe("OrderController (e2e)", () => {
               "email": "tonda@zakaznik.cz",
               "forname": "Tonda",
               "id": "5e021cc4b0d0a6bd5f64b67c",
-              "l10n": [],
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
 "roles": ["5e021e7c909b5abd8afb0ba5"],
               "surname": "Zakaznik"
             }
@@ -1229,7 +1259,10 @@ describe("OrderController (e2e)", () => {
               "email": "tonda@zakaznik.cz",
               "forname": "Tonda",
               "id": "5e021cc4b0d0a6bd5f64b67c",
-              "l10n": [],
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
 "roles": [
                 "5e021e7c909b5abd8afb0ba5"
               ],
@@ -1247,11 +1280,11 @@ describe("OrderController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "country": "US",
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "country": "CZ",
                     "value": 10
                   }
                 ],

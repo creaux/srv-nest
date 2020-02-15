@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { StripePaymentModule } from './stripe-payment/stripe-payment.module';
-import { PricePolicyService } from './price-policy.service';
+import { OrderModule } from '../order/order.module';
 
 @Module({
-  imports: [StripePaymentModule],
-  providers: [PaymentService, PricePolicyService],
+  imports: [
+    forwardRef(() => StripePaymentModule),
+    forwardRef(() => OrderModule),
+  ],
+  providers: [PaymentService],
   exports: [PaymentService],
 })
 export class PaymentModule {}

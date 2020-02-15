@@ -67,11 +67,19 @@ describe("ProductController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "charge": 0,
+                    "country": "US",
+                    "currency": "USD",
+                    "price": 124,
+                    "tax": 0,
                     "value": 124
                   },
                   {
-                    "currency": "czk",
+                    "charge": 2.2,
+                    "country": "FR",
+                    "currency": "EUR",
+                    "price": 13.2,
+                    "tax": 0.2,
                     "value": 11
                   }
                 ],
@@ -88,11 +96,19 @@ describe("ProductController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "charge": 0,
+                    "country": "US",
+                    "currency": "USD",
+                    "price": 123,
+                    "tax": 0,
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "charge": 2.1,
+                    "country": "CZ",
+                    "currency": "CZK",
+                    "price": 12.1,
+                    "tax": 0.21,
                     "value": 10
                   }
                 ],
@@ -109,11 +125,19 @@ describe("ProductController (e2e)", () => {
                 ],
                 "prices": [
                   {
-                    "currency": "usd",
+                    "charge": 0,
+                    "country": "US",
+                    "currency": "USD",
+                    "price": 123,
+                    "tax": 0,
                     "value": 123
                   },
                   {
-                    "currency": "czk",
+                    "charge": 1.9,
+                    "country": "DE",
+                    "currency": "EUR",
+                    "price": 11.9,
+                    "tax": 0.19,
                     "value": 10
                   }
                 ],
@@ -159,11 +183,11 @@ describe("ProductController (e2e)", () => {
               ],
               "prices": [
                 {
-                  "currency": "usd",
+                  "country": "US",
                   "value": 123
                 },
                 {
-                  "currency": "czk",
+                  "country": "CZ",
                   "value": 10
                 }
               ],
@@ -232,7 +256,7 @@ describe("ProductController (e2e)", () => {
             expect(body.images[0].src).toEqual(createProductRequestMock.images[0].src);
             expect(body.images[0].alt).toEqual(createProductRequestMock.images[0].alt);
             expect(body.prices[0].value).toEqual(createProductRequestMock.prices[0].value);
-            expect(body.prices[0].currency).toEqual(createProductRequestMock.prices[0].currency);
+            expect(body.prices[0].country).toEqual(createProductRequestMock.prices[0].country);
             return done();
           });
       });
