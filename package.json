@@ -36,7 +36,7 @@
     "@nestjs/passport": "^6.1.0",
     "@nestjs/platform-express": "^6.10.13",
     "@nestjs/swagger": "^3.0.2",
-    "@pyxismedia/lib-model": "^1.0.32",
+    "@pyxismedia/lib-model": "^1.0.33",
     "@types/bcrypt": "^3.0.0",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.16.0",
