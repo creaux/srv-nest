@@ -1,18 +1,36 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AccessService } from './access.service';
-import { AccessCollectionRequestDto } from './dto/access-collection-request.dto';
 import { AccessResponseDto } from './dto/access-response.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { UseRoles } from 'nest-access-control/lib';
+import { AccessGuard } from './access.guard';
+import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 
 @Controller('access')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 export class AccessController {
   constructor(private readonly accessService: AccessService) {}
 
   @Get()
-  @UseGuards(AuthGuard('bearer'))
-  public async findAll(): Promise<AccessResponseDto[]> {
-    return await this.accessService.findAll();
+  @ApiOperation({ title: 'Get collection of access rights' })
+  @ApiResponse({
+    status: 200,
+    description: 'All access rights have been successfully retrieved.',
+  })
+  @UseGuards(AuthGuard('bearer'), AccessGuard)
+  @UseRoles({ resource: 'access', action: 'read', possession: 'any' })
+  public async findAll(
+    @Query('skip', ParseNumberPipe) skip: number,
+  ): Promise<AccessResponseDto[]> {
+    return await this.accessService.findAll(skip);
   }
 }

@@ -448,8 +448,27 @@ describe('PostController (e2e)', () => {
             expect(body.state).toEqual(CreatePostModel.MOCK.state);
             expect(body.labels).toEqual(CreatePostModel.MOCK.labels);
             expect(body.image).toEqual(CreatePostModel.MOCK.image);
-            expect(body.createdBy).toEqual(CreatePostModel.MOCK.createdBy);
-            expect(body.section).toEqual(CreatePostModel.MOCK.section);
+            expect(body.createdBy).toEqual({
+              "email": "karel@vomacka.cz",
+              "forname": "Karel",
+              "id": "000000000000000000000a00",
+              "l10n": {
+                "language": "EN",
+                "location": "US"
+              },
+              "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
+              "roles": [
+                {
+                  "id": "5dc9bc0c99e35856ffe90e66",
+                  "name": "Superadmin"
+                }
+              ],
+              "surname": "Vomacka"
+            });
+            expect(body.section).toEqual({
+              "id": "00000000000000000000000a",
+              "name": "Section"
+            });
             return done();
           });
       });
@@ -1068,7 +1087,10 @@ describe('PostController (e2e)', () => {
               roles: [{ id: '5dc9bbffa68eed83b62d0e4c', name: 'Admin' }],
               surname: 'Medvidek',
             });
-            expect(body.section).toEqual('00000000000000000000000a');
+            expect(body.section).toEqual({
+              "id": "00000000000000000000000a",
+              "name": "Section"
+            });
             expect(body.id).toEqual('000000000000000000000a00');
             done();
           });

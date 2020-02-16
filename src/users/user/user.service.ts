@@ -6,12 +6,9 @@ import {
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
-import {
-  UserSchemaInterface,
-  USER_MODEL,
-  ROLE_MODEL,
-} from '@pyxismedia/lib-model';
+import { UserSchemaInterface, USER_MODEL } from '@pyxismedia/lib-model';
 import { UserResponseDto } from './dto/create-user-response.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -29,7 +26,7 @@ export class UserService {
       .exec()
       .then(documents =>
         documents.map(document => {
-          return new UserResponseDto(document.toObject());
+          return plainToClass(UserResponseDto, document.toObject());
         }),
       );
   }
@@ -41,7 +38,7 @@ export class UserService {
       .exec()
       .then(document => {
         if (document) {
-          return new UserResponseDto(document.toObject());
+          return plainToClass(UserResponseDto, document.toObject());
         }
         // TODO: Test exception
         throw new NotFoundException(
@@ -59,10 +56,7 @@ export class UserService {
 
     return await this.userModel
       .create(createUserRequestDto)
-      .then(document => new UserResponseDto(document.toObject()))
-      .then(data => {
-        return data;
-      });
+      .then(document => plainToClass(UserResponseDto, document.toObject()));
   }
 
   async findByEmail(email: string): Promise<UserResponseDto> {
@@ -72,10 +66,12 @@ export class UserService {
       .exec()
       .then(document => {
         if (document) {
-          return new UserResponseDto(document.toObject());
+          return plainToClass(UserResponseDto, document.toObject());
         }
-        // TODO: Throw exception not found, 404
-        return null;
+        // TODO: Test exception
+        throw new NotFoundException(
+          `User with email ${email} hasn't been found`,
+        );
       });
   }
 }

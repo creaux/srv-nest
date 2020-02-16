@@ -17,6 +17,7 @@ import { UserService } from '../../users/user/user.service';
 import { ProductService } from '../product/product.service';
 import { PaymentService } from '../payment/payment.service';
 import { classToPlain, plainToClass } from 'class-transformer';
+import { ROLE_MODEL } from '@pyxismedia/lib-model';
 
 @Injectable()
 export class OrderService {
@@ -34,11 +35,19 @@ export class OrderService {
       .sort('createdAt')
       .skip(skip)
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       .then(documents =>
-        // TODO plainToClass to ensure prices with tax etc
-        documents.map(document => new OrderResponseDto(document.toObject())),
+        documents.map(document =>
+          plainToClass(OrderResponseDto, document.toObject()),
+        ),
       );
   }
 
@@ -46,10 +55,17 @@ export class OrderService {
     return await this.orderModel
       .findById(id)
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       // TODO serialize????!
-      .then(document => new OrderResponseDto(document.toObject()));
+      .then(document => plainToClass(OrderResponseDto, document.toObject()));
   }
 
   public async findByUserSomeId(
@@ -59,6 +75,13 @@ export class OrderService {
     return await this.orderModel
       .findById(id)
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       .then(document => {
@@ -66,7 +89,7 @@ export class OrderService {
         if (document) {
           const data = document.toObject();
           if (data.user.id === userId) {
-            return new OrderResponseDto(data);
+            return plainToClass(OrderResponseDto, data);
           }
         }
         throw new NotFoundException(
@@ -86,15 +109,22 @@ export class OrderService {
       .sort('createdAt')
       .skip(skip)
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       .then(documents => {
-        return documents.filter(document => {
-          const data = document.toObject();
-          if (data.user.id === userId) {
-            return new OrderResponseDto(data);
-          }
-        });
+        return documents
+          .filter(document => {
+            const data = document.toObject();
+            return data.user.id === userId;
+          })
+          .map(document => plainToClass(OrderResponseDto, document.toObject()));
       });
   }
 
@@ -145,9 +175,16 @@ export class OrderService {
     return await this.orderModel
       .findByIdAndDelete(id)
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
-      .then(document => document.toObject());
+      .then(document => plainToClass(OrderResponseDto, document.toObject()));
   }
 
   /**
@@ -205,11 +242,18 @@ export class OrderService {
         { new: true },
       )
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       .then(document => {
         if (document) {
-          return document.toObject();
+          return plainToClass(OrderResponseDto, document.toObject());
         }
         throw new NotFoundException(
           `Order with requested id ${orderId} doesn't exists`,
@@ -231,11 +275,18 @@ export class OrderService {
         { new: true },
       )
       .populate('user', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .populate('products')
       .exec()
       .then(document => {
         if (document) {
-          return document.toObject();
+          return plainToClass(OrderResponseDto, document.toObject());
         }
         throw new NotFoundException(
           `Order with requested id ${orderId} doesn't exists`,
@@ -256,6 +307,13 @@ export class OrderService {
       )
       .populate('products')
       .populate('users', '-password')
+      .populate({
+        path: 'user',
+        populate: {
+          path: 'roles',
+          model: ROLE_MODEL,
+        },
+      })
       .exec()
       .then(document => {
         if (document) {

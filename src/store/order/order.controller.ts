@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -9,6 +10,7 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import {
@@ -36,6 +38,7 @@ import {
 import { Types } from 'mongoose';
 
 @Controller('store/order')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 export class OrderController {
   constructor(

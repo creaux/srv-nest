@@ -5,7 +5,6 @@ import { UserController } from './user/user.controller';
 import { MongoModule } from '../mongo/mongo.module';
 import { RoleService } from './role/role.service';
 import { RoleController } from './role/role.controller';
-import { AccessController } from './access/access.controller';
 import {
   UserSchema,
   ROLE_MODEL,
@@ -17,6 +16,7 @@ import { AccessControlModule, RolesBuilder } from 'nest-access-control/lib';
 import { AccessModule } from './access/access.module';
 import { UserExistsConstrain } from './constraints/user-exists.constrain';
 import { AccessGuard } from './access/access.guard';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -34,9 +34,10 @@ import { AccessGuard } from './access/access.guard';
       },
     }),
     AccessModule,
+    forwardRef(() => AuthModule),
   ],
   providers: [UserService, RoleService, UserExistsConstrain],
-  controllers: [UserController, RoleController, AccessController],
+  controllers: [UserController, RoleController],
   exports: [UserService, RoleService, UserExistsConstrain],
 })
 export class UsersModule {}

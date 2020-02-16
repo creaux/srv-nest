@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -27,9 +28,9 @@ export class ProductService {
       .skip(skip)
       .exec()
       .then(documents =>
-        documents.map(document => {
-          return plainToClass(ProductResponseDto, document.toObject());
-        }),
+        documents.map(document =>
+          plainToClass(ProductResponseDto, document.toObject()),
+        ),
       );
   }
 
@@ -39,10 +40,9 @@ export class ProductService {
       _id: Types.ObjectId(),
       ...plain,
     };
-    return await this.productModel.create(product).then(document => {
-      return document.toObject();
-    });
-    // TODO: catch!!! everywhere
+    return await this.productModel
+      .create(product)
+      .then(document => plainToClass(ProductResponseDto, document.toObject()));
   }
 
   public async getProductById(
@@ -53,7 +53,7 @@ export class ProductService {
       .exec()
       .then(document => {
         if (document) {
-          return new ProductResponseDto(document.toObject());
+          return plainToClass(ProductResponseDto, document.toObject());
         }
         throw new NotFoundException(
           'There is no product exists with requested id.',
@@ -67,7 +67,7 @@ export class ProductService {
       .exec()
       .then(document => {
         if (document) {
-          return new ProductResponseDto(document.toObject());
+          return plainToClass(ProductResponseDto, document.toObject());
         }
         throw new NotFoundException(
           `There no product exists with requested id: ${id}`,

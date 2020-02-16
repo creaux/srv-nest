@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RoleResponseDto } from './role-response.dto';
 import { CreateRoleRequestDto } from './dto/create-role-request.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class RoleService {
@@ -20,7 +21,7 @@ export class RoleService {
       .exec()
       .then(documents =>
         documents.map(document => {
-          return new RoleResponseDto(document.toObject());
+          return plainToClass(RoleResponseDto, document.toObject());
         }),
       );
   }
@@ -30,7 +31,7 @@ export class RoleService {
       .exec()
       .then(document => {
         if (document) {
-          return new RoleResponseDto(document.toObject());
+          return plainToClass(RoleResponseDto, document.toObject());
         }
         return null;
       });
@@ -39,7 +40,7 @@ export class RoleService {
   public findByName(name: string) {
     return this.userModel.findOne({ name }).then(document => {
       if (document) {
-        return new RoleResponseDto(document.toObject());
+        return plainToClass(RoleResponseDto, document.toObject());
       }
       return null;
     });
@@ -56,11 +57,11 @@ export class RoleService {
 
     return this.userModel
       .create({ _id: Types.ObjectId(), ...createRoleRequestDto })
-      .then(document => new RoleResponseDto(document.toObject()));
+      .then(document => plainToClass(RoleResponseDto, document.toObject()));
   }
   public delete(id: string) {
     return this.userModel
       .findByIdAndRemove(id)
-      .then(document => new RoleResponseDto(document.toObject()));
+      .then(document => plainToClass(RoleResponseDto, document.toObject()));
   }
 }

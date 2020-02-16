@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ACCESS_MODEL, AccessSchemaInterface } from '@pyxismedia/lib-model';
 import { Model } from 'mongoose';
 import { AccessResponseDto } from './dto/access-response.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class AccessService {
@@ -11,14 +12,16 @@ export class AccessService {
     private readonly accessModel: Model<AccessSchemaInterface>,
   ) {}
 
-  public async findAll(): Promise<AccessResponseDto[]> {
+  public async findAll(skip: number = 0): Promise<AccessResponseDto[]> {
     return await this.accessModel
       .find()
+      .sort('_id')
+      .skip(skip)
       .exec()
-      .then(documents => {
-        return documents.map(
-          document => new AccessResponseDto(document.toObject()),
-        );
-      });
+      .then(documents =>
+        documents.map(document =>
+          plainToClass(AccessResponseDto, document.toObject()),
+        ),
+      );
   }
 }

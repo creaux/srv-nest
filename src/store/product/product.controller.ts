@@ -19,16 +19,15 @@ import { ParseObjectIdPipe } from '../../pipes/parse-object-id.pipe';
 import { ProductResponseDto, CreateProductRequestDto } from './dto';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
 import { AuthGuard } from '@nestjs/passport';
-import { classToPlain } from 'class-transformer';
 import { ExposeGroup } from '@pyxismedia/lib-model';
 
 @Controller('store/product')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  @UseInterceptors(ClassSerializerInterceptor)
   @SerializeOptions({
     groups: [ExposeGroup.RESPONSE],
   })

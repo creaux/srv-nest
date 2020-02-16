@@ -130,7 +130,10 @@ describe("OrderController (e2e)", () => {
                   "location": "US"
                 },
                 "roles": [
-                  "5dc9bc0c99e35856ffe90e66"
+                  {
+                    "id": "5dc9bc0c99e35856ffe90e66",
+                    "name": "Superadmin"
+                  }
                 ],
                 "surname": "Vomacka"
               }
@@ -193,7 +196,10 @@ describe("OrderController (e2e)", () => {
                   "location": "US"
                 },
                 "roles": [
-                  "5e021e7c909b5abd8afb0ba5"
+                  {
+                    "id": "5e021e7c909b5abd8afb0ba5",
+                    "name": "Customer"
+                  }
                 ],
                 "surname": "Zakaznik"
               }
@@ -265,7 +271,10 @@ describe("OrderController (e2e)", () => {
                   "location": "US"
                 },
                 "roles": [
-                  "5e021e7c909b5abd8afb0ba5"
+                  {
+                    "id": "5e021e7c909b5abd8afb0ba5",
+                    "name": "Customer"
+                  }
                 ],
                 "surname": "Zakaznik"
               }
@@ -339,7 +348,10 @@ describe("OrderController (e2e)", () => {
                   "location": "US"
                 },
 "roles": [
-                  "5dc9bc0c99e35856ffe90e66"
+  {
+    "id": "5dc9bc0c99e35856ffe90e66",
+    "name": "Superadmin"
+  }
                 ],
                 "surname": "Vomacka"
               }
@@ -374,7 +386,10 @@ describe("OrderController (e2e)", () => {
                 "location": "US"
               },
 "roles": [
-                "5dc9bc0c99e35856ffe90e66"
+  {
+    "id": "5dc9bc0c99e35856ffe90e66",
+    "name": "Superadmin"
+  }
               ],
               "surname": "Vomacka"
             });
@@ -546,7 +561,10 @@ describe("OrderController (e2e)", () => {
                 "location": "US"
               },
 "roles": [
-                "5e021e7c909b5abd8afb0ba5"
+  {
+    "id": "5e021e7c909b5abd8afb0ba5",
+    "name": "Customer"
+  }
               ],
               "surname": "Zakaznik"
             });
@@ -1148,7 +1166,10 @@ describe("OrderController (e2e)", () => {
                   "location": "US"
                 },
 "roles": [
-                  "5e021e7c909b5abd8afb0ba5"
+  {
+    "id": "5e021e7c909b5abd8afb0ba5",
+    "name": "Customer"
+  }
                 ],
                 "surname": "Zakaznik"
               }
@@ -1231,7 +1252,10 @@ describe("OrderController (e2e)", () => {
                 "language": "EN",
                 "location": "US"
               },
-"roles": ["5e021e7c909b5abd8afb0ba5"],
+"roles": [                  {
+  "id": "5e021e7c909b5abd8afb0ba5",
+  "name": "Customer"
+}],
               "surname": "Zakaznik"
             }
           });
@@ -1264,7 +1288,10 @@ describe("OrderController (e2e)", () => {
                 "location": "US"
               },
 "roles": [
-                "5e021e7c909b5abd8afb0ba5"
+  {
+    "id": "5e021e7c909b5abd8afb0ba5",
+    "name": "Customer"
+  }
               ],
               "surname": "Zakaznik"
             });
