@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoMemoryService } from './mongo-memory.service';
-import { MONGO_MEMORY } from '../../library/library.module';
 import { MONGO_MEMORY_CONFIG } from './mongo-memory.config';
+import { MONGO_MEMORY } from './mongo-memory.dependecy';
 
 describe('MemoryService', () => {
   let service: MongoMemoryService;

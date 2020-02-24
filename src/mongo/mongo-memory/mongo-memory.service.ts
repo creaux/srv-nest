@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataMock } from '@pyxismedia/lib-model';
-import { MongoMemoryServer } from 'mongodb-memory-server-core';
-import { MONGO_MEMORY, MongoMemory } from '../../library/library.module';
 import { MONGO_MEMORY_CONFIG } from './mongo-memory.config';
+import { MONGO_MEMORY, MongoMemory } from './mongo-memory.dependecy';
 
 @Injectable()
 export class MongoMemoryService extends DataMock {
-  private connection: MongoMemoryServer;
+  private connection: any;
 
   constructor(
     @Inject(MONGO_MEMORY) private readonly MemoryServer: MongoMemory,
