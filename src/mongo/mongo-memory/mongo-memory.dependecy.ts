@@ -11,6 +11,7 @@ try {
 }
 
 type MongoMemory = typeof MongoMemoryServer;
+
 const MONGO_MEMORY = Symbol('MONGO_MEMORY');
 
 export { MongoMemory, MONGO_MEMORY, MongoMemoryServer };

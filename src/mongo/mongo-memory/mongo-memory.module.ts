@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongoMemoryService } from './mongo-memory.service';
 import { MONGO_MEMORY_CONFIG, mongoMemoryConfig } from './mongo-memory.config';
-import { MONGO_MEMORY, MongoMemoryServer } from './mongo-memory.dependecy';
+import {
+  MONGO_MEMORY,
+  MongoMemory,
+  MongoMemoryServer,
+} from './mongo-memory.dependecy';
 import { ConfigFacade } from '../../config/config.facade';
 import { ConfigModule } from '../../config/config.module';
 
@@ -10,13 +14,13 @@ import { ConfigModule } from '../../config/config.module';
   providers: [
     {
       provide: MongoMemoryService,
-      useFactory: (env: ConfigFacade) => {
+      useFactory: (mongoMemory: MongoMemory, env: ConfigFacade) => {
         if (env.isDevelopment) {
-          return MongoMemoryService;
+          return new MongoMemoryService(mongoMemory, env);
         }
         return {};
       },
-      inject: [ConfigFacade],
+      inject: [MONGO_MEMORY, ConfigFacade],
     },
     {
       provide: MONGO_MEMORY_CONFIG,
