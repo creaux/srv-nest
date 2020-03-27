@@ -28,7 +28,7 @@
     "documentation": "compodoc -p tsconfig.json -s"
   },
   "dependencies": {
-    "@nestjs/cli": "^6.12.9",
+    "@nestjs/cli": "^7.1.0",
     "@nestjs/common": "6.10.13",
     "@nestjs/core": "^6.10.13",
     "@nestjs/graphql": "^6.2.4",
