@@ -85,7 +85,7 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@compodoc/compodoc": "^1.1.11",
-    "@nestjs/testing": "^6.3.1",
+    "@nestjs/testing": "^7.0.7",
     "jest": "^24.9.0",
     "mongodb-memory-server": "^5.2.11",
     "nodemon": "^1.19.4",
