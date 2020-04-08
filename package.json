@@ -88,7 +88,7 @@
     "@nestjs/testing": "^6.3.1",
     "jest": "^24.9.0",
     "mongodb-memory-server": "^5.2.11",
-    "nodemon": "^1.19.4",
+    "nodemon": "^2.0.3",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
