@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ACCESS_MODEL, AccessSchema } from '@pyxismedia/lib-model';
+import { AccessSchema, SchemaName } from '@pyxismedia/lib-model';
 import { AccessService } from './access.service';
 import { AccessGuard } from './access.guard';
 import { AuthModule } from '../../auth/auth.module';
@@ -10,7 +10,9 @@ import { AccessController } from './access.controller';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: ACCESS_MODEL, schema: AccessSchema }]),
+    MongooseModule.forFeature([
+      { name: SchemaName.ACCESS, schema: AccessSchema },
+    ]),
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
     PipesModule,

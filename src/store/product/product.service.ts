@@ -10,6 +10,7 @@ import {
   PRODUCT_MODEL,
   ProductSchema,
   ExposeGroup,
+  SchemaName,
 } from '@pyxismedia/lib-model';
 import { ProductResponseDto, CreateProductRequestDto } from './dto';
 import { classToPlain, plainToClass } from 'class-transformer';
@@ -17,7 +18,7 @@ import { classToPlain, plainToClass } from 'class-transformer';
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(PRODUCT_MODEL)
+    @InjectModel(SchemaName.PRODUCT)
     private readonly productModel: Model<ProductSchema>,
   ) {}
 

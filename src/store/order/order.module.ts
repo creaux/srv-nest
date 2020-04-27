@@ -3,7 +3,7 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { MongoModule } from '../../mongo/mongo.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ORDER_MODEL, OrderSchema } from '@pyxismedia/lib-model';
+import { ORDER_MODEL, OrderSchema, SchemaName } from '@pyxismedia/lib-model';
 import { PipesModule } from '../../pipes/pipes.module';
 import { UsersModule } from '../../users/users.module';
 import { AuthModule } from '../../auth/auth.module';
@@ -15,7 +15,7 @@ import { PaymentModule } from '../payment/payment.module';
     MongoModule,
     MongooseModule.forFeature([
       {
-        name: ORDER_MODEL,
+        name: SchemaName.ORDER,
         schema: OrderSchema,
       },
     ]),

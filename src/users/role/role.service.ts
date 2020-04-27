@@ -1,5 +1,5 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { ROLE_MODEL, RoleSchemaInterface } from '@pyxismedia/lib-model';
+import { RoleSchemaInterface, SchemaName } from '@pyxismedia/lib-model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RoleResponseDto } from './role-response.dto';
@@ -9,7 +9,7 @@ import { plainToClass } from 'class-transformer';
 @Injectable()
 export class RoleService {
   constructor(
-    @InjectModel(ROLE_MODEL)
+    @InjectModel(SchemaName.ROLE)
     private readonly userModel: Model<RoleSchemaInterface>,
   ) {}
 

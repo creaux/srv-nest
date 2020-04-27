@@ -6,21 +6,18 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {
-  AUTH_MODEL,
-  AuthSignInRequestDto,
-} from './dto/auth-sign-in-request.dto';
+import { AuthSignInRequestDto } from './dto/auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
-import { AuthSchemaInterface } from '@pyxismedia/lib-model';
+import { AuthSchemaInterface, SchemaName } from '@pyxismedia/lib-model';
 import { JWT, Jwt, Bcrypt, BCRYPT } from '../../library/library.module';
 import { UserResponseDto } from '../../users/user/dto/create-user-response.dto';
 import { AuthSignInResponseDto } from './dto/auth-sign-in-response.dto';
-import { CreateAuthModel } from '@pyxismedia/lib-model/build/auth/create-auth.model';
+import { CreateAuthModel } from '@pyxismedia/lib-model';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(AUTH_MODEL)
+    @InjectModel(SchemaName.AUTH)
     private readonly authModel: Model<AuthSchemaInterface>,
     private readonly userService: UserService,
     @Inject(JWT) private readonly jwt: Jwt,

@@ -2,7 +2,11 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostRequestDto } from './dto/create-post-request.dto';
-import { PostSchemaInterface, ROLE_MODEL } from '@pyxismedia/lib-model';
+import {
+  PostSchemaInterface,
+  ROLE_MODEL,
+  SchemaName,
+} from '@pyxismedia/lib-model';
 import { PostResponseDto } from './dto/post-response.dto';
 import { UserService } from '../../users/user/user.service';
 import { plainToClass } from 'class-transformer';
@@ -11,7 +15,8 @@ import { plainToClass } from 'class-transformer';
 export class PostService {
   constructor(
     private readonly userService: UserService,
-    @InjectModel('Post') private readonly postModel: Model<PostSchemaInterface>,
+    @InjectModel(SchemaName.POST)
+    private readonly postModel: Model<PostSchemaInterface>,
   ) {}
 
   async create(createPostDto: CreatePostRequestDto): Promise<PostResponseDto> {

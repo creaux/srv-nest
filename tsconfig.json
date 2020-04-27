@@ -1,17 +1,11 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "sourceMap": true,
-    "outDir": "./dist",
     "baseUrl": "./",
-    "noImplicitAny": true,
-    // Because dependencies in @pyxismedia/lib-model which are js
+    "resolveJsonModule": true,
+    "paths": {
+      "@pyxismedia/lib-model": ["../lib-model/src"]
+    },
     "allowJs": true
-  },
-  "exclude": ["node_modules"]
+  }
 }

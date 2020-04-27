@@ -1,54 +1,72 @@
-import { MemoryDb } from './memory-db';
 import {
-  AuthSuccessModel,
-  DataMockEntities,
   CreateRoleModel,
+  Fiber,
+  Injector,
+  RoleModel,
+  UserModel,
+  AccessModel,
+  Mockeries,
+  L10nModel,
 } from '@pyxismedia/lib-model';
 import { TestingModule, Test } from '@nestjs/testing';
 import { UsersModule } from '../src/users/users.module';
 import { AuthModule } from '../src/auth/auth.module';
-import { ConfigService } from '../src/config/config.service';
 import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import * as request from 'supertest';
 import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-response.dto';
+import {
+  MONGO_OPTIONS_TOKEN,
+  MongoOptionsBuilder,
+} from '../src/mongo/mongo-options.service';
 
 describe('RoleController (e2e)', () => {
   let app: any;
-  let db: MemoryDb;
+  let fiber: Fiber;
+  let mockeries: Mockeries;
+  let roles: RoleModel[];
   let dbUri: string;
+  let users: UserModel[];
 
   beforeAll(async () => {
-    db = new MemoryDb();
-    db.import(DataMockEntities.ROLES);
-    db.import(DataMockEntities.USERS);
-    db.import(DataMockEntities.ACCESS);
-    dbUri = await db.uri;
-    await db.ensure();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+    mockeries = Injector.resolve<Mockeries>(Mockeries);
+    fiber = Injector.resolve<Fiber>(Fiber);
+    mockeries.prepare(L10nModel);
+    await fiber.createFromModel(RoleModel, 3);
+    await fiber.createFromModel(UserModel);
+    await fiber.createFromModel(AccessModel);
+    roles = mockeries.resolve<RoleModel[]>(RoleModel);
+    users = mockeries.resolve<UserModel[]>(UserModel);
+    const accesses = mockeries.resolve(AccessModel);
+    dbUri = await fiber.dbUri;
   });
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [UsersModule, AuthModule],
     })
-      .overrideProvider(ConfigService)
-      .useValue({
-        get() {
-          return dbUri;
-        },
-        Env: {},
-      })
+      .overrideProvider(MONGO_OPTIONS_TOKEN)
+      .useValue(
+        new MongoOptionsBuilder()
+          .withUri(dbUri)
+          .withUseNewUrlParser(true)
+          .withUseUnifiedTopology(true)
+          .build(),
+      )
       .compile();
+
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
   afterAll(async () => {
-    await db.stop();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    await fiber.tearDown();
   });
 
   describe('unauthentized', () => {
-    it('/role (GET)', async () => {
-      return await request(app.getHttpServer())
+    it('/role (GET)', () => {
+      request(app.getHttpServer())
         .get('/role')
         .expect(401)
         .expect({ statusCode: 401, error: 'Unauthorized' });
@@ -71,9 +89,8 @@ describe('RoleController (e2e)', () => {
           .then(res => res.body);
       });
 
-      it('/role (GET)', async () => {
-        const expected = db.get(DataMockEntities.ROLES);
-        return await request(app.getHttpServer())
+      it('/role (GET)', () => {
+        request(app.getHttpServer())
           .get('/role')
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(403)
@@ -84,10 +101,9 @@ describe('RoleController (e2e)', () => {
           });
       });
 
-      it('/role/:id (GET)', async () => {
-        const expected = db.get(DataMockEntities.ROLES);
-        return await request(app.getHttpServer())
-          .get(`/role/${expected[0].id}`)
+      it('/role/:id (GET)', () => {
+        request(app.getHttpServer())
+          .get(`/role/${roles[0].id}`)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(403)
           .expect({
@@ -97,8 +113,8 @@ describe('RoleController (e2e)', () => {
           });
       });
 
-      it('/role (POST) 201 Created', async () => {
-        const response = await request(app.getHttpServer())
+      it('/role (POST) 201 Created', () => {
+        request(app.getHttpServer())
           .post('/role')
           .send(CreateRoleModel.MOCK)
           .set('Authorization', `Bearer ${auth.token}`)
@@ -110,10 +126,11 @@ describe('RoleController (e2e)', () => {
           });
       });
 
-      it('/role (DELETE) 200 Deleted', async () => {
-        const response = await request(app.getHttpServer())
+      it('/role (DELETE) 200 Deleted', () => {
+        const newRole = mockeries.create(RoleModel);
+        request(app.getHttpServer())
           .post('/role')
-          .send(CreateRoleModel.MOCK)
+          .send(newRole)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(403)
           .expect({
@@ -139,33 +156,32 @@ describe('RoleController (e2e)', () => {
           .then(res => res.body);
       });
 
-      it('/role (GET)', async () => {
-        const expected = db.get(DataMockEntities.ROLES);
-        return await request(app.getHttpServer())
+      it('/role (GET)', () => {
+        request(app.getHttpServer())
           .get('/role')
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(200)
-          .expect(expected);
+          .expect(roles);
       });
 
-      it('/role/:id (GET)', async () => {
-        const expected = db.get(DataMockEntities.ROLES);
-        return await request(app.getHttpServer())
-          .get(`/role/${expected[0].id}`)
+      it('/role/:id (GET)', () => {
+        request(app.getHttpServer())
+          .get(`/role/${roles[0].id}`)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(200)
-          .expect(expected[0]);
+          .expect(roles[0]);
       });
 
       it('/role (POST) 201 Created', async () => {
+        const newRole = mockeries.create<RoleModel>(RoleModel);
         const response = await request(app.getHttpServer())
           .post('/role')
-          .send(CreateRoleModel.MOCK)
+          .send(newRole)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(201)
           .expect(response => response.body.name === CreateRoleModel.MOCK.name);
 
-        await request(app.getHttpServer())
+        request(app.getHttpServer())
           .delete(`/role/${response.body.id}`)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(200)
@@ -173,9 +189,10 @@ describe('RoleController (e2e)', () => {
       });
 
       it('/role (DELETE) 200 Deleted', async () => {
+        const newRole = mockeries.create(RoleModel);
         const response = await request(app.getHttpServer())
           .post('/role')
-          .send(CreateRoleModel.MOCK)
+          .send(newRole)
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(201)
           .expect(response => response.body.name === CreateRoleModel.MOCK.name);
@@ -188,10 +205,9 @@ describe('RoleController (e2e)', () => {
       });
 
       it('/role (POST) 409 Conflict', async () => {
-        const existing = db.get(DataMockEntities.ROLES);
         await request(app.getHttpServer())
           .post('/role')
-          .send(existing[0])
+          .send(roles[0])
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(409)
           .expect({

@@ -6,14 +6,14 @@ import {
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
-import { UserSchemaInterface, USER_MODEL } from '@pyxismedia/lib-model';
+import { SchemaName, UserSchemaInterface } from '@pyxismedia/lib-model';
 import { UserResponseDto } from './dto/create-user-response.dto';
 import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(USER_MODEL)
+    @InjectModel(SchemaName.USER)
     private readonly userModel: Model<UserSchemaInterface>,
   ) {}
 
@@ -61,7 +61,7 @@ export class UserService {
 
   async findByEmail(email: string): Promise<UserResponseDto> {
     return await this.userModel
-      .findOne({ email })
+      .findOne({ email: { $eq: email } })
       .populate('roles')
       .exec()
       .then(document => {
@@ -72,6 +72,9 @@ export class UserService {
         throw new NotFoundException(
           `User with email ${email} hasn't been found`,
         );
+      })
+      .catch(err => {
+        throw new Error(err);
       });
   }
 }

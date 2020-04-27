@@ -2,7 +2,11 @@ import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PRODUCT_MODEL, ProductSchema } from '@pyxismedia/lib-model';
+import {
+  PRODUCT_MODEL,
+  ProductSchema,
+  SchemaName,
+} from '@pyxismedia/lib-model';
 import { PipesModule } from '../../pipes/pipes.module';
 import { MongoModule } from '../../mongo/mongo.module';
 import { UsersModule } from '../../users/users.module';
@@ -14,7 +18,7 @@ import { LoggerModule } from '../../logger/logger.module';
     MongoModule,
     MongooseModule.forFeature([
       {
-        name: PRODUCT_MODEL,
+        name: SchemaName.PRODUCT,
         schema: ProductSchema,
       },
     ]),

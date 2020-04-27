@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ACCESS_MODEL, AccessSchemaInterface } from '@pyxismedia/lib-model';
+import { AccessSchemaInterface, SchemaName } from '@pyxismedia/lib-model';
 import { Model } from 'mongoose';
 import { AccessResponseDto } from './dto/access-response.dto';
 import { plainToClass } from 'class-transformer';
@@ -8,7 +8,7 @@ import { plainToClass } from 'class-transformer';
 @Injectable()
 export class AccessService {
   constructor(
-    @InjectModel(ACCESS_MODEL)
+    @InjectModel(SchemaName.ACCESS)
     private readonly accessModel: Model<AccessSchemaInterface>,
   ) {}
 

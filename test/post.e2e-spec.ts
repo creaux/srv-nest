@@ -7,6 +7,7 @@ import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.
 import { MemoryDb } from './memory-db';
 import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-response.dto';
 import { useContainer } from 'class-validator';
+import { Injector } from '@pyxismedia/lib-model';
 
 describe('PostController (e2e)', () => {
   let app: any;
@@ -68,9 +69,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -81,9 +82,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -107,9 +108,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -120,9 +121,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -146,9 +147,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -159,9 +160,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -185,9 +186,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -198,9 +199,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -224,9 +225,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -237,9 +238,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -282,9 +283,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -295,9 +296,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Frantisek',
                 surname: 'Medvidek',
                 email: 'frantisek@medvidek.cz',
-                "l10n": {
-                  "language": "CZ",
-                  "location": "CZ"
+                l10n: {
+                  language: 'CZ',
+                  location: 'CZ',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -321,9 +322,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -334,9 +335,9 @@ describe('PostController (e2e)', () => {
                 forname: 'Karel',
                 surname: 'Vomacka',
                 email: 'karel@vomacka.cz',
-                "l10n": {
-                  "language": "EN",
-                  "location": "US"
+                l10n: {
+                  language: 'EN',
+                  location: 'US',
                 },
                 password:
                   '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -369,9 +370,9 @@ describe('PostController (e2e)', () => {
               forname: 'Karel',
               surname: 'Vomacka',
               email: 'karel@vomacka.cz',
-              "l10n": {
-                "location": "US",
-                "language": "EN"
+              l10n: {
+                location: 'US',
+                language: 'EN',
               },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -382,9 +383,9 @@ describe('PostController (e2e)', () => {
               forname: 'Frantisek',
               surname: 'Medvidek',
               email: 'frantisek@medvidek.cz',
-              "l10n": {
-                "location": "CZ",
-                "language": "CZ"
+              l10n: {
+                location: 'CZ',
+                language: 'CZ',
               },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -449,25 +450,26 @@ describe('PostController (e2e)', () => {
             expect(body.labels).toEqual(CreatePostModel.MOCK.labels);
             expect(body.image).toEqual(CreatePostModel.MOCK.image);
             expect(body.createdBy).toEqual({
-              "email": "karel@vomacka.cz",
-              "forname": "Karel",
-              "id": "000000000000000000000a00",
-              "l10n": {
-                "language": "EN",
-                "location": "US"
+              email: 'karel@vomacka.cz',
+              forname: 'Karel',
+              id: '000000000000000000000a00',
+              l10n: {
+                language: 'EN',
+                location: 'US',
               },
-              "password": "$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou",
-              "roles": [
+              password:
+                '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
+              roles: [
                 {
-                  "id": "5dc9bc0c99e35856ffe90e66",
-                  "name": "Superadmin"
-                }
+                  id: '5dc9bc0c99e35856ffe90e66',
+                  name: 'Superadmin',
+                },
               ],
-              "surname": "Vomacka"
+              surname: 'Vomacka',
             });
             expect(body.section).toEqual({
-              "id": "00000000000000000000000a",
-              "name": "Section"
+              id: '00000000000000000000000a',
+              name: 'Section',
             });
             return done();
           });
@@ -480,83 +482,85 @@ describe('PostController (e2e)', () => {
           .set('Authorization', `Bearer ${auth.token}`)
           .expect(400)
           .expect({
-            "error": "Request validation failed",
-            "message": [
+            error: 'Request validation failed',
+            message: [
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "state should not be null or undefined",
-                  "isEnum": "state must be a valid enum value"
+                children: [],
+                constraints: {
+                  isDefined: 'state should not be null or undefined',
+                  isEnum: 'state must be a valid enum value',
                 },
-                "property": "state",
-                "target": {}
+                property: 'state',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "createdBy should not be null or undefined",
-                  "isMongoId": "createdBy must be a mongodb id"
+                children: [],
+                constraints: {
+                  isDefined: 'createdBy should not be null or undefined',
+                  isMongoId: 'createdBy must be a mongodb id',
                 },
-                "property": "createdBy",
-                "target": {}
+                property: 'createdBy',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isMongoId": "section must be a mongodb id"
+                children: [],
+                constraints: {
+                  isMongoId: 'section must be a mongodb id',
                 },
-                "property": "section",
-                "target": {}
+                property: 'section',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "title should not be null or undefined",
-                  "isString": "title must be a string",
-                  "length": "title must be longer than or equal to 1 characters"
+                children: [],
+                constraints: {
+                  isDefined: 'title should not be null or undefined',
+                  isString: 'title must be a string',
+                  length: 'title must be longer than or equal to 1 characters',
                 },
-                "property": "title",
-                "target": {}
+                property: 'title',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "subtitle should not be null or undefined",
-                  "isString": "subtitle must be a string",
-                  "length": "subtitle must be longer than or equal to 1 characters"
+                children: [],
+                constraints: {
+                  isDefined: 'subtitle should not be null or undefined',
+                  isString: 'subtitle must be a string',
+                  length:
+                    'subtitle must be longer than or equal to 1 characters',
                 },
-                "property": "subtitle",
-                "target": {}
+                property: 'subtitle',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "content should not be null or undefined",
-                  "isString": "content must be a string",
-                  "length": "content must be longer than or equal to 1 characters"
+                children: [],
+                constraints: {
+                  isDefined: 'content should not be null or undefined',
+                  isString: 'content must be a string',
+                  length:
+                    'content must be longer than or equal to 1 characters',
                 },
-                "property": "content",
-                "target": {}
+                property: 'content',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isDefined": "image should not be null or undefined",
-                  "isUrl": "image must be an URL address"
+                children: [],
+                constraints: {
+                  isDefined: 'image should not be null or undefined',
+                  isUrl: 'image must be an URL address',
                 },
-                "property": "image",
-                "target": {}
+                property: 'image',
+                target: {},
               },
               {
-                "children": [],
-                "constraints": {
-                  "isArray": "labels must be an array"
+                children: [],
+                constraints: {
+                  isArray: 'labels must be an array',
                 },
-                "property": "labels",
-                "target": {}
-              }
+                property: 'labels',
+                target: {},
+              },
             ],
-            "statusCode": 400
+            statusCode: 400,
           });
       });
 
@@ -1065,9 +1069,9 @@ describe('PostController (e2e)', () => {
               email: 'karel@vomacka.cz',
               forname: 'Karel',
               id: '000000000000000000000a00',
-              "l10n": {
-                "language": "EN",
-                "location": "US"
+              l10n: {
+                language: 'EN',
+                location: 'US',
               },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -1078,9 +1082,9 @@ describe('PostController (e2e)', () => {
               email: 'frantisek@medvidek.cz',
               forname: 'Frantisek',
               id: '000000000000000000000b00',
-              "l10n": {
-                "location": "CZ",
-                "language": "CZ"
+              l10n: {
+                location: 'CZ',
+                language: 'CZ',
               },
               password:
                 '$2b$10$0JCol.4vgoaiy70z9XX8ZOyJHYV6PMidts.WToOrAZmj90wgbPIou',
@@ -1088,8 +1092,8 @@ describe('PostController (e2e)', () => {
               surname: 'Medvidek',
             });
             expect(body.section).toEqual({
-              "id": "00000000000000000000000a",
-              "name": "Section"
+              id: '00000000000000000000000a',
+              name: 'Section',
             });
             expect(body.id).toEqual('000000000000000000000a00');
             done();

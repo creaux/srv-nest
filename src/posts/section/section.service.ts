@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SectionModel } from '@pyxismedia/lib-model';
+import { SchemaName, SectionModel } from '@pyxismedia/lib-model';
 import { Section } from '../post/post.types';
 
 @Injectable()
 export class SectionService {
   constructor(
-    @InjectModel('Section') private readonly sectionModel: Model<Section>,
+    @InjectModel(SchemaName.SECTION)
+    private readonly sectionModel: Model<Section>,
   ) {}
 
   async findById(id: string): Promise<SectionModel | null> {
