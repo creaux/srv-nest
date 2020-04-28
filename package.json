@@ -60,7 +60,7 @@
     "husky": "^4.0.2",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
-    "lint-staged": "^9.4.2",
+    "lint-staged": "^10.2.0",
     "mongoose": "^5.6.0",
     "mongoose-intl": "https://github.com/alexsk/mongoose-intl#89a472d942c25ea1bb635366b41af1e1792e9b85",
     "nest-access-control": "https://github.com/creaux/nest-access-control.git",
