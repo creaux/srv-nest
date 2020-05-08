@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
-import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
-import { ConfigModule } from '../src/config/config.module';
 import {
-  Fiber, ImageModel,
-  Injector, L10nModel,
+  CreateRoleModel,
+  CreateUserModel,
+  Fiber,
+  Injector,
+  L10nModel,
   Mockeries,
-  PostModel, RoleModel,
-  SectionModel,
-  UserModel
+  UserModel,
 } from '@pyxismedia/lib-model';
 import { MONGO_OPTIONS_TOKEN, MongoOptionsBuilder } from '../src/mongo/mongo-options.service';
+import { ConfigService } from '../src/config/config.service';
 
 describe('AuthController (e2e)', () => {
   let app: any;
@@ -25,8 +25,10 @@ describe('AuthController (e2e)', () => {
     mockeries = Injector.resolve<Mockeries>(Mockeries);
     fiber = Injector.resolve<Fiber>(Fiber);
     mockeries.prepare(L10nModel);
-    await fiber.createFromModel(RoleModel);
-    await fiber.createFromModel(UserModel);
+    // TODO: How to make sure we know whether it should be an array or single value. Information is stored in MongooseSchema now
+    // It causes cast to array issue then
+    await fiber.createFromModel(CreateRoleModel, 2);
+    await fiber.createFromModel(CreateUserModel);
     user = mockeries.resolve<UserModel>(UserModel);
 
     dbUri = await fiber.dbUri;
@@ -36,6 +38,8 @@ describe('AuthController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AuthModule],
     })
+      .overrideProvider(ConfigService)
+      .useValue({})
       .overrideProvider(MONGO_OPTIONS_TOKEN)
       .useValue(
         new MongoOptionsBuilder()
