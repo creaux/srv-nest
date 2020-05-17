@@ -1,56 +1,67 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AuthSignInRequestDto } from '../src/auth/auth/dto/auth-sign-in-request.dto';
 import { AuthModule } from '../src/auth/auth.module';
-import { MemoryDb } from './memory-db';
-import { UsersModule } from '../src/users/users.module';
 import { ConfigService } from '../src/config/config.service';
 import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-response.dto';
-import { Mockeries, Schema, UserModel } from '@pyxismedia/lib-model';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { model, connect } from 'mongoose';
+import {
+  AuthSignInBuilder,
+  CreateAccessModel,
+  CreateRoleModel,
+  CreateUserModel,
+  Fiber,
+  Injector,
+  L10nModel,
+  Mockeries,
+  UserModel,
+} from '@pyxismedia/lib-model';
+import {
+  MONGO_OPTIONS_TOKEN,
+  MongoOptionsBuilder,
+} from '../src/mongo/mongo-options.service';
+import { UsersModule } from '../src/users/users.module';
 
 describe('UsersController (e2e)', () => {
   let app: any;
-  let db: MemoryDb;
+  let mockeries: Mockeries;
+  let fiber: Fiber;
   let dbUri: string;
-  let userModelMock: UserModel[];
+  let user: UserModel[];
 
   beforeAll(async () => {
-    // db = new MemoryDb();
-    // db.import(DataMockEntities.USERS);
-    // db.import(DataMockEntities.ACCESS);
-    // db.import(DataMockEntities.ROLES);
-    // dbUri = await db.uri;
-    // await db.ensure();
+    mockeries = Injector.resolve<Mockeries>(Mockeries);
+    fiber = Injector.resolve<Fiber>(Fiber);
+    mockeries.prepare(L10nModel);
+    await fiber.createFromModel(CreateRoleModel, 2);
+    await fiber.createFromModel(CreateAccessModel);
+    await fiber.createFromModel(CreateUserModel, 2);
+    user = mockeries.resolve<UserModel[]>(UserModel);
+    dbUri = await fiber.dbUri;
   });
 
   beforeAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule, AuthModule],
+      imports: [AuthModule, UsersModule],
     })
       .overrideProvider(ConfigService)
-      .useValue({
-        get() {
-          return dbUri;
-        },
-        Env: {},
-      })
+      .useValue({})
+      .overrideProvider(MONGO_OPTIONS_TOKEN)
+      .useValue(
+        new MongoOptionsBuilder()
+          .withUri(dbUri)
+          .withUseNewUrlParser(true)
+          .withUseUnifiedTopology(true)
+          .build(),
+      )
       .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  beforeAll(async () => {
-    const connection = new MongoMemoryServer();
-    await connection.ensureInstance();
-    const connectionString = await connection.getConnectionString();
-    await connect(connectionString);
-    const userSchema = Schema.resolve(UserModel);
-    const instance = model('user', userSchema);
-    userModelMock = Mockeries.resolve(UserModel);
-    await instance.insertMany(userModelMock);
+  afterAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    await fiber.tearDown();
   });
 
   describe('access rights - any', () => {
@@ -60,10 +71,10 @@ describe('UsersController (e2e)', () => {
       auth = await request(app.getHttpServer())
         .post('/auth')
         .send(
-          new AuthSignInRequestDto({
-            email: 'karel@vomacka.cz',
-            password: '12345',
-          }),
+          new AuthSignInBuilder()
+            .withEmail(user[0].email)
+            .withPassword(user[0].password)
+            .build(),
         )
         .then(res => res.body);
     });
@@ -71,13 +82,13 @@ describe('UsersController (e2e)', () => {
     it('/user (POST)', async done => {
       return request(app.getHttpServer())
         .post('/user')
-        .send(userModelMock)
+        .send(user)
         .set('Authorization', `Bearer ${auth.token}`)
         .expect(function(res) {
           return (
-            res.body.forname === userModelMock[0].forname &&
-            res.body.surname === userModelMock[0].surname &&
-            res.body.email === userModelMock[0].email &&
+            res.body.forname === user[0].forname &&
+            res.body.surname === user[0].surname &&
+            res.body.email === user[0].email &&
             !res.body.password
           );
         })
