@@ -1,3 +1,3 @@
-import { UserPopulatedModel } from '@pyxismedia/lib-model';
+import { UserModel } from '@pyxismedia/lib-model';
 
-export class UserResponseDto extends UserPopulatedModel {}
+export class UserResponseDto extends UserModel {}

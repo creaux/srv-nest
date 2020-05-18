@@ -13,6 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UseRoles } from 'nest-access-control/lib';
 import { AccessGuard } from './access.guard';
 import { ParseNumberPipe } from '../../pipes/parse-number.pipe';
+import { Action, Possession } from '@pyxismedia/lib-model';
 
 @Controller('access')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -27,7 +28,11 @@ export class AccessController {
     description: 'All access rights have been successfully retrieved.',
   })
   @UseGuards(AuthGuard('bearer'), AccessGuard)
-  @UseRoles({ resource: 'access', action: 'read', possession: 'any' })
+  @UseRoles({
+    resource: 'access',
+    action: Action.READ,
+    possession: Possession.ANY,
+  })
   public async findAll(
     @Query('skip', ParseNumberPipe) skip: number,
   ): Promise<AccessResponseDto[]> {

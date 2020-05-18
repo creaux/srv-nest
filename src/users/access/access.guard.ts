@@ -85,7 +85,7 @@ export class AccessGuard implements CanActivate {
     const result = [await this.getRoleById('5e17734e841b06a773bd300b')];
     if (result[0] == undefined) {
       throw new NotImplementedException(
-        'There are missing roles in the database.',
+        'There is missing Anonymous role in the database.',
       );
     }
     return result;

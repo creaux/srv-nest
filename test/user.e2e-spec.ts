@@ -6,13 +6,14 @@ import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-respons
 import {
   AuthSignInBuilder,
   CreateAccessModel,
-  CreateRoleModel, CreateUserMockeries,
+  CreateRoleModel,
+  CreateUserMockeries,
   CreateUserModel,
   Fiber,
   Injector,
   L10nModel,
   Mockeries,
-  UserModel
+  UserModel,
 } from '@pyxismedia/lib-model';
 import {
   MONGO_OPTIONS_TOKEN,
@@ -33,7 +34,8 @@ describe('UsersController (e2e)', () => {
     fiber = Injector.resolve<Fiber>(Fiber);
     mockeries.prepare(L10nModel);
     await fiber.createFromModel(CreateRoleModel, 2);
-    await fiber.createFromModel(CreateAccessModel);
+    // 1 as count has to be chosen to make sure that statics are also evaluated
+    await fiber.createFromModel(CreateAccessModel, 1);
     await fiber.createFromModel(CreateUserModel, 2);
     user = mockeries.resolve<UserModel[]>(UserModel);
     dbUri = await fiber.dbUri;
@@ -78,7 +80,7 @@ describe('UsersController (e2e)', () => {
           new AuthSignInBuilder()
             .withEmail(admin.email)
             .withPassword(admin.password)
-            .build()
+            .build(),
         )
         .then(res => res.body);
     });
