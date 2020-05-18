@@ -6,13 +6,13 @@ import { AuthSignInResponseDto } from '../src/auth/auth/dto/auth-sign-in-respons
 import {
   AuthSignInBuilder,
   CreateAccessModel,
-  CreateRoleModel,
+  CreateRoleModel, CreateUserMockeries,
   CreateUserModel,
   Fiber,
   Injector,
   L10nModel,
   Mockeries,
-  UserModel,
+  UserModel
 } from '@pyxismedia/lib-model';
 import {
   MONGO_OPTIONS_TOKEN,
@@ -26,6 +26,7 @@ describe('UsersController (e2e)', () => {
   let fiber: Fiber;
   let dbUri: string;
   let user: UserModel[];
+  let newUser: UserModel;
 
   beforeAll(async () => {
     mockeries = Injector.resolve<Mockeries>(Mockeries);
@@ -36,6 +37,8 @@ describe('UsersController (e2e)', () => {
     await fiber.createFromModel(CreateUserModel, 2);
     user = mockeries.resolve<UserModel[]>(UserModel);
     dbUri = await fiber.dbUri;
+
+    newUser = mockeries.create(CreateUserModel);
   });
 
   beforeAll(async () => {
@@ -68,13 +71,14 @@ describe('UsersController (e2e)', () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
+      const admin = user.find(u => u._id === CreateUserMockeries.ADMIN);
       auth = await request(app.getHttpServer())
         .post('/auth')
         .send(
           new AuthSignInBuilder()
-            .withEmail(user[0].email)
-            .withPassword(user[0].password)
-            .build(),
+            .withEmail(admin.email)
+            .withPassword(admin.password)
+            .build()
         )
         .then(res => res.body);
     });
@@ -82,13 +86,14 @@ describe('UsersController (e2e)', () => {
     it('/user (POST)', async done => {
       return request(app.getHttpServer())
         .post('/user')
-        .send(user)
+        .send(newUser)
         .set('Authorization', `Bearer ${auth.token}`)
+        .expect(201)
         .expect(function(res) {
           return (
-            res.body.forname === user[0].forname &&
-            res.body.surname === user[0].surname &&
-            res.body.email === user[0].email &&
+            res.body.forname === newUser.forname &&
+            res.body.surname === newUser.surname &&
+            res.body.email === newUser.email &&
             !res.body.password
           );
         })

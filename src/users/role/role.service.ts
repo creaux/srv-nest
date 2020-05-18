@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { RoleSchemaInterface, SchemaName } from '@pyxismedia/lib-model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -33,7 +37,7 @@ export class RoleService {
         if (document) {
           return plainToClass(RoleResponseDto, document.toObject());
         }
-        return null;
+        throw new NotFoundException(`Role with id ${id} doesn't exists`);
       });
   }
 
