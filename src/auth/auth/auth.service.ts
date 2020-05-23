@@ -1,18 +1,22 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
-  Inject,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthSignInRequestDto } from './dto/auth-sign-in-request.dto';
 import { UserService } from '../../users/user/user.service';
-import { AuthSchemaInterface, SchemaName } from '@pyxismedia/lib-model';
-import { JWT, Jwt, Bcrypt, BCRYPT } from '../../library/library.module';
+import {
+  AuthSchemaInterface,
+  CreateAuthModel,
+  QueryPopulateOptionsBuilder,
+  SchemaName,
+} from '@pyxismedia/lib-model';
+import { Bcrypt, BCRYPT, JWT, Jwt } from '../../library/library.module';
 import { UserResponseDto } from '../../users/user/dto/create-user-response.dto';
 import { AuthSignInResponseDto } from './dto/auth-sign-in-response.dto';
-import { CreateAuthModel } from '@pyxismedia/lib-model';
 
 @Injectable()
 export class AuthService {
@@ -27,12 +31,18 @@ export class AuthService {
   public async validateUser(token: string): Promise<AuthSignInResponseDto> {
     return await this.authModel
       .findOne({ token })
-      .populate({
-        path: 'user',
-        populate: {
-          path: 'roles',
-        },
-      })
+      .populate(
+        new QueryPopulateOptionsBuilder()
+          .withPath('user')
+          .withModel(SchemaName.USER)
+          .withPopulate(
+            new QueryPopulateOptionsBuilder()
+              .withPath('roles')
+              .withModel(SchemaName.ROLE)
+              .build(),
+          )
+          .build(),
+      )
       .exec()
       .then(document => {
         if (document) {

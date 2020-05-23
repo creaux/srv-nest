@@ -26,10 +26,10 @@ describe('UsersController (e2e)', () => {
   let mockeries: Mockeries;
   let fiber: Fiber;
   let dbUri: string;
-  let user: UserModel[];
+  let users: UserModel[];
   let newUser: UserModel;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     mockeries = Injector.resolve<Mockeries>(Mockeries);
     fiber = Injector.resolve<Fiber>(Fiber);
     mockeries.prepare(L10nModel);
@@ -37,13 +37,14 @@ describe('UsersController (e2e)', () => {
     // 1 as count has to be chosen to make sure that statics are also evaluated
     await fiber.createFromModel(CreateAccessModel, 1);
     await fiber.createFromModel(CreateUserModel, 2);
-    user = mockeries.resolve<UserModel[]>(UserModel);
+    users = mockeries.resolve<UserModel[]>(UserModel);
     dbUri = await fiber.dbUri;
 
     newUser = mockeries.create(CreateUserModel);
+    console.log(newUser);
   });
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AuthModule, UsersModule],
@@ -64,8 +65,9 @@ describe('UsersController (e2e)', () => {
     await app.init();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    mockeries.clean(L10nModel);
     await fiber.tearDown();
   });
 
@@ -73,7 +75,7 @@ describe('UsersController (e2e)', () => {
     let auth: AuthSignInResponseDto;
 
     beforeEach(async () => {
-      const admin = user.find(u => u._id === CreateUserMockeries.ADMIN);
+      const admin = users.find(u => u.id === CreateUserMockeries.ADMIN);
       auth = await request(app.getHttpServer())
         .post('/auth')
         .send(
@@ -104,17 +106,27 @@ describe('UsersController (e2e)', () => {
         });
     });
 
-    // it('/user (GET)', async () => {
-    //   const expected = userModelMock.map((user: UserModel) => {
-    //     const { password, ...rest } = user;
-    //     return rest;
-    //   });
-    //   return request(app.getHttpServer())
-    //     .get('/user')
-    //     .set('Authorization', `Bearer ${auth.token}`)
-    //     .expect(200)
-    //     .expect(expected);
-    // });
+    it('/user (GET)', async () => {
+      const expected = users.map((user: UserModel) => user.withoutPassword);
+      return request(app.getHttpServer())
+        .get('/user')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .expect(200)
+        .expect(
+          expected.sort((a, b) => {
+            if (a.surname < b.surname) {
+              return -1;
+            }
+
+            if (a.surname > b.surname) {
+              return 1;
+            }
+
+            return 0;
+          }),
+        );
+    });
+
     //
     // it('/user?skip=3 (GET)', async () => {
     //   const all = db.get(DataMockEntities.USERS);

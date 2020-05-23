@@ -8,6 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
@@ -18,6 +19,7 @@ import { UserResponseDto } from './dto/create-user-response.dto';
 import { UseRoles } from 'nest-access-control/lib';
 import { AccessGuard } from '../access/access.guard';
 import { Action } from '@pyxismedia/lib-model';
+import { DefaultValidationPipe } from '../../pipes/default-validation.pipe';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -44,10 +46,10 @@ export class UserController {
   // TODO: Middleware for creating Dto objects from params NOTE: This should be done by this https://docs.nestjs.com/techniques/serialization
   @Post()
   @ApiOperation({ title: 'Create user' })
-  @UseRoles({ resource: 'user', action: Action.CREATE, possession: 'any' })
   @UseGuards(AuthGuard('bearer'), AccessGuard)
+  @UseRoles({ resource: 'user', action: Action.CREATE, possession: 'any' })
   createUser(
-    @Body(new ValidationPipe({ transform: true }))
+    @Body(new DefaultValidationPipe())
     userCreateDto: CreateUserRequestDto,
   ): Promise<UserResponseDto | ConflictException> {
     return this.userService.createUser(userCreateDto);

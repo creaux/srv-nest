@@ -22,15 +22,15 @@ describe('AuthController (e2e)', () => {
   let dbUri: string;
   let fiber: Fiber;
   let mockeries: Mockeries;
-  let user: UserModel;
+  let users: UserModel[];
 
   beforeAll(async () => {
     mockeries = Injector.resolve<Mockeries>(Mockeries);
     fiber = Injector.resolve<Fiber>(Fiber);
     mockeries.prepare(L10nModel);
     await fiber.createFromModel(CreateRoleModel, 2);
-    await fiber.createFromModel(CreateUserModel);
-    user = mockeries.resolve<UserModel>(UserModel);
+    await fiber.createFromModel(CreateUserModel, 2);
+    users = mockeries.resolve<UserModel[]>(UserModel);
     dbUri = await fiber.dbUri;
   });
 
@@ -63,15 +63,15 @@ describe('AuthController (e2e)', () => {
       .post('/auth')
       .send(
         new AuthSignInBuilder()
-          .withEmail(user.email)
-          .withPassword(user.password)
+          .withEmail(users[0].email)
+          .withPassword(users[0].password)
           .build(),
       )
       .expect(201)
       .expect((res: any) => {
         res.body.token.match(/\d/);
         res.body.createdAt.match(/\d/);
-        res.body._id.match(/\d/);
+        res.body.id.match(/\d/);
       });
   });
 });
