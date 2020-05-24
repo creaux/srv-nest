@@ -101,7 +101,7 @@ export class AuthService {
 
     if (comparison) {
       return await this.createAuth(
-        new CreateAuthModel({ token, user: user._id }),
+        new CreateAuthModel({ token, user: user.id }),
       );
     }
 
