@@ -50,7 +50,7 @@
     "@types/supertest": "^2.0.5",
     "apollo-link-context": "^1.0.14",
     "apollo-server-express": "^2.3.3",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^4.0.0",
     "class-transformer": "0.2.3",
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
