@@ -52,7 +52,7 @@
     "apollo-server-express": "^2.3.3",
     "bcrypt": "^3.0.6",
     "class-transformer": "0.2.3",
-    "class-validator": "^0.11.0",
+    "class-validator": "^0.14.0",
     "dotenv": "^8.2.0",
     "flatted": "^2.0.1",
     "graphql": "^14.1.1",
